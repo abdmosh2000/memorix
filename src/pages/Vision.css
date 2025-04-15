@@ -1,0 +1,43 @@
+/* Styles for the Vision page */
+.vision-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  padding: 50px 20px;
+  text-align: center;
+  color: #333;
+}
+
+.vision-page h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.vision-page p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vision-page p:last-child {
+  margin-bottom: 0;
+}
+
+.vision-page p:first-child {
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .vision-page h2 {
+      font-size: 2rem;
+  }
+
+  .vision-page p {
+      font-size: 1.1rem;
+  }
+}

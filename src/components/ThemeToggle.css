@@ -1,0 +1,56 @@
+/* ThemeToggle.css */
+
+.theme-toggle {
+  margin: 0 5px;
+}
+
+.theme-toggle-button {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle-button svg {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-button:hover svg {
+  transform: rotate(12deg);
+}
+
+.theme-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+  .theme-text {
+    display: none;
+  }
+}
+
+/* Animation for theme toggle */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+body.light .theme-toggle-button svg {
+  animation: spin 0.5s ease-in-out;
+}
+
+body.dark .theme-toggle-button svg {
+  animation: spin 0.5s ease-in-out;
+}

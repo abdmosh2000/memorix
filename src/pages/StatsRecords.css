@@ -1,0 +1,48 @@
+/* Styles for the StatsRecords page */
+.stats-records-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.stats-records-page h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.stats-list {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  margin: 0 auto;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.stats-list p {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.stats-list p strong {
+  color: #333;
+  font-weight: 700;
+}
+
+.loading, .error-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stats-list {
+      width: 95%;
+  }
+}

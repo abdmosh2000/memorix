@@ -1,0 +1,327 @@
+/* ستايل نموذج إنشاء الكبسولة */
+.create-capsule-form {
+  background-color: #FFFFFF; /* White background */
+  color: #2C3E50; /* Midnight Blue */
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.create-capsule-form h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+/* تنسيق الحقول في النموذج */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #BDC3C7; /* Light gray border */
+  border-radius: 5px;
+  background-color: #F4F6F7; /* Soft Silver */
+  color: #2C3E50; /* Midnight Blue */
+  margin-top: 8px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #8E44AD; /* Royal Purple */
+  outline: none;
+}
+
+/* تنسيق مربع الاختيار (Checkbox) */
+.form-group input[type="checkbox"] {
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+/* قسم الوسائط */
+.media-section {
+  border: 1px solid #BDC3C7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background-color: #F8F9FA;
+}
+
+.media-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* أزرار الوسائط */
+.media-btn {
+  background-color: #3498DB; /* ازرق */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto;
+  margin: 0;
+}
+
+.media-btn:hover {
+  background-color: #2980B9; /* ازرق داكن */
+}
+
+.media-btn.active {
+  background-color: #2980B9;
+  box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.5);
+}
+
+.media-btn:disabled {
+  background-color: #BDC3C7;
+  cursor: not-allowed;
+}
+
+.media-btn.clear-btn {
+  background-color: #E74C3C; /* احمر */
+}
+
+.media-btn.clear-btn:hover {
+  background-color: #C0392B; /* احمر داكن */
+}
+
+/* معاينة الوسائط */
+.media-preview {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+  background-color: #EAECEE;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-preview-content {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin: 10px auto;
+  display: block;
+  border-radius: 5px;
+}
+
+.camera-preview {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+/* التحكم في التسجيل */
+.recording-controls {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.capture-btn, .stop-btn {
+  background-color: #E74C3C; /* احمر */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: auto;
+  margin: 0;
+}
+
+.capture-btn:hover, .stop-btn:hover {
+  background-color: #C0392B; /* احمر داكن */
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #E74C3C;
+  font-weight: bold;
+}
+
+.recording-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: #E74C3C;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* رسالة الخطأ */
+.error-message {
+  background-color: #FADBD8;
+  color: #E74C3C;
+  border: 1px solid #E74C3C;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+/* Recipients section */
+.recipients-section {
+  border: 1px solid #BDC3C7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background-color: #F8F9FA;
+}
+
+.recipients-info {
+  font-size: 0.9rem;
+  color: #7F8C8D;
+  margin-bottom: 15px;
+}
+
+.recipient-input-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.recipient-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #BDC3C7;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.add-recipient-btn {
+  background-color: #27AE60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-recipient-btn:hover {
+  background-color: #2ECC71;
+}
+
+.recipient-error {
+  color: #E74C3C;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.recipients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.recipient-tag {
+  display: flex;
+  align-items: center;
+  background-color: #3498DB;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.recipient-email {
+  margin-right: 10px;
+}
+
+.remove-recipient {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-recipient:hover {
+  color: #E74C3C;
+}
+
+[dir="rtl"] .recipient-email {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/* زر إنشاء الكبسولة */
+.submit-btn {
+  background-color: #8E44AD; /* Royal Purple */
+  color: #ECF0F1; /* Soft White */
+  padding: 14px 20px;
+  font-size: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #9B59B6; /* Lighter Purple */
+}
+
+/* رسالة التنبيه عند حدوث خطأ */
+.alert {
+  background-color: #E74C3C; /* Luxury Red */
+  color: #ECF0F1; /* Soft White */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* الحواف الداخلية للنموذج */
+.create-capsule-form .form-group input,
+.create-capsule-form .form-group textarea {
+  font-size: 1.1rem;
+}
+
+/* تنسيق الـ Textarea */
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}

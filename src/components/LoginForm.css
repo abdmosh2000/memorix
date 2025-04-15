@@ -1,0 +1,92 @@
+/* ستايل صفحة تسجيل الدخول */
+.login-form {
+  background-color: #FFFFFF; /* White background */
+  color: #2C3E50; /* Midnight Blue */
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* العنوان الرئيسي في صفحة تسجيل الدخول */
+.login-form h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+/* تنسيق الحقول في النموذج */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #BDC3C7; /* Light gray border */
+  border-radius: 5px;
+  background-color: #F4F6F7; /* Soft Silver */
+  color: #2C3E50; /* Midnight Blue */
+  margin-top: 8px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #8E44AD; /* Royal Purple */
+  outline: none;
+}
+
+/* زر تسجيل الدخول */
+button {
+  background-color: #8E44AD; /* Royal Purple */
+  color: #ECF0F1; /* Soft White */
+  padding: 14px 20px;
+  font-size: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #9B59B6; /* Lighter Purple */
+}
+
+/* رسالة التنبيه عند حدوث خطأ */
+.alert {
+  background-color: #E74C3C; /* Luxury Red */
+  color: #ECF0F1; /* Soft White */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* لينك "نسيت كلمة المرور" أو روابط إضافية */
+.login-form .forgot-password {
+  display: block;
+  margin-top: 15px;
+  text-align: center;
+  color: #8E44AD; /* Royal Purple */
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.login-form .forgot-password:hover {
+  text-decoration: underline;
+}

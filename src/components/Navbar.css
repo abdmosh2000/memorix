@@ -1,0 +1,214 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e); /* Royal colors */
+  padding: 1rem 2rem;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  height: 70px;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Dark mode styles */
+body.dark .navbar {
+  background: linear-gradient(to right, #000428, #004e92);
+}
+
+/* Light mode styles */
+body.light .navbar {
+  background: linear-gradient(to right, #2980b9, #2c3e50);
+}
+
+/* Brand logo on left */
+.navbar-brand {
+  flex: 0 0 auto;
+  z-index: 2;
+}
+
+.navbar-brand a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand a:hover {
+  color: #ffd700; /* Gold */
+}
+
+/* Center navigation links */
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-links > a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+  position: relative;
+  padding: 5px 0;
+}
+
+.navbar-links > a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.navbar-links > a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 50%;
+  background-color: #ffd700;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-links > a:hover::after {
+  width: 100%;
+}
+
+/* Right side controls */
+.navbar-right {
+  flex: 0 0 auto;
+  margin-left: auto;
+  z-index: 2;
+}
+
+.navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Auth links for non-logged in users */
+.auth-links {
+  display: flex;
+  gap: 15px;
+  margin-left: 5px;
+}
+
+.login-link, .register-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+.login-link {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.register-link {
+  background: linear-gradient(90deg, #00dbde, #fc00ff);
+  color: white;
+  font-weight: 600;
+}
+
+.register-link:hover {
+  background: linear-gradient(90deg, #fc00ff, #00dbde);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* RTL Support for Arabic language */
+[dir="rtl"] .navbar-brand {
+  font-family: 'Montserrat', 'Segoe UI', 'Arial', sans-serif; /* Ensure consistent font in RTL */
+}
+
+[dir="rtl"] .navbar-links {
+  gap: 1.8rem; /* Slightly closer spacing for Arabic */
+}
+
+[dir="rtl"] .navbar-links > a {
+  font-family: 'Montserrat', 'Segoe UI', 'Arial', sans-serif; /* Ensure consistent font in RTL */
+  letter-spacing: normal; /* Remove letter-spacing for Arabic */
+  padding: 5px 2px; /* Extra padding for Arabic text */
+}
+
+[dir="rtl"] .auth-links {
+  gap: 10px; /* Adjust spacing for auth links in Arabic */
+}
+
+[dir="rtl"] .login-link, 
+[dir="rtl"] .register-link {
+  padding: 8px 18px; /* Slightly wider buttons for Arabic text */
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 1024px) {
+  .navbar-links > a::after {
+    bottom: -3px;
+  }
+  
+  .navbar-center {
+    position: relative;
+    left: auto;
+    transform: none;
+  }
+  
+  .navbar {
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .navbar-brand a {
+    font-size: 1.5rem;
+  }
+  
+  .navbar-center {
+    display: none;
+  }
+  
+  .navbar-right {
+    display: none;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+}

@@ -1,0 +1,92 @@
+/* النمط العام للصفحة */
+.contact-us-page {
+  background-color: #ECF0F1; /* خلفية فاتحة وناعمة */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 30px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* العنوان الرئيسي */
+.contact-us-page h2 {
+  font-size: 36px;
+  color: #2C3E50; /* اللون الأسود المزرق */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* النموذج (form) */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* المجموعات الفردية للنماذج */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* التسميات (labels) */
+.form-group label {
+  font-size: 18px;
+  color: #2C3E50;
+  margin-bottom: 8px;
+}
+
+/* الحقول (inputs) */
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #BDC3C7; /* حدود خفيفة */
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: #2C3E50;
+  width: 100%;
+}
+
+/* تنسيق زر الإرسال */
+button[type="submit"] {
+  background-color: #8E44AD; /* اللون البنفسجي */
+  color: white;
+  font-size: 18px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* التأثير عند المرور على الزر */
+button[type="submit"]:hover {
+  background-color: #9B59B6; /* تدرج لون عند التمرير */
+}
+
+/* في الوضع الداكن */
+body.dark-mode .contact-us-page {
+  background-color: #2C3E50; /* خلفية داكنة */
+  color: #ECF0F1; /* النص الأبيض */
+}
+
+body.dark-mode .contact-us-page h2 {
+  color: #ECF0F1;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background-color: #34495E; /* خلفية داكنة للمدخلات */
+  color: #ECF0F1; /* النص الأبيض */
+  border: 1px solid #BDC3C7;
+}
+
+body.dark-mode button[type="submit"] {
+  background-color: #9B59B6; /* زر داكن في الوضع الليلي */
+}
+
+body.dark-mode button[type="submit"]:hover {
+  background-color: #8E44AD;
+}

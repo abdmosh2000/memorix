@@ -1,0 +1,96 @@
+/* Styles for the Favorites page */
+.favorites-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.favorites-page h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.capsule-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.capsule-list .capsule-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: calc(33% - 20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.capsule-list .capsule-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.capsule-list .capsule-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.capsule-list .capsule-card .capsule-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.capsule-list .capsule-card .capsule-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.capsule-list .capsule-card .capsule-date {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.capsule-list .capsule-card .capsule-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.capsule-list .capsule-card .capsule-actions button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.capsule-list .capsule-card .capsule-actions button:hover {
+  background-color: #45a049;
+}
+
+/* Loader */
+.favorites-page .loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.favorites-page .error {
+  text-align: center;
+  font-size: 1.2rem;
+  color: red;
+}

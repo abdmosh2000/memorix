@@ -1,0 +1,53 @@
+/* النمط العام للصفحة */
+.about-us-page {
+  background-color: #F4F6F7; /* الخلفية الفاتحة */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 30px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* العنوان */
+.about-us-page h2 {
+  font-size: 36px;
+  color: #2C3E50; /* اللون الأسود المزرق */
+  margin-bottom: 20px;
+}
+
+/* العناوين الفرعية */
+.about-us-page h3 {
+  font-size: 28px;
+  color: #8E44AD; /* اللون البنفسجي */
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* الفقرات */
+.about-us-page p {
+  font-size: 18px;
+  color: #2C3E50;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* الفقرات المميزة عن المنشئ */
+.about-us-page p strong {
+  color: #F39C12; /* اللون الذهبي */
+}
+
+/* في الوضع الداكن */
+body.dark-mode .about-us-page {
+  background-color: #121212; /* الخلفية الداكنة */
+  color: #ECF0F1; /* النص الأبيض الناعم */
+}
+
+body.dark-mode .about-us-page h2,
+body.dark-mode .about-us-page h3 {
+  color: #ECF0F1; /* النص الأبيض في الوضع الداكن */
+}
+
+body.dark-mode .about-us-page p {
+  color: #ECF0F1; /* النص الأبيض في الوضع الداكن */
+}

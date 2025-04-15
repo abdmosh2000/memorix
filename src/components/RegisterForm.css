@@ -1,0 +1,134 @@
+/* النمط العام للنموذج */
+.register-form {
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+/* المسافات بين العناصر داخل النموذج */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* النصوص داخل النماذج */
+label {
+  display: block;
+  font-size: 16px;
+  color: #2C3E50; /* النص الأسود المزرق */
+  margin-bottom: 8px;
+}
+
+/* حقول الإدخال */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #BDC3C7;
+  border-radius: 5px;
+  background-color: #F4F6F7;
+  font-size: 16px;
+  color: #2C3E50;
+}
+
+/* تنسيق حقل اختيار الملفات */
+input[type="file"] {
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* تنسيق معاينة الصورة */
+.image-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.image-preview img {
+  border: 2px solid #BDC3C7;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* عند التركيز على الحقول */
+input:focus {
+  border-color: #8E44AD; /* اللون البنفسجي */
+  outline: none;
+}
+
+/* تنسيق الزر */
+button[type="submit"] {
+  background-color: #8E44AD; /* اللون البنفسجي */
+  color: #FFFFFF;
+  padding: 15px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* تأثير التحويم على الزر */
+button[type="submit"]:hover {
+  background-color: #6F2A8E; /* ظل أفتح من اللون البنفسجي */
+}
+
+/* تنسيق مربع الاختيار */
+input[type="checkbox"] {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+/* النصوص التحذيرية */
+.alert {
+  background-color: #E74C3C; /* اللون الأحمر */
+  color: #ECF0F1; /* اللون الأبيض الناعم */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* النصوص العادية */
+p {
+  font-size: 14px;
+  color: #2C3E50;
+}
+
+/* تعديل التنسيق عند الوضع الداكن */
+body.dark-mode .register-form {
+  background-color: #121212; /* اللون الأسود الفحم */
+  color: #ECF0F1; /* اللون الأبيض الناعم */
+}
+
+body.dark-mode .form-group label {
+  color: #ECF0F1; /* النص الأبيض في الوضع الداكن */
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="file"] {
+  background-color: #2C3E50; /* خلفية داكنة */
+  border-color: #BDC3C7;
+  color: #ECF0F1;
+}
+
+body.dark-mode .image-preview img {
+  border-color: #667788;
+}
+
+body.dark-mode button[type="submit"] {
+  background-color: #8E44AD;
+}
+
+body.dark-mode button[type="submit"]:hover {
+  background-color: #6F2A8E;
+}
