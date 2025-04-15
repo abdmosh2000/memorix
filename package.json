@@ -2,6 +2,9 @@
   "name": "memorix-frontend",
   "version": "1.0.0",
   "description": "Frontend for Memorix application",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
     "i18next": "^23.5.1",
     "i18next-browser-languagedetector": "^8.0.4",
@@ -25,7 +28,9 @@
   },
   "scripts": {
     "start": "webpack serve --mode development --hot",
-    "build": "webpack --mode production"
+    "build": "node vercel-build.js",
+    "postinstall": "npm install --no-save --legacy-peer-deps",
+    "vercel-build": "npm run build"
   },
   "author": "Abdallah M. M. Shalat",
   "license": "MIT"
