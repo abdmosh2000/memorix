@@ -51,5 +51,11 @@ module.exports = {
     ],
     resolve: {
         extensions: ['.js', '.jsx'], // Allow importing .js and .jsx files without specifying the extension
+        fallback: {
+            "path": require.resolve("path-browserify"),
+            "util": require.resolve("util/"),
+            "stream": require.resolve("stream-browserify"),
+            "buffer": require.resolve("buffer/"),
+        }
     },
 };
