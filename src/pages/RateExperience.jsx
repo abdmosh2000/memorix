@@ -50,8 +50,10 @@ function RateExperience() {
                 design: ratings.design,
                 usability: ratings.usability,
                 security: ratings.security,
-                feedback: ratings.feedback
+                feedback: ratings.feedback || ''
             };
+            
+            console.log('Submitting rating data:', ratingData);
             
             // Use the authTokens correctly
             const storedTokens = localStorage.getItem('authTokens');
@@ -71,11 +73,22 @@ function RateExperience() {
                 body: JSON.stringify(ratingData)
             });
             
-            const responseData = await response.json();
+            // Handle non-JSON responses
+            let responseData;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                responseData = await response.json();
+            } else {
+                const textData = await response.text();
+                console.error('Received non-JSON response:', textData);
+                responseData = { message: textData || 'Server returned an unexpected response' };
+            }
             
             if (!response.ok) {
                 throw new Error(responseData.message || 'Failed to submit rating');
             }
+            
+            console.log('Rating submission successful:', responseData);
             
             // Set success and navigate after a delay
             setSuccess(true);
