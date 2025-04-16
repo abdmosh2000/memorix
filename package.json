@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend for Memorix application",
   "engines": {
-    "node": ">=14.0.0"
+    "node": "18.x"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.4",
@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "babel-loader": "^9.2.1",
+    "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^6.11.0",
     "html-webpack-plugin": "^5.6.3",
     "mini-css-extract-plugin": "^2.9.2",

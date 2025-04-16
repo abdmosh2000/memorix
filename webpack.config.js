@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: process.env.NODE_ENV || 'development', // 'production' or 'development'
@@ -44,9 +45,19 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './public/index.html', // Use 'public/index.html' as the template
+            favicon: './public/favicon.ico', // Specify the favicon explicitly
         }),
         new MiniCssExtractPlugin({
             filename: 'styles.css', // Extract CSS into a separate file
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                // Copy favicon files to the output directory
+                { from: 'public/apple-touch-icon.png', to: '' },
+                { from: 'public/favicon-32x32.png', to: '' },
+                { from: 'public/favicon-16x16.png', to: '' },
+                { from: 'public/site.webmanifest', to: '' },
+            ],
         }),
     ],
     resolve: {
