@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Test</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .favicon-display {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .favicon-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .favicon-image {
+            margin-right: 20px;
+        }
+        img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Favicon Test Page</h1>
+    <p>This page is a test to verify that your favicons are working correctly. You should see your custom favicon in the browser tab.</p>
+    
+    <div class="favicon-display">
+        <h2>Favicons in this project:</h2>
+        
+        <div class="favicon-row">
+            <div class="favicon-image">
+                <img src="/favicon.ico" alt="Favicon ICO">
+            </div>
+            <div>
+                <p><strong>favicon.ico</strong> - The standard favicon that most browsers will use</p>
+            </div>
+        </div>
+        
+        <div class="favicon-row">
+            <div class="favicon-image">
+                <img src="/favicon-32x32.png" alt="Favicon 32x32">
+            </div>
+            <div>
+                <p><strong>favicon-32x32.png</strong> - 32x32 PNG version</p>
+            </div>
+        </div>
+        
+        <div class="favicon-row">
+            <div class="favicon-image">
+                <img src="/favicon-16x16.png" alt="Favicon 16x16">
+            </div>
+            <div>
+                <p><strong>favicon-16x16.png</strong> - 16x16 PNG version</p>
+            </div>
+        </div>
+        
+        <div class="favicon-row">
+            <div class="favicon-image">
+                <img src="/apple-touch-icon.png" alt="Apple Touch Icon">
+            </div>
+            <div>
+                <p><strong>apple-touch-icon.png</strong> - Used by iOS devices when adding to home screen</p>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Troubleshooting</h2>
+    <p>If you don't see the custom favicon in the browser tab:</p>
+    <ol>
+        <li>Try hard-refreshing the page (Ctrl+F5 or Cmd+Shift+R)</li>
+        <li>Clear your browser cache</li>
+        <li>Check if the images above display correctly</li>
+        <li>Verify that the favicon files are in the correct location</li>
+        <li>Check the network tab in developer tools to see if the favicon files are being loaded</li>
+    </ol>
+</body>
+</html>

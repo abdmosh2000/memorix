@@ -36,6 +36,8 @@
   "scripts": {
     "start": "webpack serve --mode development --hot",
     "build": "node vercel-build.js",
+    "render-build": "node render-build.js",
+    "pre-deploy": "node pre-deploy.js",
     "postinstall": "npm install --no-save --legacy-peer-deps",
     "vercel-build": "npm run build"
   },
