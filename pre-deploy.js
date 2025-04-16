@@ -66,8 +66,8 @@ try {
   console.log(`${colors.yellow}Warning: ${err.message}${colors.reset}\n`);
 }
 
-// Install dependencies
-if (!execCommand('npm install --legacy-peer-deps', 'Installing dependencies')) {
+// Install dependencies without triggering postinstall
+if (!execCommand('npm install --legacy-peer-deps --ignore-scripts', 'Installing dependencies')) {
   console.error(`${colors.red}${colors.bold}Failed to install dependencies. Aborting.${colors.reset}\n`);
   process.exit(1);
 }

@@ -47,13 +47,12 @@ if (fs.existsSync(path.join(__dirname, 'dist'))) {
   }
 }
 
-// Install dependencies
-console.log('Installing dependencies...');
-if (!executeWithTimeout('npm install --production=false --legacy-peer-deps')) {
-  // Try with a more conservative approach if the initial install fails
-  console.log('Retrying with a different install approach...');
-  executeWithTimeout('npm install --no-optional --legacy-peer-deps');
-}
+// Dependencies should already be installed from the build command in render.yaml,
+// but we'll do a quick check for critical ones
+console.log('Checking dependencies...');
+
+// Skip reinstalling all dependencies to avoid infinite loops
+// Just check for critical ones and install individually if missing
 
 // Check for critical dependencies
 const criticalDeps = [
