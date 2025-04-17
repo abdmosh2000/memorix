@@ -11,12 +11,12 @@ services:
       - key: NODE_ENV
         value: production
       - key: REACT_APP_API_URL
-        value: https://memorix-api.onrender.com/api  # Replace with your backend URL
+        value: https://memorix-backend-wn9o.onrender.com/api  # Replace with your backend URL
     headers:
       - path: /*
         name: Cache-Control
         value: public, max-age=0, must-revalidate
     routes:
       - type: rewrite
-        source: /*
+        source: /**
         destination: /index.html

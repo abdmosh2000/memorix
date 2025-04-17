@@ -88,13 +88,65 @@ if (buildSuccessful && fs.existsSync(path.join(__dirname, 'dist'))) {
   process.exit(1);
 }
 
-// Create a _redirects file for SPA routing
+// Create necessary files for SPA routing on various hosting platforms
+console.log('Creating SPA routing configuration files...');
+
+// Copy the diagnostic page to the dist directory
+try {
+  if (fs.existsSync(path.join(__dirname, 'diagnostic.html'))) {
+    fs.copyFileSync(
+      path.join(__dirname, 'diagnostic.html'),
+      path.join(__dirname, 'dist', 'diagnostic.html')
+    );
+    console.log('Copied diagnostic.html to dist directory');
+  }
+} catch (err) {
+  console.error(`Warning: Could not copy diagnostic.html: ${err.message}`);
+}
+
+// Create _redirects file for Netlify
 const redirects = `
 # Redirect all routes to index.html for SPA routing
 /*    /index.html   200
 `;
-
 fs.writeFileSync(path.join(__dirname, 'dist', '_redirects'), redirects);
-console.log('Created _redirects file for proper SPA routing.');
+
+// Create a 200.html file (used by some static hosting providers)
+try {
+  if (fs.existsSync(path.join(__dirname, 'public', '200.html'))) {
+    fs.copyFileSync(
+      path.join(__dirname, 'public', '200.html'),
+      path.join(__dirname, 'dist', '200.html')
+    );
+  } else {
+    fs.copyFileSync(
+      path.join(__dirname, 'dist', 'index.html'),
+      path.join(__dirname, 'dist', '200.html')
+    );
+  }
+} catch (err) {
+  console.error(`Warning: Could not create 200.html: ${err.message}`);
+}
+
+// Create a copy of index.html at the path of each route for Github Pages compatibility
+try {
+  // Read the routes from your React Router configuration or create folders for known routes
+  const routes = ['login', 'register', 'dashboard', 'profile', 'settings', 'capsules', 'create'];
+  
+  for (const route of routes) {
+    const routeDir = path.join(__dirname, 'dist', route);
+    if (!fs.existsSync(routeDir)) {
+      fs.mkdirSync(routeDir, { recursive: true });
+    }
+    fs.copyFileSync(
+      path.join(__dirname, 'dist', 'index.html'),
+      path.join(routeDir, 'index.html')
+    );
+  }
+} catch (err) {
+  console.error(`Warning: Could not create route directories: ${err.message}`);
+}
+
+console.log('SPA routing configuration completed.');
 
 console.log('Render build process completed.');

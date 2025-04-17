@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'), // Output directory
         filename: 'bundle.js', // Output filename
-        publicPath: '/', // Important for React Router
+        publicPath: './', // Change to relative paths for Render
     },
     devServer: {
         static: {
@@ -60,6 +60,10 @@ module.exports = {
                 { from: 'public/favicon-32x32.png', to: '' },
                 { from: 'public/favicon-16x16.png', to: '' },
                 { from: 'public/site.webmanifest', to: '' },
+                { from: 'public/_redirects', to: '' },
+                { from: 'public/200.html', to: '' },
+                // Copy the static.json file for hosting services
+                { from: 'static.json', to: '' },
             ],
         }),
     ],

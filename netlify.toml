@@ -1,0 +1,25 @@
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm run build"
+
+# Routing for Single Page Applications (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_ENV = "production"
+
+# Cache control for static assets
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/static/*"
+    [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
