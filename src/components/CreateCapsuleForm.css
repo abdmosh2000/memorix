@@ -213,10 +213,12 @@
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .recipient-input {
   flex: 1;
+  min-width: 60%;
   padding: 12px;
   border: 1px solid #BDC3C7;
   border-radius: 5px;
@@ -231,6 +233,9 @@
   padding: 0 20px;
   cursor: pointer;
   transition: background-color 0.3s;
+  max-width: 100px;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .add-recipient-btn:hover {

@@ -183,3 +183,8 @@ export const getStats = async () => {
 export const getFavoriteCapsules = async (userId) => {
     return await handleRequest(`/favorites/user/${userId}`);
 };
+
+// Subscription API calls
+export const updateSubscription = async (subscriptionData) => {
+    return await handleRequest('/subscriptions/update', 'POST', subscriptionData);
+};

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
+import { updateSubscription } from '../api';
+import { addNotification, NOTIFICATION_TYPES } from '../notifications';
+import PayPalButton from '../components/PayPalButton';
 import './Pricing.css'
 
 function Pricing() {
@@ -19,31 +22,55 @@ function Pricing() {
         setSelectedPlan(plan);
     };
     
-    const handleSubscribe = async (plan) => {
-        // In a real application, this would integrate with a payment processor
-        // For now, we'll just update the user's subscription level
+    const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
+    
+    // Handle payment success
+    const handlePaymentSuccess = async (paymentDetails) => {
         try {
+            setIsPaymentProcessing(true);
+            setPaymentError(null);
+            
+            console.log('Payment successful:', paymentDetails);
+            
+            // Update subscription in backend
+            await updateSubscription({
+                plan: paymentDetails.plan,
+                orderID: paymentDetails.orderID,
+                subscriptionID: paymentDetails.subscriptionID
+            });
+            
+            // Update user in context
             if (user) {
-                // Simulate upgrading subscription
-                alert(`Subscribed to ${plan} plan successfully!`);
-                
-                // In a real app, you would update the user after payment is processed
-                // For demo purposes, we'll update it directly
                 const updatedUser = await updateUser({
                     ...user,
-                    subscription: plan
+                    subscription: paymentDetails.plan
                 });
-                
-                // Redirect to dashboard
-                navigate('/dashboard');
-            } else {
-                // If not logged in, redirect to registration
-                navigate('/register');
             }
+            
+            // Show success notification
+            addNotification(
+                `Successfully subscribed to the ${paymentDetails.plan.charAt(0).toUpperCase() + paymentDetails.plan.slice(1)} plan! Enjoy your upgraded features.`,
+                NOTIFICATION_TYPES.SYSTEM
+            );
+            
+            // Redirect to dashboard
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 500);
+            
         } catch (error) {
-            console.error('Error subscribing to plan:', error);
-            alert('Failed to subscribe. Please try again.');
+            console.error('Error updating subscription:', error);
+            setPaymentError('Failed to complete subscription. Please contact support.');
+        } finally {
+            setIsPaymentProcessing(false);
         }
+    };
+    
+    // Handle payment error
+    const handlePaymentError = (error) => {
+        console.error('Payment error:', error);
+        setPaymentError('Payment failed. Please try again or use a different payment method.');
     };
     
     return (
@@ -94,13 +121,19 @@ function Pricing() {
                             <li>✅ Priority support</li>
                         </ul>
                     </div>
-                    <button 
-                        className={`featured-button ${user?.subscription === 'premium' ? 'current-plan' : ''}`}
-                        onClick={() => user?.subscription === 'premium' ? null : handleSubscribe('premium')}
-                        disabled={user?.subscription === 'premium'}
-                    >
-                        {user?.subscription === 'premium' ? 'Current Plan' : 'Subscribe Now'}
-                    </button>
+                    {user?.subscription === 'premium' ? (
+                        <button className="featured-button current-plan">Current Plan</button>
+                    ) : (
+                        <div className="payment-options">
+                            <PayPalButton 
+                                planId="premium"
+                                amount="9.99"
+                                buttonColor="blue"
+                                onSuccess={handlePaymentSuccess}
+                                onError={handlePaymentError}
+                            />
+                        </div>
+                    )}
                 </div>
                 
                 <div className={`plan ${selectedPlan === 'vip' ? 'selected' : ''}`}>
@@ -119,15 +152,34 @@ function Pricing() {
                             <li>✅ 24/7 VIP support</li>
                         </ul>
                     </div>
-                    <button 
-                        className={user?.subscription === 'vip' ? 'current-plan' : ''}
-                        onClick={() => user?.subscription === 'vip' ? null : handleSubscribe('vip')}
-                        disabled={user?.subscription === 'vip'}
-                    >
-                        {user?.subscription === 'vip' ? 'Current Plan' : 'Get VIP Access'}
-                    </button>
+                    {user?.subscription === 'vip' ? (
+                        <button className="current-plan">Current Plan</button>
+                    ) : (
+                        <div className="payment-options">
+                            <PayPalButton 
+                                planId="vip"
+                                amount="24.99"
+                                buttonColor="gold"
+                                onSuccess={handlePaymentSuccess}
+                                onError={handlePaymentError}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
+            
+            {isPaymentProcessing && (
+                <div className="payment-processing">
+                    <div className="loading-spinner"></div>
+                    <p>Processing your payment...</p>
+                </div>
+            )}
+            
+            {paymentError && (
+                <div className="payment-error">
+                    <p>⚠️ {paymentError}</p>
+                </div>
+            )}
             
             <div className="pricing-guarantee">
                 <h4>100% Satisfaction Guarantee</h4>

@@ -36,10 +36,20 @@ function Navbar({ toggleSidebar }) {
                     <ThemeToggle />
                     <LanguageSelector />
                     {isLoggedIn && (
-                        <NotificationsDropdown 
-                            notifications={notifications} 
-                            onMarkAsRead={markAllAsRead} 
-                        />
+                        <>
+                            {user?.subscription && user.subscription !== 'free' && (
+                                <div 
+                                    className="plan-badge"
+                                    data-plan={user.subscription.toLowerCase()}
+                                >
+                                    {user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1)}
+                                </div>
+                            )}
+                            <NotificationsDropdown 
+                                notifications={notifications} 
+                                onMarkAsRead={markAllAsRead} 
+                            />
+                        </>
                     )}
                     {isLoggedIn ? (
                         <ProfileDropdown user={user} onLogout={logout} />

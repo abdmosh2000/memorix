@@ -141,6 +141,38 @@ body.light .navbar {
   transform: translateY(-2px);
 }
 
+/* Subscription Plan Badge */
+.plan-badge {
+  background: linear-gradient(90deg, #ffdd00, #fbb034);
+  color: #333;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 15px;
+  margin-right: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plan-badge:before {
+  content: '✦';
+  margin-right: 4px;
+  font-size: 0.9rem;
+}
+
+/* Different colors for different plans */
+.plan-badge[data-plan="premium"] {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.plan-badge[data-plan="vip"] {
+  background: linear-gradient(90deg, #fc00ff, #00dbde);
+  color: white;
+}
+
 .navbar-toggle {
   display: none;
   background: none;

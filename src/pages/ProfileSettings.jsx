@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth';
 import { updateUser } from '../api'; // Import API function
+import SettingsControls from '../components/SettingsControls';
 import './ProfileSettings.css'
 
 function ProfileSettings() {
@@ -150,6 +151,9 @@ function ProfileSettings() {
                         />
                     </div>
                 )}
+                
+                {/* Add the SettingsControls component here */}
+                <SettingsControls />
             </div>
             
             <div className="profile-settings-container">
