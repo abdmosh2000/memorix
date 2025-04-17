@@ -43,6 +43,9 @@ module.exports = {
         ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    }),
         new HtmlWebpackPlugin({
             template: './public/index.html', // Use 'public/index.html' as the template
             favicon: './public/favicon.ico', // Specify the favicon explicitly
