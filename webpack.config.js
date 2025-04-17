@@ -43,6 +43,9 @@ module.exports = {
         ],
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
@@ -71,6 +74,7 @@ module.exports = {
         extensions: ['.js', '.jsx'], // Allow importing .js and .jsx files without specifying the extension
         fallback: {
             "path": require.resolve("path-browserify"),
+            "process": require.resolve("process/browser"),
             "util": require.resolve("util/"),
             "stream": require.resolve("stream-browserify"),
             "buffer": require.resolve("buffer/"),
