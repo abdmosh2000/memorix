@@ -79,8 +79,21 @@ export const AuthProvider = ({ children }) => {
             
             // If a profile picture was provided, convert it to a data URI
             if (profilePicture) {
-                userData.profilePicture = await convertFileToDataURL(profilePicture);
+                try {
+                    userData.profilePicture = await convertFileToDataURL(profilePicture);
+                    // Limit the size of the data URL to prevent request size issues
+                    if (userData.profilePicture && userData.profilePicture.length > 5000000) {
+                        // If larger than ~5MB, resize or compress it
+                        console.warn('Profile picture too large, using default');
+                        delete userData.profilePicture; // Don't send it if too large
+                    }
+                } catch (error) {
+                    console.error('Error processing profile picture:', error);
+                    // Continue without the profile picture
+                }
             }
+            
+            console.log('Registering user, sending data to:', `${config.apiUrl}/auth/register`);
             
             const response = await fetch(`${config.apiUrl}/auth/register`, {
                 method: 'POST',

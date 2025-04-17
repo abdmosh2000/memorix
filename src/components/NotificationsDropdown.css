@@ -7,23 +7,26 @@
 }
 
 .notifications-icon {
-  background: transparent;
+  background: #3498db; /* Blue background for better visibility */
   border: none;
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.25rem; /* Slightly larger icon */
   cursor: pointer;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .notifications-icon:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #2980b9; /* Darker blue on hover */
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .notification-badge {
@@ -33,15 +36,24 @@
   background-color: #ff4757;
   color: white;
   border-radius: 50%;
-  font-size: 0.7rem;
-  min-width: 18px;
-  height: 18px;
+  font-size: 0.8rem; /* Slightly larger font */
+  min-width: 20px; /* Slightly larger badge */
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  border: 2px solid #24243e;
+  border: 2px solid #ffffff; /* White border for contrast */
   transform: translate(25%, -25%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow */
+  animation: pulse 2s infinite; /* Add subtle animation */
+}
+
+/* Subtle pulse animation for the badge */
+@keyframes pulse {
+  0% { transform: translate(25%, -25%) scale(1); }
+  50% { transform: translate(25%, -25%) scale(1.1); }
+  100% { transform: translate(25%, -25%) scale(1); }
 }
 
 .notifications-menu {

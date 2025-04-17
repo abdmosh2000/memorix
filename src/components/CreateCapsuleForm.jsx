@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../auth';
 import { createCapsule } from '../api'; // Import API function
+import { addNotification, NOTIFICATION_TYPES } from '../notifications';
 import './CreateCapsuleForm.css';
 
 function CreateCapsuleForm() {
@@ -234,10 +235,22 @@ function CreateCapsuleForm() {
                 }
             } catch (err) {
                 // Check if it's a subscription limit error
-                if (err.message && err.message.includes('upgrade your subscription')) {
-                    if (confirm(t('You have reached your free tier limit. Would you like to upgrade your subscription?'))) {
+                if (err.response && err.response.data && 
+                    (err.response.data.redirectTo === '/pricing' || 
+                     err.response.data.message.includes('upgrade your subscription'))) {
+                    
+                    // Add notification about the subscription limit
+                    addNotification(
+                        'You have reached your free plan limit. Please upgrade your subscription to create more capsules.',
+                        NOTIFICATION_TYPES.SYSTEM
+                    );
+                    
+                    // Redirect to pricing page after a short delay
+                    setTimeout(() => {
                         navigate('/pricing');
-                    }
+                    }, 500);
+                    
+                    return; // Don't throw the error, we're handling it
                 } else {
                     throw err;
                 }
