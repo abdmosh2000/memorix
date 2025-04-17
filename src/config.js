@@ -7,7 +7,7 @@ const config = {
   // Base API URL - will use environment variables in production
   apiUrl: isDevelopment 
     ? 'http://localhost:5000/api' 
-    : process.env.REACT_APP_API_URL || 'https://api.memorix.com/api',
+    : process.env.REACT_APP_API_URL || 'https://memorix-backend-wn9o.onrender.com/api',
   
   // Default headers for API requests
   defaultHeaders: {
