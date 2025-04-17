@@ -13,7 +13,7 @@ const PayPalButton = ({
   useEffect(() => {
     // Load the PayPal SDK script
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=BAAWwqTo4Fq4CkqrzbMzWWILnNRK1LswEiJ6Y6iRTYLfU71Bw7taxUzVBE23fFjkzKeTeY9IWT6gb1MJtM&currency=${currency}`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=BAAWwqTo4Fq4CkqrzbMzWWILnNRK1LswEiJ6Y6iRTYLfU71Bw7taxUzVBE23fFjkzKeTeY9IWT6gb1MJtM&currency=${currency}&debug=true`;
     script.async = true;
 
     // Initialize PayPal buttons when the SDK is loaded
@@ -23,7 +23,8 @@ const PayPalButton = ({
           style: {
             color: buttonColor,
             shape: 'pill',
-            layout: 'vertical'
+            layout: 'vertical',
+            label: 'pay'
           },
           createOrder: (data, actions) => {
             // Create the order for a one-time payment
@@ -58,6 +59,10 @@ const PayPalButton = ({
           onError: (err) => {
             console.error('PayPal error:', err);
             onError(err);
+          },
+          onCancel: () => {
+            console.log('Payment cancelled by user');
+            onError({ message: 'Payment was cancelled. Please try again when you are ready.' });
           }
         }).render(paypalRef.current);
       }

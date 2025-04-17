@@ -128,6 +128,7 @@ function Pricing() {
                             <PayPalButton 
                                 planId="premium"
                                 amount="9.99"
+                                currency="USD"
                                 buttonColor="blue"
                                 onSuccess={handlePaymentSuccess}
                                 onError={handlePaymentError}
@@ -159,6 +160,7 @@ function Pricing() {
                             <PayPalButton 
                                 planId="vip"
                                 amount="24.99"
+                                currency="USD"
                                 buttonColor="gold"
                                 onSuccess={handlePaymentSuccess}
                                 onError={handlePaymentError}
