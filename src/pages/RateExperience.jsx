@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth';
+import config from '../config';
 import './Rating.css'; // We'll use the same CSS as the Ratings page
 
 function RateExperience() {
@@ -64,7 +65,7 @@ function RateExperience() {
             }
             
             // Call API to submit rating
-            const response = await fetch('http://localhost:5000/api/ratings', {
+            const response = await fetch(`${config.apiUrl}/ratings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

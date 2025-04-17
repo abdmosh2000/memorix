@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import config from './config';
 
 const AuthContext = createContext();
 
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
             if (authTokens) {
                 try {
                     const token = typeof authTokens === 'string' ? authTokens : JSON.stringify(authTokens);
-                    const response = await fetch('http://localhost:5000/api/auth/user', {
+                    const response = await fetch(`${config.apiUrl}/auth/user`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }) => {
                 userData.profilePicture = await convertFileToDataURL(profilePicture);
             }
             
-            const response = await fetch('http://localhost:5000/api/auth/register', {
+            const response = await fetch(`${config.apiUrl}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,7 +116,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
+            const response = await fetch(`${config.apiUrl}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,7 +140,7 @@ export const AuthProvider = ({ children }) => {
 
     const updateUser = async (userData) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${userData._id}`, {
+            const response = await fetch(`${config.apiUrl}/users/${userData._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
