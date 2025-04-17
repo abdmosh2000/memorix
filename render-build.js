@@ -76,9 +76,9 @@ if (missingDeps.length > 0) {
   executeWithTimeout(`npm install ${missingDeps.join(' ')} --legacy-peer-deps`);
 }
 
-// Run the build with a production flag
-console.log('Building the application...');
-const buildSuccessful = executeWithTimeout('npx webpack --mode production');
+// Run the build with the production webpack config
+console.log('Building the application with production config...');
+const buildSuccessful = executeWithTimeout('npx webpack --config webpack.prod.js');
 
 // Verify the build output
 if (buildSuccessful && fs.existsSync(path.join(__dirname, 'dist'))) {
