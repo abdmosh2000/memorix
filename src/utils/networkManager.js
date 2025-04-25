@@ -75,11 +75,17 @@ class NetworkManager {
       
       const response = await fetch(
         // Use a tiny endpoint that won't consume much bandwidth
-        `${config.apiUrl}/health/ping?${new Date().getTime()}`, 
+        // Note: config.apiUrl already includes '/api', so we don't repeat it
+        `${config.apiUrl.replace(/\/api$/, '')}/api/health/ping?${new Date().getTime()}`, 
         { 
           method: 'HEAD',
           signal: controller.signal,
-          cache: 'no-store'
+          cache: 'no-store',
+          mode: 'cors',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'text/plain'
+          }
         }
       );
       
