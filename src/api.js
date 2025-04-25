@@ -1,7 +1,42 @@
 import config from './config';
+import networkManager from './utils/networkManager';
 
-// Helper function to handle API requests with retries and better error handling
-const handleRequest = async (url, method = 'GET', body = null, retryCount = 0) => {
+/**
+ * Enhanced request handler with mobile device optimizations
+ * - Adds request queueing for offline/poor connections
+ * - Implements device-specific optimizations
+ * - Better error handling with user-friendly messages
+ */
+const handleRequest = async (url, method = 'GET', body = null, retryCount = 0, options = {}) => {
+    // If device is offline, queue the request for later when possible
+    if (!navigator.onLine && options.queueIfOffline !== false) {
+        console.log(`Device offline, queueing request: ${method} ${url}`);
+        return new Promise((resolve, reject) => {
+            networkManager.queueRequest(
+                async () => {
+                    try {
+                        const result = await performRequest(url, method, body);
+                        resolve(result);
+                    } catch (error) {
+                        reject(error);
+                    }
+                },
+                { 
+                    critical: options.critical || false,
+                    expiresIn: options.expiresIn || 3600000 // 1 hour by default
+                }
+            );
+        });
+    }
+    
+    // For online devices, proceed with normal request flow
+    return performRequest(url, method, body, retryCount, options);
+};
+
+/**
+ * Actual request implementation with enhanced error handling and retries
+ */
+const performRequest = async (url, method = 'GET', body = null, retryCount = 0, options = {}) => {
     try {
         const options = {
             method,
@@ -85,24 +120,85 @@ const handleRequest = async (url, method = 'GET', body = null, retryCount = 0) =
                 throw new Error(config.errorMessages.timeout);
             }
 
+            // Enhanced network error handling
             if ((error.message && error.message.includes('network')) || 
                 !navigator.onLine || 
                 error.name === 'TypeError') {
                 
-                // Check if we should retry
-                if (retryCount < config.maxRetries) {
-                    console.log(`Retrying request (${retryCount + 1}/${config.maxRetries})`);
-                    
-                    // Exponential backoff: 1s, 2s, 4s, etc.
-                    const backoffTime = 1000 * (2 ** retryCount);
-                    await new Promise(resolve => setTimeout(resolve, backoffTime));
-                    
-                    return handleRequest(url, method, body, retryCount + 1);
+                // Check network status using our manager
+                const isOnline = await networkManager.checkNetworkStatus();
+                
+                // If we're actually online but experiencing issues
+                if (isOnline) {
+                    // Check if we should retry
+                    if (retryCount < config.maxRetries) {
+                        console.log(`Retrying request (${retryCount + 1}/${config.maxRetries})`);
+                        
+                        // Exponential backoff with jitter: 1-2s, 2-4s, 4-8s, etc.
+                        const baseTime = 1000 * (2 ** retryCount);
+                        const jitter = Math.random() * 0.4 + 0.8; // 0.8-1.2 multiplier
+                        const backoffTime = baseTime * jitter;
+                        
+                        await new Promise(resolve => setTimeout(resolve, backoffTime));
+                        
+                        return performRequest(url, method, body, retryCount + 1, options);
+                    } else {
+                        // Create a more helpful error message
+                        const isMobile = networkManager.isMobileDevice;
+                        
+                        // Mobile-specific error message
+                        if (isMobile) {
+                            let errorMessage = config.errorMessages.network;
+                            
+                            // Check for specific connection issues
+                            if ('connection' in navigator) {
+                                const conn = navigator.connection;
+                                if (conn.effectiveType === '2g' || conn.downlink < 0.5) {
+                                    errorMessage = 'Poor connection detected. Please try again when you have a better signal.';
+                                } else if (conn.saveData) {
+                                    errorMessage = 'Data saver is enabled on your device. This may limit Memorix functionality.';
+                                }
+                            }
+                            
+                            throw new Error(errorMessage);
+                        } else {
+                            throw new Error(config.errorMessages.network);
+                        }
+                    }
                 } else {
-                    throw new Error(config.errorMessages.network);
+                    // We're actually offline
+                    if (options.queueIfOffline !== false) {
+                        // Queue the request to try again when connection is restored
+                        return new Promise((resolve, reject) => {
+                            networkManager.queueRequest(
+                                async () => {
+                                    try {
+                                        const result = await performRequest(url, method, body, 0, options);
+                                        resolve(result);
+                                    } catch (error) {
+                                        reject(error);
+                                    }
+                                },
+                                { 
+                                    critical: options.critical || false,
+                                    expiresIn: options.expiresIn || 3600000 
+                                }
+                            );
+                        });
+                    } else {
+                        throw new Error('You appear to be offline. Please check your connection and try again.');
+                    }
                 }
             }
-
+            
+            // For server errors, provide more details when possible
+            if (error.status >= 500) {
+                // Add timestamp to help with server log correlation
+                const timestamp = new Date().toISOString();
+                error.timestamp = timestamp;
+                error.message = `${error.message} (Ref: ${timestamp.substring(11, 19)})`;
+            }
+            
             throw error;
         }
     } catch (error) {

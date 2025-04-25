@@ -66,6 +66,11 @@ button:hover {
   background-color: #9B59B6; /* Lighter Purple */
 }
 
+button:disabled {
+  background-color: #D2B4DE; /* Lighter Purple, more faded */
+  cursor: not-allowed;
+}
+
 /* رسالة التنبيه عند حدوث خطأ */
 .alert {
   background-color: #E74C3C; /* Luxury Red */
@@ -75,6 +80,61 @@ button:hover {
   text-align: center;
   margin-top: 20px;
   font-size: 1rem;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #E74C3C10; /* Light red with transparency */
+  color: #E74C3C; /* Red text */
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  border-left: 4px solid #E74C3C;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Retry connection button specific styling */
+.retry-button {
+  background-color: transparent;
+  border: 1px solid #3498DB; /* Blue */
+  color: #3498DB;
+  font-size: 0.8rem;
+  padding: 8px 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto; /* Override full width from general button style */
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  background-color: #3498DB; /* Blue */
+  color: #FFFFFF;
+}
+
+/* Offline mode styling */
+button.offline-mode {
+  background-color: #F39C12; /* Orange */
+  color: #FFFFFF;
+}
+
+button.offline-mode:hover {
+  background-color: #F5B041; /* Lighter Orange */
+}
+
+.offline-note {
+  background-color: #F39C1210; /* Light orange with transparency */
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 15px;
+  font-size: 0.8rem;
+  color: #F39C12; /* Orange */
+  text-align: center;
+  border: 1px dashed #F39C12;
 }
 
 /* لينك "نسيت كلمة المرور" أو روابط إضافية */

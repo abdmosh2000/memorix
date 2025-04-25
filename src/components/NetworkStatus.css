@@ -1,0 +1,159 @@
+/* NetworkStatus Component Styles */
+
+.network-status {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  max-width: 90%;
+  width: 340px;
+  z-index: 9999;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Dark mode styling */
+body.dark .network-status {
+  background-color: #252538;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Show the status when visible */
+.network-status.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Different status colors */
+.network-status.good {
+  border-left: 4px solid #4CAF50;
+}
+
+.network-status.medium {
+  border-left: 4px solid #FFC107;
+}
+
+.network-status.poor {
+  border-left: 4px solid #FF9800;
+}
+
+.network-status.offline {
+  border-left: 4px solid #F44336;
+}
+
+/* Status icon styles */
+.status-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Status message styles */
+.status-message {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+body.dark .status-message {
+  color: #e0e0e0;
+}
+
+/* Close button styles */
+.status-close {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.status-close:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #666;
+}
+
+body.dark .status-close {
+  color: #aaa;
+}
+
+body.dark .status-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Retry button */
+.retry-button {
+  background-color: transparent;
+  border: 1px solid #F44336;
+  color: #F44336;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+body.dark .retry-button {
+  border-color: #ff6659;
+  color: #ff6659;
+}
+
+body.dark .retry-button:hover {
+  background-color: rgba(255, 102, 89, 0.15);
+}
+
+/* Mobile styling */
+@media (max-width: 768px) {
+  .network-status {
+    width: calc(100% - 40px);
+    bottom: 10px;
+    padding: 12px 15px;
+  }
+  
+  .status-message {
+    font-size: 13px;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.network-status.offline .status-icon,
+.network-status.poor .status-icon {
+  animation: pulse 2s infinite;
+}

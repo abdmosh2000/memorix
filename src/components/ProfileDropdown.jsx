@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './ProfileDropdown.css'
+import './ProfileDropdown.css';
 
 function ProfileDropdown({ user, onLogout }) {
+    // Check if user has admin role
+    const isAdmin = user && user.role === 'admin';
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -37,6 +39,11 @@ function ProfileDropdown({ user, onLogout }) {
                     <Link to="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link>
                     <Link to="/my-capsules" onClick={() => setIsOpen(false)}>All My Capsules</Link>
                     <Link to="/profile/settings" onClick={() => setIsOpen(false)}>Settings</Link>
+                    {isAdmin && (
+                        <Link to="/admin" onClick={() => setIsOpen(false)} className="admin-link">
+                            Admin Dashboard
+                        </Link>
+                    )}
                     <button onClick={onLogout}>Logout</button>
                 </div>
             )}

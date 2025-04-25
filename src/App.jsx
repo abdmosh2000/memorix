@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
+import NetworkStatus from './components/NetworkStatus';
 import Home from './pages/Home';
 import Pricing from './pages/Pricing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
+import ResendVerification from './pages/ResendVerification';
 import Dashboard from './pages/Dashboard';
 import ProfileSettings from './pages/ProfileSettings';
 import CreateCapsule from './pages/CreateCapsule';
@@ -21,13 +24,15 @@ import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import StatsRecords from './pages/StatsRecords';
 import Favorites from './pages/Favorites';
+import AdminDashboard from './pages/AdminDashboard';
 import { useAuth } from './auth'; // Custom auth hook
 import { ThemeProvider } from './theme'; // Custom theme provider
 import DemoNotifications from './components/DemoNotifications'; // Demo notifications generator
 import './App.css'; // Global styles
 
 function App() {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
+    const isAdmin = user && user.role === 'admin';
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { authTokens, isLoading } = useAuth();
     
@@ -39,6 +44,7 @@ function App() {
     return (
         <ThemeProvider>
             {isLoggedIn && <DemoNotifications />}
+            <NetworkStatus />
           
                 <div className="app-container">
                     <Navbar toggleSidebar={toggleSidebar} />
@@ -65,6 +71,9 @@ function App() {
                             <Route path="/contact" element={<ContactUs />} />
                             <Route path="/stats" element={<StatsRecords />} />
                             <Route path="/favorites" element={isLoggedIn ? <Favorites /> : <Navigate to="/login" />} />
+                            <Route path="/verify-email" element={<VerifyEmail />} />
+                            <Route path="/resend-verification" element={<ResendVerification />} />
+                            <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
                             <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                     </div>

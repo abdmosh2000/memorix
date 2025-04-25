@@ -63,3 +63,15 @@
   background-color: #29293d;
   color: #ffd700;
 }
+
+.dropdown-menu .admin-link {
+  background-color: rgba(142, 68, 173, 0.2); /* Light purple with transparency */
+  border-left: 3px solid #8E44AD;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.dropdown-menu .admin-link:hover {
+  background-color: rgba(142, 68, 173, 0.4); /* Darker purple on hover */
+  color: #ffffff;
+}
