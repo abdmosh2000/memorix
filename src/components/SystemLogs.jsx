@@ -30,9 +30,26 @@ const SystemLogs = () => {
         ...(endDate && { endDate })
       });
       
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/admin/logs?${queryParams.toString()}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       

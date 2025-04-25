@@ -19,6 +19,7 @@ function CreateCapsuleForm() {
     const [currentRecipient, setCurrentRecipient] = useState('');
     const [recipientError, setRecipientError] = useState('');
     const [error, setError] = useState('');
+    const [showSubscriptionLimitModal, setShowSubscriptionLimitModal] = useState(false);
     
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -224,7 +225,10 @@ function CreateCapsuleForm() {
                 
                 // Notify the user of successful creation
                 if (recipients.length > 0) {
-                    alert(t('Capsule created successfully and invitation sent to recipients.'));
+                    addNotification(
+                        t('Capsule created successfully and invitation sent to recipients.'),
+                        NOTIFICATION_TYPES.SUCCESS
+                    );
                 }
                 
                 // Navigate to a new rating page with the capsule ID as parameter
@@ -234,22 +238,13 @@ function CreateCapsuleForm() {
                     navigate('/dashboard');
                 }
             } catch (err) {
-                // Check if it's a subscription limit error
-                if (err.response && err.response.data && 
-                    (err.response.data.redirectTo === '/pricing' || 
-                     err.response.data.message.includes('upgrade your subscription'))) {
+                // Check if it's a subscription limit error using improved error handling
+                if (err.redirectToPricing || 
+                    (err.response && err.response.data && err.response.data.redirectTo === '/pricing') ||
+                    (err.message && err.message.toLowerCase().includes('upgrade'))) {
                     
-                    // Add notification about the subscription limit
-                    addNotification(
-                        'You have reached your free plan limit. Please upgrade your subscription to create more capsules.',
-                        NOTIFICATION_TYPES.SYSTEM
-                    );
-                    
-                    // Redirect to pricing page after a short delay
-                    setTimeout(() => {
-                        navigate('/pricing');
-                    }, 500);
-                    
+                    // Show the subscription limit modal instead of immediately redirecting
+                    setShowSubscriptionLimitModal(true);
                     return; // Don't throw the error, we're handling it
                 } else {
                     throw err;
@@ -439,6 +434,35 @@ function CreateCapsuleForm() {
             {error && <div className="error-message">{error}</div>}
             
             <button type="submit" className="submit-btn">Create Capsule</button>
+            
+            {/* Subscription Limit Modal */}
+            {showSubscriptionLimitModal && (
+                <div className="modal-overlay">
+                    <div className="subscription-limit-modal">
+                        <h2>Free Plan Limit Reached</h2>
+                        <p>
+                            You've reached the limit of your free plan. Free users can only create one capsule.
+                        </p>
+                        <p>
+                            Upgrade your plan to create more capsules and unlock additional premium features.
+                        </p>
+                        <div className="subscription-limit-actions">
+                            <button 
+                                className="upgrade-button"
+                                onClick={() => navigate('/pricing')}
+                            >
+                                Upgrade Now
+                            </button>
+                            <button
+                                className="cancel-button"
+                                onClick={() => setShowSubscriptionLimitModal(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </form>
     );
 }

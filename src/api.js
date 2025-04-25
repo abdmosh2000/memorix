@@ -72,43 +72,61 @@ const performRequest = async (url, method = 'GET', body = null, retryCount = 0, 
             const response = await fetch(config.apiUrl + url, options);
             clearTimeout(timeoutId);
 
-            // Handle different HTTP status codes
-            if (!response.ok) {
-                let errorMessage = '';
-                try {
-                    const errorData = await response.json();
-                    errorMessage = errorData.message || config.errorMessages.default;
-                } catch (parseError) {
-                    // If the response is not valid JSON
-                    const errorText = await response.text();
-                    errorMessage = errorText || config.errorMessages.default;
-                }
+                // Handle different HTTP status codes
+                if (!response.ok) {
+                    let errorMessage = '';
+                    let errorData = null;
+                    
+                    try {
+                        // Parse response to get full error data
+                        errorData = await response.json();
+                        errorMessage = errorData.message || config.errorMessages.default;
+                    } catch (parseError) {
+                        // If the response is not valid JSON
+                        const errorText = await response.text();
+                        errorMessage = errorText || config.errorMessages.default;
+                    }
 
-                // Handle specific status codes
-                switch (response.status) {
-                    case 401:
-                        errorMessage = config.errorMessages.unauthorized;
-                        // Clear auth tokens on unauthorized
-                        localStorage.removeItem('authTokens');
-                        break;
-                    case 403:
-                        errorMessage = config.errorMessages.forbidden;
-                        break;
-                    case 404:
-                        errorMessage = config.errorMessages.notFound;
-                        break;
-                    case 500:
-                    case 502:
-                    case 503:
-                    case 504:
-                        errorMessage = config.errorMessages.server;
-                        break;
-                }
+                    // Apply default messages for certain status codes if needed
+                    switch (response.status) {
+                        case 401:
+                            if (!errorMessage) errorMessage = config.errorMessages.unauthorized;
+                            // Clear auth tokens on unauthorized
+                            localStorage.removeItem('authTokens');
+                            break;
+                        case 403:
+                            if (!errorMessage) errorMessage = config.errorMessages.forbidden;
+                            break;
+                        case 404:
+                            if (!errorMessage) errorMessage = config.errorMessages.notFound;
+                            break;
+                        case 500:
+                        case 502:
+                        case 503:
+                        case 504:
+                            if (!errorMessage) errorMessage = config.errorMessages.server;
+                            break;
+                    }
 
-                const error = new Error(errorMessage);
-                error.status = response.status;
-                throw error;
-            }
+                    // Create enhanced error with additional data
+                    const error = new Error(errorMessage);
+                    error.status = response.status;
+                    
+                    // Include full error data from server if available
+                    if (errorData) {
+                        error.response = { 
+                            data: errorData,
+                            status: response.status
+                        };
+                        
+                        // Special handling for subscription limit redirects
+                        if (errorData.redirectTo === '/pricing') {
+                            error.redirectToPricing = true;
+                        }
+                    }
+                    
+                    throw error;
+                }
 
             return await response.json();
 

@@ -42,10 +42,26 @@ export const AuthProvider = ({ children }) => {
         const fetchUserData = async () => {
             if (authTokens) {
                 try {
-                    const token = typeof authTokens === 'string' ? authTokens : JSON.stringify(authTokens);
+                    // Ensure token is properly extracted
+                    let token;
+                    if (typeof authTokens === 'string') {
+                        try {
+                            // Try to parse JSON if it's a string
+                            token = JSON.parse(authTokens);
+                        } catch (e) {
+                            // If parsing fails, use as is
+                            token = authTokens;
+                        }
+                    } else {
+                        // Use the object directly
+                        token = authTokens;
+                    }
+                    
                     const response = await fetch(`${config.apiUrl}/auth/user`, {
                         headers: {
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         }
                     });
                     
@@ -332,11 +348,27 @@ export const AuthProvider = ({ children }) => {
 
     const updateUser = async (userData) => {
         try {
+            // Ensure token is properly extracted
+            let token;
+            if (typeof authTokens === 'string') {
+                try {
+                    // Try to parse JSON if it's a string
+                    token = JSON.parse(authTokens);
+                } catch (e) {
+                    // If parsing fails, use as is
+                    token = authTokens;
+                }
+            } else {
+                // Use the object directly
+                token = authTokens;
+            }
+            
             const response = await fetch(`${config.apiUrl}/users/${userData._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authTokens}`
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(userData),
             });

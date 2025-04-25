@@ -23,9 +23,26 @@ const ContentManagement = () => {
         ...(publicFilter && { public: publicFilter })
       });
       
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/capsules?${queryParams.toString()}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       
@@ -46,11 +63,27 @@ const ContentManagement = () => {
   
   const togglePublicStatus = async (capsuleId, currentStatus) => {
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/capsules/${capsuleId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         },
         body: JSON.stringify({ isPublic: !currentStatus })
       });
@@ -73,11 +106,27 @@ const ContentManagement = () => {
   
   const featureCapsule = async (capsuleId, featured) => {
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/capsules/${capsuleId}/feature`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         },
         body: JSON.stringify({ featured: !featured })
       });
@@ -104,10 +153,27 @@ const ContentManagement = () => {
     }
     
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/capsules/${capsuleId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       

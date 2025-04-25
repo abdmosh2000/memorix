@@ -25,9 +25,26 @@ const UserManagement = () => {
         ...(roleFilter && { role: roleFilter })
       });
       
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/admin/users?${queryParams.toString()}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       
@@ -48,11 +65,27 @@ const UserManagement = () => {
   
   const handleRoleChange = async (userId, newRole) => {
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/admin/users/${userId}/role`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         },
         body: JSON.stringify({ role: newRole })
       });
@@ -75,10 +108,27 @@ const UserManagement = () => {
   
   const handleVerifyUser = async (userId) => {
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/admin/users/${userId}/verify`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       
@@ -100,11 +150,27 @@ const UserManagement = () => {
   
   const giftUserSubscription = async (userId, subscriptionType) => {
     try {
+      // Get token and ensure it's properly formatted
+      const authTokens = localStorage.getItem('authTokens');
+      let token;
+      
+      if (authTokens) {
+        try {
+          // If it's a JSON string, parse it
+          const tokenData = JSON.parse(authTokens);
+          token = tokenData;
+        } catch (e) {
+          // If not a valid JSON, use as is
+          token = authTokens;
+        }
+      }
+      
       const response = await fetch(`/api/admin/users/${userId}/gift-subscription`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authTokens')}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           subscriptionType,
