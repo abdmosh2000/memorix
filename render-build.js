@@ -131,7 +131,12 @@ try {
 // Create a copy of index.html at the path of each route for Github Pages compatibility
 try {
   // Read the routes from your React Router configuration or create folders for known routes
-  const routes = ['login', 'register', 'dashboard', 'profile', 'settings', 'capsules', 'create'];
+  const routes = [
+    'login', 'register', 'dashboard', 'profile', 'settings', 'create', 'public',
+    'testimonials', 'ratings', 'rate-experience', 'notifications', 'vision', 'about', 
+    'contact', 'stats', 'favorites', 'verify-email', 'resend-verification', 'admin',
+    'profile/settings', 'my-capsules'
+  ];
   
   for (const route of routes) {
     const routeDir = path.join(__dirname, 'dist', route);

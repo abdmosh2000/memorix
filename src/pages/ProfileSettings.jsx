@@ -5,12 +5,13 @@ import SettingsControls from '../components/SettingsControls';
 import './ProfileSettings.css'
 
 function ProfileSettings() {
-    const { user, authTokens } = useAuth();
+    const { user, authTokens, resendVerification } = useAuth();
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
     const [profilePicture, setProfilePicture] = useState(user?.profilePicture || '');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [resendingVerification, setResendingVerification] = useState(false);
     
     // State for tracking which field is currently being edited
     const [editingField, setEditingField] = useState(null);
@@ -38,6 +39,25 @@ function ProfileSettings() {
         }
         setEditingField(null);
         setPreviewPicture(null);
+    };
+    
+    const handleResendVerification = async () => {
+        if (!user || !user.email || resendingVerification) return;
+        
+        setResendingVerification(true);
+        try {
+            const result = await resendVerification(user.email);
+            if (result.success) {
+                alert('Verification email has been sent. Please check your inbox.');
+            } else {
+                alert(result.message || 'Failed to send verification email. Please try again later.');
+            }
+        } catch (err) {
+            console.error('Error sending verification email:', err);
+            alert('An error occurred. Please try again later.');
+        } finally {
+            setResendingVerification(false);
+        }
     };
 
     const handleSave = async (field) => {
@@ -237,7 +257,21 @@ function ProfileSettings() {
                             </div>
                         </div>
                     ) : (
-                        <p className="field-value">{user?.email || 'Not set'}</p>
+                        <div className="field-value email-field-value">
+                            <p>{user?.email || 'Not set'}</p>
+                            {user && user.verified === false && (
+                                <div className="email-verification-status">
+                                    <span className="verification-warning">!</span>
+                                    <button 
+                                        className="resend-verification-btn" 
+                                        onClick={handleResendVerification}
+                                        disabled={resendingVerification}
+                                    >
+                                        {resendingVerification ? 'Sending...' : 'Resend Verification Code'}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     )}
                 </div>
                 

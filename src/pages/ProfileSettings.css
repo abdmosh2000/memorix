@@ -200,6 +200,55 @@
   border-left: 4px solid #E74C3C;
 }
 
+/* Email verification styling */
+.email-field-value {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.email-verification-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.verification-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #E74C3C;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.resend-verification-btn {
+  background-color: #3498DB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.resend-verification-btn:hover:not(:disabled) {
+  background-color: #2980B9;
+}
+
+.resend-verification-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .profile-settings-container {

@@ -95,13 +95,15 @@ export const AuthProvider = ({ children }) => {
     // Function to verify email with token
     const verifyEmail = async (token) => {
         try {
-            const response = await fetch(`${config.apiUrl}/auth/verify-email`, {
+            // Properly append the token to the URL as a query parameter
+            const url = `${config.apiUrl}/auth/verify-email?token=${token}`;
+            
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     ...config.defaultHeaders,
                     'Content-Type': 'application/json',
-                },
-                params: { token }
+                }
             });
 
             const data = await response.json();

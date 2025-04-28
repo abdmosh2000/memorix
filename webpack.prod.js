@@ -14,7 +14,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.[contenthash].js',
-        publicPath: './',
+        publicPath: '/',
         clean: true // Clean the output directory before emit
     },
     optimization: {

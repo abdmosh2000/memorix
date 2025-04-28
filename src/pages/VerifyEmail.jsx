@@ -30,6 +30,11 @@ function VerifyEmail() {
                         'Email verified successfully! You can now log in.',
                         NOTIFICATION_TYPES.SUCCESS
                     );
+                    
+                    // Auto-redirect to home page after 3 seconds
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 3000);
                 } else {
                     setVerificationStatus('error');
                     setError(result.message || 'Failed to verify email. The link may be expired or invalid.');
@@ -42,7 +47,7 @@ function VerifyEmail() {
         };
 
         handleVerification();
-    }, [token, verifyEmail]);
+    }, [token, verifyEmail, navigate]);
 
     const handleGoToLogin = () => {
         navigate('/login');

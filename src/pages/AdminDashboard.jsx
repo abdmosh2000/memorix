@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../auth';
+import config from '../config';
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell
@@ -73,7 +74,7 @@ const AdminDashboard = () => {
         }
       }
       
-      const response = await fetch('/api/admin/stats', {
+      const response = await fetch(`${config.apiUrl}/admin/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',

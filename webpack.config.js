@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'), // Output directory
         filename: 'bundle.js', // Output filename
-        publicPath: './', // Change to relative paths for Render
+        publicPath: '/', // Use absolute paths to fix SPA routing issues
     },
     devServer: {
         static: {
