@@ -18,7 +18,7 @@ function Navbar({ toggleSidebar }) {
         <nav className="navbar">
             <div className="navbar-brand">
                 <Link to="/">
-                    <img src="/logo.png" alt="Memorix Logo" className="navbar-logo" />
+                    <img src="logo.png" alt="Memorix Logo" className="navbar-logo" />
                 </Link>
             </div>
             
