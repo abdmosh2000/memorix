@@ -21,16 +21,6 @@ const AdminDashboard = () => {
   // Check if user is admin
   const isAdmin = user && user.role === 'admin';
   
-  // If not logged in, redirect to login
-  if (!isLoggedIn) {
-    return <Navigate to="/login" />;
-  }
-  
-  // If not admin, redirect to dashboard
-  if (isLoggedIn && !isAdmin) {
-    return <Navigate to="/dashboard" />;
-  }
-  
   // Colors for charts
   const colors = {
     primary: '#8E44AD',
@@ -61,33 +51,56 @@ const AdminDashboard = () => {
       setLoading(true);
       // Get token and ensure it's properly formatted
       const authTokens = localStorage.getItem('authTokens');
-      let token;
+      let token = '';
       
       if (authTokens) {
         try {
           // If it's a JSON string, parse it
           const tokenData = JSON.parse(authTokens);
-          token = tokenData;
+          // Handle different token formats
+          if (typeof tokenData === 'string') {
+            token = tokenData;
+          } else if (tokenData && tokenData.token) {
+            token = tokenData.token;
+          } else if (tokenData && tokenData.access) {
+            token = tokenData.access;
+          } else {
+            token = tokenData; // Use as is if it's already parsed but not in expected format
+          }
         } catch (e) {
           // If not a valid JSON, use as is
           token = authTokens;
         }
       }
       
+      console.log('Fetching admin stats...');
+      
       const response = await fetch(`${config.apiUrl}/admin/stats`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Cache-Control': 'no-cache'
         }
       });
       
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
-      setStats(data.data);
+      
+      if (data && data.data) {
+        setStats(data.data);
+        setError(null);
+      } else {
+        // Handle empty or invalid response data
+        console.warn('Received empty or invalid data from API', data);
+        setStats(null);
+        setError('Received invalid data format from server');
+      }
+      
       setLoading(false);
     } catch (err) {
       console.error('Error fetching admin stats:', err);
@@ -330,13 +343,22 @@ const AdminDashboard = () => {
     );
   };
   
+  // Handle auth redirects
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (isLoggedIn && !isAdmin) {
+    return <Navigate to="/dashboard" />;
+  }
+  
   return (
     <div className="admin-dashboard">
       <header className="dashboard-header">
         <h1>Admin Dashboard</h1>
         <div className="user-welcome">
-          <span>Welcome, {user.name}</span>
-          <span className="user-role">{user.role}</span>
+          <span>Welcome, {user?.name}</span>
+          <span className="user-role">{user?.role}</span>
         </div>
       </header>
       

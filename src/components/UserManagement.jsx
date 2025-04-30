@@ -287,12 +287,39 @@ const UserManagement = () => {
                 <div className="user-actions">
                   {(isHeadAdmin || user.email.toLowerCase() !== 'abdmosh2000@gmail.com') && (
                     <>
-                      <button 
-                        className="action-button edit-button"
-                        onClick={() => handleRoleChange(user._id, user.role === 'user' ? 'moderator' : 'user')}
-                      >
-                        👑 Change Role
-                      </button>
+                      <div className="dropdown-menu">
+                        <button className="action-button edit-button">
+                          👑 Role Actions
+                        </button>
+                        <div className="dropdown-content">
+                          <button 
+                            onClick={() => handleRoleChange(user._id, 'user')}
+                            className={user.role === 'user' ? 'active' : ''}
+                          >
+                            Set as User
+                          </button>
+                          <button 
+                            onClick={() => handleRoleChange(user._id, 'moderator')}
+                            className={user.role === 'moderator' ? 'active' : ''}
+                          >
+                            Set as Moderator
+                          </button>
+                          <button 
+                            onClick={() => handleRoleChange(user._id, 'content_curator')}
+                            className={user.role === 'content_curator' ? 'active' : ''}
+                          >
+                            Set as Content Curator
+                          </button>
+                          {isHeadAdmin && (
+                            <button 
+                              onClick={() => handleRoleChange(user._id, 'admin')}
+                              className={user.role === 'admin' ? 'active' : ''}
+                            >
+                              Set as Admin
+                            </button>
+                          )}
+                        </div>
+                      </div>
                       
                       {!user.verified && (
                         <button 
@@ -303,12 +330,22 @@ const UserManagement = () => {
                         </button>
                       )}
                       
-                      <button 
-                        className="action-button" 
-                        onClick={() => giftUserSubscription(user._id, 'premium')}
-                      >
-                        🎁 Gift Premium
-                      </button>
+                      <div className="dropdown-menu">
+                        <button className="action-button gift-button">
+                          🎁 Gift Subscription
+                        </button>
+                        <div className="dropdown-content">
+                          <button onClick={() => giftUserSubscription(user._id, 'free')}>
+                            Basic (Free)
+                          </button>
+                          <button onClick={() => giftUserSubscription(user._id, 'premium')}>
+                            Premium (1 Month)
+                          </button>
+                          <button onClick={() => giftUserSubscription(user._id, 'vip')}>
+                            VIP (1 Month)
+                          </button>
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>

@@ -40,10 +40,23 @@ body.light .navbar {
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  height: 40px;
+  max-width: 150px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .navbar-brand a:hover {
   color: #ffd700; /* Gold */
+}
+
+.navbar-brand a:hover .navbar-logo {
+  transform: scale(1.05);
 }
 
 /* Center navigation links */

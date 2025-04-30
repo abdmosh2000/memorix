@@ -17,7 +17,9 @@ function Navbar({ toggleSidebar }) {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                <Link to="/">Memorix</Link>
+                <Link to="/">
+                    <img src="/logo.png" alt="Memorix Logo" className="navbar-logo" />
+                </Link>
             </div>
             
             {/* Main navigation links in the center */}
