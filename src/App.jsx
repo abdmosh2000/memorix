@@ -27,6 +27,7 @@ import StatsRecords from './pages/StatsRecords';
 import Favorites from './pages/Favorites';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentFailed from './pages/PaymentFailed';
+import Checkout from './pages/Checkout';
 import AdminDashboard from './pages/AdminDashboard';
 import { useAuth } from './auth'; // Custom auth hook
 // ThemeProvider is already wrapped in index.js
@@ -76,6 +77,7 @@ function App() {
                             <Route path="/favorites" element={isLoggedIn ? <Favorites /> : <Navigate to="/login" />} />
                             <Route path="/verify-email" element={<VerifyEmail />} />
                             <Route path="/resend-verification" element={<ResendVerification />} />
+                            <Route path="/checkout" element={isLoggedIn ? <Checkout /> : <Navigate to="/login" />} />
                             <Route path="/payment/success" element={isLoggedIn ? <PaymentSuccess /> : <Navigate to="/login" />} />
                             <Route path="/payment/failed" element={<PaymentFailed />} />
                             <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />

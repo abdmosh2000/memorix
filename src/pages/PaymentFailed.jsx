@@ -31,12 +31,15 @@ function PaymentFailed() {
                 canonical="https://memorix.fun/payment-failed"
             />
             <div className="payment-result-card failed">
-                <div className="icon-container">
-                    <div className="error-icon">
-                        <span className="error-x"></span>
-                        <span className="error-y"></span>
-                    </div>
+            <div className="result-logo">
+                <img src="/logo.png" alt="Memorix Logo" className="payment-logo" />
+            </div>
+            <div className="icon-container">
+                <div className="error-icon">
+                    <span className="error-x"></span>
+                    <span className="error-y"></span>
                 </div>
+            </div>
                 <h1>Payment Failed</h1>
                 <p className="error-message">{errorMessage}</p>
                 <p>Don't worry! Your account has not been charged. Please try again with a different payment method or contact our support team for assistance.</p>

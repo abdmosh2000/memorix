@@ -61,16 +61,19 @@ function PaymentSuccess() {
             />
             <div id="confetti" className="confetti-container"></div>
             <div className="payment-result-card success">
-                <div className="icon-container">
-                    <div className="success-checkmark">
-                        <div className="check-icon">
-                            <span className="icon-line line-tip"></span>
-                            <span className="icon-line line-long"></span>
-                            <div className="icon-circle"></div>
-                            <div className="icon-fix"></div>
-                        </div>
+            <div className="result-logo">
+                <img src="/logo.png" alt="Memorix Logo" className="payment-logo" />
+            </div>
+            <div className="icon-container">
+                <div className="success-checkmark">
+                    <div className="check-icon">
+                        <span className="icon-line line-tip"></span>
+                        <span className="icon-line line-long"></span>
+                        <div className="icon-circle"></div>
+                        <div className="icon-fix"></div>
                     </div>
                 </div>
+            </div>
                 <h1>Payment Successful!</h1>
                 <p>Thank you for your subscription. Your account has been upgraded and you now have access to all premium features.</p>
                 <p className="subscription-details">

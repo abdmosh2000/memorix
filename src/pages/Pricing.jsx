@@ -70,7 +70,7 @@ function Pricing() {
                 keywords="memorix pricing, time capsule pricing, digital memory storage plans, memory preservation subscription"
                 canonical="https://memorix.fun/pricing"
             />
-            <h2>Choose Your Perfect Plan</h2>
+            <h1>Choose Your Perfect Plan</h1>
             <p className="pricing-subtitle">Unlock the full potential of your memories with our flexible subscription options</p>
             
             <div className="pricing-table">
@@ -119,16 +119,12 @@ function Pricing() {
                     {user?.subscription === 'premium' ? (
                         <button className="featured-button current-plan">Current Plan</button>
                     ) : (
-                        <div className="payment-options">
-                            <PayPalButton 
-                                planId="premium"
-                                amount="9.99"
-                                currency="USD"
-                                buttonColor="blue"
-                                onSuccess={handlePaymentSuccess}
-                                onError={handlePaymentError}
-                            />
-                        </div>
+                        <button 
+                            className="featured-button"
+                            onClick={() => navigate('/checkout?plan=premium')}
+                        >
+                            Subscribe
+                        </button>
                     )}
                 </div>
                 
@@ -151,16 +147,12 @@ function Pricing() {
                     {user?.subscription === 'vip' ? (
                         <button className="current-plan">Current Plan</button>
                     ) : (
-                        <div className="payment-options">
-                            <PayPalButton 
-                                planId="vip"
-                                amount="24.99"
-                                currency="USD"
-                                buttonColor="gold"
-                                onSuccess={handlePaymentSuccess}
-                                onError={handlePaymentError}
-                            />
-                        </div>
+                        <button 
+                            className="vip-button"
+                            onClick={() => navigate('/checkout?plan=vip')}
+                        >
+                            Subscribe
+                        </button>
                     )}
                 </div>
             </div>

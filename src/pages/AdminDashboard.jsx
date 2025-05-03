@@ -5,6 +5,7 @@ import UserManagement from '../components/UserManagement';
 import ContentManagement from '../components/ContentManagement';
 import SystemLogs from '../components/SystemLogs';
 import PaymentStats from '../components/PaymentStats';
+import UserStats from '../components/UserStats';
 import DashboardSummary from '../components/DashboardSummary';
 import SEO from '../components/SEO';
 import './AdminDashboard.css';
@@ -71,6 +72,7 @@ const AdminDashboard = () => {
       {activeTab === 'overview' && (
         <>
           <DashboardSummary />
+          <UserStats />
           <PaymentStats />
         </>
       )}
