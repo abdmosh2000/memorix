@@ -1,0 +1,12 @@
+This is a placeholder for the actual og-image.jpg file that should be created by a designer.
+
+For optimal Open Graph results, this image should:
+- Be 1200 x 630 pixels (minimum)
+- Have a clear, visually appealing representation of Memorix
+- Feature the main value proposition
+- Include the Memorix logo
+- Use a consistent color scheme with the website
+- Be optimized for fast loading
+- Have the main content centered (to account for different cropping on platforms)
+
+The actual image should be created by a designer and saved as og-image.jpg in this same directory.

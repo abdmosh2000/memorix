@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -24,9 +25,11 @@ import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import StatsRecords from './pages/StatsRecords';
 import Favorites from './pages/Favorites';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentFailed from './pages/PaymentFailed';
 import AdminDashboard from './pages/AdminDashboard';
 import { useAuth } from './auth'; // Custom auth hook
-import { ThemeProvider } from './theme'; // Custom theme provider
+// ThemeProvider is already wrapped in index.js
 import DemoNotifications from './components/DemoNotifications'; // Demo notifications generator
 import './App.css'; // Global styles
 
@@ -42,7 +45,7 @@ function App() {
     };
 
     return (
-        <ThemeProvider>
+        <HelmetProvider>
             {isLoggedIn && <DemoNotifications />}
             <NetworkStatus />
           
@@ -73,14 +76,15 @@ function App() {
                             <Route path="/favorites" element={isLoggedIn ? <Favorites /> : <Navigate to="/login" />} />
                             <Route path="/verify-email" element={<VerifyEmail />} />
                             <Route path="/resend-verification" element={<ResendVerification />} />
+                            <Route path="/payment/success" element={isLoggedIn ? <PaymentSuccess /> : <Navigate to="/login" />} />
+                            <Route path="/payment/failed" element={<PaymentFailed />} />
                             <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
                             <Route path="*" element={<Navigate to="/" />} />
                         </Routes>
                     </div>
                     <Footer />
                 </div>
-          
-        </ThemeProvider>
+        </HelmetProvider>
     );
 }
 

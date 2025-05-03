@@ -95,6 +95,20 @@ const config = {
     api: 'api.memorix.fun',
     render: 'memorix-app.onrender.com',
     godaddy: '.godaddysites.com'
+  },
+  
+  // Payment gateway configurations
+  payments: {
+    paypal: {
+      clientId: 'AYIPUiIX3yHW8qHg7p4_i-aHScRVofCw_xYlPbfHXSqpGUkilhsZpW1UGXPdV6V2Im0bG-k5cmTvugYC', // Production
+      clientIdSandbox: 'AZBmHGrYYBnkHkLTESP8-7Ub7_SvjKOUL_rXdcgqNxXgL5KGJPHQjM6i5YYxgxjj8xBqAO1QeXUPqQnL', // Sandbox for testing
+      currency: 'USD',
+      redirectUrls: {
+        success: '/payment/success',
+        failed: '/payment/failed',
+        cancel: '/payment/failed?message=Payment%20was%20cancelled'
+      }
+    }
   }
 };
 

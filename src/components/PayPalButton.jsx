@@ -1,19 +1,31 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { updateSubscription } from '../api';
+import { useAuth } from '../auth';
+import config from '../config';
 
 const PayPalButton = ({ 
   planId, 
   amount, 
-  currency = 'USD', 
+  currency = config.payments.paypal.currency || 'USD', 
   onSuccess, 
   onError,
   buttonColor = 'gold'
 }) => {
   const paypalRef = useRef();
+  const navigate = useNavigate();
+  const { user, updateUser } = useAuth();
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
-    // Load the PayPal SDK script
+    // Load the PayPal SDK script with the correct client ID
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=BAAWwqTo4Fq4CkqrzbMzWWILnNRK1LswEiJ6Y6iRTYLfU71Bw7taxUzVBE23fFjkzKeTeY9IWT6gb1MJtM&currency=${currency}&debug=true`;
+    // Use sandbox in development, production client ID in production
+    const clientId = isDevelopment 
+      ? config.payments.paypal.clientIdSandbox 
+      : config.payments.paypal.clientId;
+      
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=${currency}`;
     script.async = true;
 
     // Initialize PayPal buttons when the SDK is loaded
@@ -39,30 +51,58 @@ const PayPalButton = ({
                 }
               ],
               application_context: {
-                shipping_preference: 'NO_SHIPPING'
+                shipping_preference: 'NO_SHIPPING',
+                user_action: 'CONTINUE',
+                return_url: `${window.location.origin}${config.payments.paypal.redirectUrls.success}?plan=${planId}`,
+                cancel_url: `${window.location.origin}${config.payments.paypal.redirectUrls.cancel}`
               }
             });
           },
           onApprove: async (data, actions) => {
-            // Capture the funds from the transaction
-            const order = await actions.order.capture();
-            console.log('Payment successful:', order);
-            
-            // Call the success callback with the order details
-            onSuccess({
-              orderID: data.orderID,
-              subscriptionID: order.id,
-              plan: planId,
-              details: order
-            });
+            try {
+              // Capture the funds from the transaction
+              const order = await actions.order.capture();
+              console.log('Payment successful:', order);
+              
+              // Update subscription in backend
+              await updateSubscription({
+                plan: planId,
+                orderID: data.orderID,
+                subscriptionID: order.id
+              });
+              
+              // Update user in context if we have user data
+              if (user) {
+                const updatedUser = await updateUser({
+                  ...user,
+                  subscription: planId
+                });
+              }
+              
+              // Call the success callback with the order details
+              onSuccess({
+                orderID: data.orderID,
+                subscriptionID: order.id,
+                plan: planId,
+                details: order
+              });
+              
+              // Redirect to success page
+              navigate(`${config.payments.paypal.redirectUrls.success}?paymentId=${data.orderID}&plan=${planId}`);
+            } catch (error) {
+              console.error('Error processing payment:', error);
+              navigate(`${config.payments.paypal.redirectUrls.failed}?message=${encodeURIComponent('Payment was approved, but we encountered an issue updating your account.')}`);
+            }
           },
           onError: (err) => {
             console.error('PayPal error:', err);
             onError(err);
+            navigate(`${config.payments.paypal.redirectUrls.failed}?message=${encodeURIComponent(err.message || 'We encountered an error processing your payment')}`);
           },
           onCancel: () => {
             console.log('Payment cancelled by user');
             onError({ message: 'Payment was cancelled. Please try again when you are ready.' });
+            navigate(config.payments.paypal.redirectUrls.cancel);
           }
         }).render(paypalRef.current);
       }
@@ -77,7 +117,7 @@ const PayPalButton = ({
         document.body.removeChild(script);
       }
     };
-  }, [amount, currency, onSuccess, onError, planId, buttonColor]);
+  }, [amount, currency, onSuccess, onError, planId, buttonColor, isDevelopment]);
 
   return (
     <div ref={paypalRef} className="paypal-button-container"></div>

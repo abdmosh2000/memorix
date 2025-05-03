@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
+import SEO from '../components/SEO';
+import HomeStructuredData from '../components/StructuredData';
 import './Home.css';
 
 function Home() {
@@ -37,6 +39,14 @@ function Home() {
     
     return (
         <div className="home-page">
+            <SEO 
+                title="Memorix - Digital Time Capsules for Your Future Memories" 
+                description="Create digital time capsules to preserve photos, videos, and messages for future release. Connect your past and future with Memorix's secure time release platform."
+                keywords="time capsule, digital memories, future messages, memory preservation, scheduled messages, legacy content, personal archives, time release"
+                canonical="https://memorix.fun/"
+                type="website"
+            />
+            <HomeStructuredData />
             {/* HERO SECTION */}
             <section className="hero">
                 <div className="hero-content">

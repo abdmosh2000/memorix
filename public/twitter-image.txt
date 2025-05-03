@@ -1,0 +1,13 @@
+This is a placeholder for the actual twitter-image.jpg file that should be created by a designer.
+
+For optimal Twitter Card results, this image should:
+- Be 1200 x 675 pixels (1.91:1 aspect ratio) for large cards
+- Have a clear, visually appealing representation of Memorix
+- Feature a concise value proposition
+- Include the Memorix logo
+- Use a consistent color scheme with the website
+- Be optimized for fast loading
+- Have good contrast for legibility
+- Have the main content centered (to account for different cropping on Twitter)
+
+The actual image should be created by a designer and saved as twitter-image.jpg in this same directory.

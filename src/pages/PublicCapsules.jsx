@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPublicCapsules, rateCapsule } from '../api'; // Import API functions
 import { useAuth } from '../auth';
+import SEO from '../components/SEO';
+import CapsuleCollectionStructuredData, { CapsuleListStructuredData } from '../components/CapsuleStructuredData';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
 import CapsuleCard from '../components/CapsuleCard';
 import './PublicCapsules.css';
@@ -291,6 +293,17 @@ function PublicCapsules() {
     
     return (
         <div className="public-capsules-page">
+            <SEO 
+                title="Explore Public Time Capsules | Memorix Community" 
+                description="Browse public time capsules from the Memorix community. Discover shared memories, stories, photos, and experiences from users around the world."
+                keywords="public time capsules, shared memories, digital time capsule, memorix community, memory sharing, user capsules, public memories"
+                canonical="https://memorix.fun/public"
+                type="website"
+            />
+            <CapsuleCollectionStructuredData />
+            {!loading && !error && filteredCapsules.length > 0 && (
+                <CapsuleListStructuredData capsules={filteredCapsules} />
+            )}
             <div className="page-header">
                 <h1 className="page-title">{t('Public Capsules')}</h1>
                 <p className="page-description">

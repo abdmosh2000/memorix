@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { updateSubscription } from '../api';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
+import SEO from '../components/SEO';
 import PayPalButton from '../components/PayPalButton';
-import './Pricing.css'
+import './Pricing.css';
 
 function Pricing() {
     const [selectedPlan, setSelectedPlan] = useState(null);
@@ -33,48 +34,42 @@ function Pricing() {
             
             console.log('Payment successful:', paymentDetails);
             
-            // Update subscription in backend
-            await updateSubscription({
-                plan: paymentDetails.plan,
-                orderID: paymentDetails.orderID,
-                subscriptionID: paymentDetails.subscriptionID
-            });
-            
-            // Update user in context
-            if (user) {
-                const updatedUser = await updateUser({
-                    ...user,
-                    subscription: paymentDetails.plan
-                });
-            }
-            
-            // Show success notification
+            // Show a brief success notification before redirecting
             addNotification(
-                `Successfully subscribed to the ${paymentDetails.plan.charAt(0).toUpperCase() + paymentDetails.plan.slice(1)} plan! Enjoy your upgraded features.`,
+                `Payment successful! Processing your subscription...`,
                 NOTIFICATION_TYPES.SYSTEM
             );
             
-            // Redirect to dashboard
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 500);
+            // Note: The actual subscription update and user update are now handled in PayPalButton component
+            // This event handler is still used for in-page notifications and state management
             
         } catch (error) {
-            console.error('Error updating subscription:', error);
-            setPaymentError('Failed to complete subscription. Please contact support.');
-        } finally {
-            setIsPaymentProcessing(false);
+            console.error('Error handling payment success:', error);
+            setPaymentError('Something went wrong after payment. Your account will be updated shortly.');
         }
     };
     
-    // Handle payment error
+    // Handle payment error 
     const handlePaymentError = (error) => {
         console.error('Payment error:', error);
+        
+        // Show a notification about the payment failure
+        addNotification(
+            `Payment processing failed. ${error.message || 'Please try again later.'}`,
+            NOTIFICATION_TYPES.ERROR
+        );
+        
         setPaymentError('Payment failed. Please try again or use a different payment method.');
     };
     
     return (
         <div className="pricing-page">
+            <SEO 
+                title="Memorix Pricing - Choose Your Perfect Plan" 
+                description="Explore Memorix subscription plans including Free, Premium, and VIP options. Store digital time capsules securely with flexible pricing starting at $0/month."
+                keywords="memorix pricing, time capsule pricing, digital memory storage plans, memory preservation subscription"
+                canonical="https://memorix.fun/pricing"
+            />
             <h2>Choose Your Perfect Plan</h2>
             <p className="pricing-subtitle">Unlock the full potential of your memories with our flexible subscription options</p>
             

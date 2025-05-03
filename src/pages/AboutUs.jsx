@@ -1,8 +1,16 @@
 import React from 'react';
-import './AboutUs.css'
+import SEO from '../components/SEO';
+import './AboutUs.css';
+
 function AboutUs() {
     return (
         <div className="about-us-page">
+            <SEO 
+                title="About Memorix - Our Story and Mission" 
+                description="Learn about the team behind Memorix, our vision for digital memory preservation, and how we're helping people connect their past with their future."
+                keywords="about memorix, digital memory preservation, time capsule platform, memorix team, memorix mission"
+                canonical="https://memorix.fun/about"
+            />
             <h2>About Us</h2>
             <p>
                 We are a dedicated team of passionate developers, designers, and storytellers who understand the
