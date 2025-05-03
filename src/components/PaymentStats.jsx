@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getPaymentStats } from '../api';
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, 
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -32,48 +33,21 @@ const PaymentStats = () => {
         setRefreshing(true);
       }
       
-      const endpoint = refresh ? '/api/stats/refresh-payment' : '/api/stats';
-      
-      // Get token from localStorage
-      const authTokens = localStorage.getItem('authTokens');
-      let token = '';
-      
-      if (authTokens) {
-        try {
-          const tokenData = JSON.parse(authTokens);
-          if (typeof tokenData === 'string') {
-            token = tokenData;
-          } else if (tokenData && tokenData.token) {
-            token = tokenData.token;
-          }
-        } catch (e) {
-          token = authTokens; // Not JSON, use as is
+      try {
+        const data = await getPaymentStats(refresh);
+        
+        if (refresh) {
+          setPaymentStats(data.data);
+        } else {
+          setPaymentStats(data.paymentStats);
         }
-      }
-      
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch(endpoint, { 
-        method: 'GET',
-        headers
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      if (refresh) {
-        setPaymentStats(data.data);
-      } else {
-        setPaymentStats(data.paymentStats);
+      } catch (err) {
+        if (err.status === 404) {
+          console.warn('Payment stats endpoint not available');
+          setPaymentStats(null);
+        } else {
+          throw err;
+        }
       }
     } catch (err) {
       console.error('Error fetching payment stats:', err);

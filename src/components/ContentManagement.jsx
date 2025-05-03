@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAllCapsules, updateCapsulePublicStatus, featureCapsule, deleteCapsule } from '../api';
 
 const ContentManagement = () => {
   const [capsules, setCapsules] = useState([]);
@@ -16,43 +17,24 @@ const ContentManagement = () => {
   const fetchCapsules = async () => {
     try {
       setLoading(true);
-      const queryParams = new URLSearchParams({
-        page: currentPage,
-        limit: 10,
+      const filters = {
         ...(search && { search }),
         ...(publicFilter && { public: publicFilter })
-      });
+      };
       
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
+      try {
+        const data = await getAllCapsules(currentPage, 10, filters);
+        setCapsules(data.capsules || []);
+        setTotalPages(data.pagination?.pages || 1);
+      } catch (err) {
+        if (err.status === 404) {
+          console.warn('Capsules endpoint not available');
+          setCapsules([]);
+          setTotalPages(0);
+        } else {
+          throw err;
         }
       }
-      
-      const response = await fetch(`/api/capsules?${queryParams.toString()}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      setCapsules(data.capsules || []);
-      setTotalPages(data.pagination?.pages || 1);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching capsules:', err);
@@ -63,34 +45,7 @@ const ContentManagement = () => {
   
   const togglePublicStatus = async (capsuleId, currentStatus) => {
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/capsules/${capsuleId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ isPublic: !currentStatus })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      await updateCapsulePublicStatus(capsuleId, !currentStatus);
       
       setCapsules(capsules.map(capsule => {
         if (capsule._id === capsuleId) {
@@ -104,36 +59,9 @@ const ContentManagement = () => {
     }
   };
   
-  const featureCapsule = async (capsuleId, featured) => {
+  const handleFeatureCapsule = async (capsuleId, featured) => {
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/capsules/${capsuleId}/feature`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ featured: !featured })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      await featureCapsule(capsuleId, !featured);
       
       setCapsules(capsules.map(capsule => {
         if (capsule._id === capsuleId) {
@@ -153,34 +81,7 @@ const ContentManagement = () => {
     }
     
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/capsules/${capsuleId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
+      await deleteCapsule(capsuleId);
       setCapsules(capsules.filter(capsule => capsule._id !== capsuleId));
     } catch (err) {
       console.error('Error deleting capsule:', err);
@@ -271,7 +172,7 @@ const ContentManagement = () => {
                 
                 <button 
                   className="action-button" 
-                  onClick={() => featureCapsule(capsule._id, capsule.featured)}
+                  onClick={() => handleFeatureCapsule(capsule._id, capsule.featured)}
                 >
                   {capsule.featured ? '⭐ Unfeature' : '⭐ Feature'}
                 </button>

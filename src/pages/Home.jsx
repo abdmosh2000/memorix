@@ -56,11 +56,11 @@ function Home() {
                     
                     <div className="hero-cta">
                         {isLoggedIn ? (
-                            <button onClick={handleCreateCapsule} className="cta-button">Create Capsule</button>
+                            <button onClick={handleCreateCapsule} className="cta-button">💌 Leave a Memory</button>
                         ) : (
                             <>
-                                <Link to="/register" className="cta-button primary">Join Now</Link>
-                                <Link to="/public" className="cta-button secondary">Explore Capsules</Link>
+                                <Link to="/register" className="cta-button primary">✨ Join the Journey</Link>
+                                <Link to="/public" className="cta-button secondary">📖 Browse Memories</Link>
                             </>
                         )}
                     </div>
@@ -164,9 +164,9 @@ function Home() {
                 
                 <div className="steps-cta">
                     {isLoggedIn ? (
-                        <button onClick={handleCreateCapsule} className="cta-button medium">Create Your First Capsule</button>
+                        <button onClick={handleCreateCapsule} className="cta-button medium">🚀 Capture Your First Memory</button>
                     ) : (
-                        <Link to="/register" className="cta-button medium">Get Started Now</Link>
+                        <Link to="/register" className="cta-button medium">⭐ Begin Your Memory Journey</Link>
                     )}
                 </div>
             </section>
@@ -285,11 +285,11 @@ function Home() {
                 <p>Join thousands of users creating time capsules for the future</p>
                 
                 {isLoggedIn ? (
-                    <button onClick={handleCreateCapsule} className="cta-button large">Create Your Memory Capsule</button>
+                    <button onClick={handleCreateCapsule} className="cta-button large">🎁 Create Your Legacy Memory</button>
                 ) : (
                     <div className="cta-buttons">
-                        <Link to="/register" className="cta-button large primary">Start Your Journey</Link>
-                        <Link to="/about" className="cta-button large secondary">Learn More</Link>
+                        <Link to="/register" className="cta-button large primary">💫 Begin Your Memory Journey</Link>
+                        <Link to="/about" className="cta-button large secondary">🧭 Discover Our Story</Link>
                     </div>
                 )}
             </section>

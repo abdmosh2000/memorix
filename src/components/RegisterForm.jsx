@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
@@ -19,6 +19,9 @@ function RegisterForm({ onSuccess }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
+    
+    // Create a ref for the audio element
+    const audioRef = useRef(null);
     
     const { register, resendVerification } = useAuth();
     const navigate = useNavigate();
@@ -156,12 +159,18 @@ function RegisterForm({ onSuccess }) {
             if (result.success) {
                 console.log('Registration successful, email verification needed');
                 
+                // Play success sound
+                if (audioRef.current) {
+                    audioRef.current.volume = 0.6; // Set appropriate volume
+                    audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+                }
+                
                 // Set registration successful state
                 setRegistrationSuccessful(true);
                 
                 // Add a notification about verification
                 addNotification(
-                    `Thanks for registering, ${name}! Please check your email to verify your account.`, 
+                    `✨ Thank you for joining our memory keeper community, ${name}! Please check your email to verify your account.`, 
                     NOTIFICATION_TYPES.SUCCESS
                 );
                 
@@ -196,9 +205,9 @@ function RegisterForm({ onSuccess }) {
     if (registrationSuccessful) {
         return (
             <div className="verification-instructions">
-                <h2>Verify Your Email</h2>
-                <p>We've sent a verification email to <strong>{email}</strong>.</p>
-                <p>Please check your inbox and click the verification link to complete your registration.</p>
+                <h2>✨ One Step Away From Your Memory Journey!</h2>
+                <p>We've sent a magic link to <strong>{email}</strong> to confirm your email.</p>
+                <p>Please check your inbox and click the verification link to unlock your memory time capsule.</p>
                 
                 <div className="verification-actions">
                     <button 
@@ -207,7 +216,7 @@ function RegisterForm({ onSuccess }) {
                         onClick={handleResendVerification}
                         disabled={isOffline}
                     >
-                        {isOffline ? 'Cannot Resend While Offline' : 'Resend Verification Email'}
+                        {isOffline ? '📴 Cannot Resend While Offline' : '📧 Resend Magic Link'}
                     </button>
                     
                     <button 
@@ -215,7 +224,7 @@ function RegisterForm({ onSuccess }) {
                         className="login-button"
                         onClick={() => navigate('/login')}
                     >
-                        Go to Login
+                        🔑 Return to Your Memories
                     </button>
                 </div>
                 
@@ -332,12 +341,15 @@ function RegisterForm({ onSuccess }) {
                 </label>
             </div>
             
+            {/* Hidden audio element for sound effect */}
+            <audio ref={audioRef} src="/sounds/createaccount.mp3" preload="auto" />
+            
             <button 
                 type="submit" 
                 disabled={!acceptTerms || isSubmitting}
                 className={isOffline ? 'offline-mode' : ''}
             >
-                {isSubmitting ? 'Registering...' : isOffline ? 'Save for Later' : 'Register'}
+                {isSubmitting ? '✨ Creating Your Memory Space...' : isOffline ? '💾 Save Your Journey Entry' : '🚀 Start Your Memory Journey'}
             </button>
             
             {isOffline && (
@@ -347,7 +359,7 @@ function RegisterForm({ onSuccess }) {
             )}
             
             <div className="login-link">
-                Already have an account? <Link to="/login">Log in</Link>
+                Already preserving memories? <Link to="/login">🔐 Return to Your Journey</Link>
             </div>
         </form>
     );

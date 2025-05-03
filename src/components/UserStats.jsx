@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserStats.css';
+import { getAdminStats } from '../api';
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, 
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -40,47 +41,21 @@ const UserStats = () => {
       setError(null);
       setRefreshing(false);
       
-      // Get token from localStorage
-      const authTokens = localStorage.getItem('authTokens');
-      let token = '';
-      
-      if (authTokens) {
-        try {
-          const tokenData = JSON.parse(authTokens);
-          if (typeof tokenData === 'string') {
-            token = tokenData;
-          } else if (tokenData && tokenData.token) {
-            token = tokenData.token;
-          }
-        } catch (e) {
-          token = authTokens; // Not JSON, use as is
+      try {
+        const data = await getAdminStats();
+        if (data && data.data) {
+          setStats(data.data);
+        } else {
+          // If no data, use mock data
+          setStats(generateMockStats());
         }
-      }
-      
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/admin/stats', { 
-        method: 'GET',
-        headers
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      if (data && data.data) {
-        setStats(data.data);
-      } else {
-        // If no data, use mock data
-        setStats(generateMockStats());
+      } catch (err) {
+        if (err.status === 404) {
+          console.warn('Admin stats endpoint not available, using mock data');
+          setStats(generateMockStats());
+        } else {
+          throw err;
+        }
       }
     } catch (err) {
       console.error('Error fetching user stats:', err);

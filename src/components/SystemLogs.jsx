@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getSystemLogs } from '../api';
 
 const SystemLogs = () => {
   const [logs, setLogs] = useState([]);
@@ -22,45 +23,26 @@ const SystemLogs = () => {
     try {
       setLoading(true);
       
-      const queryParams = new URLSearchParams({
-        page: currentPage,
-        limit: 20,
+      const filters = {
         ...(levelFilter && { level: levelFilter }),
         ...(startDate && { startDate }),
         ...(endDate && { endDate })
-      });
+      };
       
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
+      try {
+        const data = await getSystemLogs(currentPage, 20, filters);
+        
+        setLogs(data.data);
+        setTotalPages(data.pagination.pages);
+      } catch (err) {
+        if (err.status === 404) {
+          console.warn('System logs endpoint not available');
+          setLogs([]);
+          setTotalPages(0);
+        } else {
+          throw err;
         }
       }
-      
-      const response = await fetch(`/api/admin/logs?${queryParams.toString()}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      setLogs(data.data);
-      setTotalPages(data.pagination.pages);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching system logs:', err);

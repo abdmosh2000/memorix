@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth';
+import { getAdminUsers, updateUserRole, verifyUser, giftSubscription } from '../api';
 
 const UserManagement = () => {
   const { user } = useAuth();
@@ -18,43 +19,24 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const queryParams = new URLSearchParams({
-        page: currentPage,
-        limit: 10,
+      const filters = {
         ...(search && { search }),
         ...(roleFilter && { role: roleFilter })
-      });
+      };
       
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
+      try {
+        const response = await getAdminUsers(currentPage, 10, filters);
+        setUsers(response.data);
+        setTotalPages(response.pagination.pages);
+      } catch (err) {
+        if (err.status === 404) {
+          console.warn('Admin users endpoint not available');
+          setUsers([]);
+          setTotalPages(0);
+        } else {
+          throw err;
         }
       }
-      
-      const response = await fetch(`/api/admin/users?${queryParams.toString()}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      setUsers(data.data);
-      setTotalPages(data.pagination.pages);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -65,34 +47,7 @@ const UserManagement = () => {
   
   const handleRoleChange = async (userId, newRole) => {
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/admin/users/${userId}/role`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ role: newRole })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      await updateUserRole(userId, newRole);
       
       setUsers(users.map(u => {
         if (u._id === userId) {
@@ -108,33 +63,7 @@ const UserManagement = () => {
   
   const handleVerifyUser = async (userId) => {
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/admin/users/${userId}/verify`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      await verifyUser(userId);
       
       setUsers(users.map(u => {
         if (u._id === userId) {
@@ -150,38 +79,7 @@ const UserManagement = () => {
   
   const giftUserSubscription = async (userId, subscriptionType) => {
     try {
-      // Get token and ensure it's properly formatted
-      const authTokens = localStorage.getItem('authTokens');
-      let token;
-      
-      if (authTokens) {
-        try {
-          // If it's a JSON string, parse it
-          const tokenData = JSON.parse(authTokens);
-          token = tokenData;
-        } catch (e) {
-          // If not a valid JSON, use as is
-          token = authTokens;
-        }
-      }
-      
-      const response = await fetch(`/api/admin/users/${userId}/gift-subscription`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          subscriptionType,
-          durationMonths: 1,
-          message: 'Enjoy your complimentary subscription!'
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      await giftSubscription(userId, subscriptionType, 1, 'Enjoy your complimentary subscription!');
       
       setUsers(users.map(u => {
         if (u._id === userId) {

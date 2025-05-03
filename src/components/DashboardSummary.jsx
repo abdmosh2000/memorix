@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAdminDashboardSummary } from '../api';
 
 const DashboardSummary = () => {
   const [stats, setStats] = useState(null);
@@ -18,50 +19,17 @@ const DashboardSummary = () => {
         setRefreshing(true);
       }
       
-      // Get token from localStorage
-      const authTokens = localStorage.getItem('authTokens');
-      let token = '';
-      
-      if (authTokens) {
-        try {
-          const tokenData = JSON.parse(authTokens);
-          if (typeof tokenData === 'string') {
-            token = tokenData;
-          } else if (tokenData && tokenData.token) {
-            token = tokenData.token;
-          }
-        } catch (e) {
-          token = authTokens; // Not JSON, use as is
-        }
-      }
-      
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/admin/dashboard-summary', { 
-        method: 'GET',
-        headers
-      });
-      
-      if (!response.ok) {
-        // If the endpoint doesn't exist yet, use mock data
-        if (response.status === 404) {
+      try {
+        const data = await getAdminDashboardSummary();
+        setStats(data);
+      } catch (err) {
+        if (err.status === 404) {
           console.warn('Dashboard summary endpoint not available, using mock data');
           setStats(generateMockStats());
-          setLoading(false);
-          setRefreshing(false);
-          return;
+        } else {
+          throw err;
         }
-        throw new Error(`Error: ${response.status}`);
       }
-      
-      const data = await response.json();
-      setStats(data);
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
       setError('Failed to load dashboard statistics. Please try again.');

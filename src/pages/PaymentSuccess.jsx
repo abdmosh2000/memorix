@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
@@ -9,6 +9,7 @@ function PaymentSuccess() {
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
+    const audioRef = useRef(null);
     
     // Extract the payment details from URL query params
     useEffect(() => {
@@ -16,11 +17,17 @@ function PaymentSuccess() {
         const paymentId = queryParams.get('paymentId');
         const plan = queryParams.get('plan');
         
+        // Play success sound
+        if (audioRef.current) {
+            audioRef.current.volume = 0.6; // Set appropriate volume
+            audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+        }
+        
         // Show success notification
         if (plan) {
             const planName = plan.charAt(0).toUpperCase() + plan.slice(1);
             addNotification(
-                `Successfully subscribed to the ${planName} plan! Enjoy your upgraded features.`,
+                `✨ Your memory journey has been enhanced! ${planName} features are now unlocked for your memories.`,
                 NOTIFICATION_TYPES.SYSTEM
             );
         }

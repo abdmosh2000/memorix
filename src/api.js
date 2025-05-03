@@ -302,3 +302,84 @@ export const getFavoriteCapsules = async (userId) => {
 export const updateSubscription = async (subscriptionData) => {
     return await handleRequest('/subscriptions/update', 'POST', subscriptionData);
 };
+
+// Admin API calls
+export const getAdminStats = async () => {
+    return await handleRequest('/admin/stats');
+};
+
+export const getAdminDashboardSummary = async () => {
+    return await handleRequest('/admin/dashboard-summary');
+};
+
+export const getAdminUsers = async (page = 1, limit = 10, filters = {}) => {
+    const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...filters
+    }).toString();
+    return await handleRequest(`/admin/users?${queryParams}`);
+};
+
+export const getAdminCapsules = async (page = 1, limit = 10, filters = {}) => {
+    const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...filters
+    }).toString();
+    return await handleRequest(`/admin/capsules?${queryParams}`);
+};
+
+export const updateUserRole = async (userId, role) => {
+    return await handleRequest(`/admin/users/${userId}/role`, 'PUT', { role });
+};
+
+export const verifyUser = async (userId) => {
+    return await handleRequest(`/admin/users/${userId}/verify`, 'PUT');
+};
+
+export const giftSubscription = async (userId, subscriptionType, durationMonths = 1, message = 'Enjoy your complimentary subscription!') => {
+    return await handleRequest(`/admin/users/${userId}/gift-subscription`, 'POST', {
+        subscriptionType,
+        durationMonths,
+        message
+    });
+};
+
+// Payment Stats
+export const getPaymentStats = async (refresh = false) => {
+    const endpoint = refresh ? '/stats/refresh-payment' : '/stats';
+    return await handleRequest(endpoint);
+};
+
+// Capsule Management API calls
+export const getAllCapsules = async (page = 1, limit = 10, filters = {}) => {
+    const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...filters
+    }).toString();
+    return await handleRequest(`/capsules?${queryParams}`);
+};
+
+export const updateCapsulePublicStatus = async (capsuleId, isPublic) => {
+    return await handleRequest(`/capsules/${capsuleId}`, 'PATCH', { isPublic });
+};
+
+export const featureCapsule = async (capsuleId, featured) => {
+    return await handleRequest(`/capsules/${capsuleId}/feature`, 'PUT', { featured });
+};
+
+export const deleteCapsule = async (capsuleId) => {
+    return await handleRequest(`/capsules/${capsuleId}`, 'DELETE');
+};
+
+// System Logs API calls
+export const getSystemLogs = async (page = 1, limit = 20, filters = {}) => {
+    const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...filters
+    }).toString();
+    return await handleRequest(`/admin/logs?${queryParams}`);
+};
