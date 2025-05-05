@@ -7,6 +7,7 @@ import ProfileDropdown from './ProfileDropdown';
 import NotificationsDropdown from './NotificationsDropdown';
 import LanguageSelector from './LanguageSelector';
 import ThemeToggle from './ThemeToggle';
+import logo from '../assets/logo.png';
 import './Navbar.css';
 
 function Navbar({ toggleSidebar }) {
@@ -18,7 +19,7 @@ function Navbar({ toggleSidebar }) {
         <nav className="navbar">
             <div className="navbar-brand">
                 <Link to="/">
-                    <img src="/logo.png" alt="Memorix Logo" className="navbar-logo" />
+                    <img src={logo} alt="Memorix Logo" className="navbar-logo" />
                 </Link>
             </div>
             
