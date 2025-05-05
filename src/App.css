@@ -100,6 +100,46 @@ input, textarea, select {
   text-align: right;
 }
 
+/* Loading page for lazy-loaded components */
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  position: relative;
+}
+
+.loading-page:after {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  display: block;
+  margin-top: 20px;
+  animation: spin 1s linear infinite;
+}
+
+body.dark .loading-page {
+  color: #bbb;
+}
+
+body.dark .loading-page:after {
+  border-color: #2a2a3a;
+  border-top-color: #3498db;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .content {

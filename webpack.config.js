@@ -9,8 +9,44 @@ module.exports = {
 // Entry point of your application
     output: {
         path: path.resolve(__dirname, 'dist'), // Output directory
-        filename: 'bundle.js', // Output filename
+        filename: process.env.NODE_ENV === 'production' 
+            ? '[name].[contenthash].js' // Use content hash for production builds
+            : 'bundle.js',
+        chunkFilename: process.env.NODE_ENV === 'production' 
+            ? '[name].[contenthash].chunk.js' // Name dynamic chunks in production
+            : '[name].chunk.js',
         publicPath: '/', // Use absolute paths to fix SPA routing issues
+    },
+    // Add performance configuration to control or disable warnings
+    performance: {
+        hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
+        // Increase max asset and entrypoint size before warning
+        maxEntrypointSize: 512000, // 500KB
+        maxAssetSize: 512000, // 500KB
+    },
+    // Enable code splitting
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            minSize: 20000,
+            minChunks: 1,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
+            enforceSizeThreshold: 50000,
+            cacheGroups: {
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                    name: 'vendors',
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
     },
     devServer: {
         static: {
