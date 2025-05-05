@@ -19,6 +19,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      setError(null);
       const filters = {
         ...(search && { search }),
         ...(roleFilter && { role: roleFilter })
@@ -26,21 +27,39 @@ const UserManagement = () => {
       
       try {
         const response = await getAdminUsers(currentPage, 10, filters);
-        setUsers(response.data);
-        setTotalPages(response.pagination.pages);
+        console.log('Received user management data:', response);
+        
+        // Validate data before updating state
+        if (response && response.data && Array.isArray(response.data)) {
+          setUsers(response.data);
+          setTotalPages(response.pagination?.pages || 1);
+        } else {
+          console.warn('Received invalid user management data structure:', response);
+          // Only show error if we don't have existing data
+          if (users.length === 0) {
+            setError('Received user data in an unexpected format');
+          } else {
+            console.log('Keeping existing users data after receiving invalid structure');
+          }
+        }
       } catch (err) {
         if (err.status === 404) {
           console.warn('Admin users endpoint not available');
-          setUsers([]);
-          setTotalPages(0);
+          // Don't clear existing data if we already have some
+          if (users.length === 0) {
+            setError('User management endpoint not available');
+          } else {
+            console.log('Keeping existing users data after 404 error');
+          }
         } else {
           throw err;
         }
       }
-      setLoading(false);
     } catch (err) {
       console.error('Error fetching users:', err);
-      setError('Failed to load users');
+      setError('Failed to load users. Keeping existing data.');
+      // Don't clear existing data on error
+    } finally {
       setLoading(false);
     }
   };

@@ -13,19 +13,34 @@ const DashboardSummary = () => {
   
   const fetchStats = async (refresh = false) => {
     try {
-      setLoading(true);
-      setError(null);
-      if (refresh) {
+      if (!refresh) {
+        setLoading(true);
+      } else {
         setRefreshing(true);
       }
+      setError(null);
       
       try {
         const data = await getAdminDashboardSummary();
-        setStats(data);
+        // Only update state if we have valid data
+        if (data && typeof data === 'object') {
+          console.log('Received dashboard data:', data);
+          setStats(data);
+        } else {
+          console.warn('Received invalid dashboard data structure:', data);
+          // Don't overwrite existing data if we already have some
+          if (!stats) {
+            setStats(generateMockStats());
+          }
+          setError('Received invalid data format from server');
+        }
       } catch (err) {
         if (err.status === 404) {
           console.warn('Dashboard summary endpoint not available, using mock data');
-          setStats(generateMockStats());
+          // Don't overwrite existing data if we already have some
+          if (!stats) {
+            setStats(generateMockStats());
+          }
         } else {
           throw err;
         }
@@ -33,8 +48,11 @@ const DashboardSummary = () => {
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
       setError('Failed to load dashboard statistics. Please try again.');
-      // Fall back to mock data if API fails
-      setStats(generateMockStats());
+      // Only use mock data if we don't have any existing data
+      if (!stats) {
+        console.log('No existing stats, falling back to mock data');
+        setStats(generateMockStats());
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);

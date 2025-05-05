@@ -65,6 +65,8 @@ module.exports = {
                 { from: 'public/site.webmanifest', to: '' },
                 { from: 'public/_redirects', to: '' },
                 { from: 'public/200.html', to: '' },
+                // Copy logo file to the output directory
+                { from: 'public/logo.png', to: '' },
                 // Copy the static.json file for hosting services
                 { from: 'static.json', to: '' },
             ],

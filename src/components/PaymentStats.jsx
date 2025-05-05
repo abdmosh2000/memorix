@@ -27,24 +27,94 @@ const PaymentStats = () => {
   
   const fetchPaymentStats = async (refresh = false) => {
     try {
-      setLoading(true);
-      setError(null);
-      if (refresh) {
+      if (!refresh) {
+        setLoading(true);
+      } else {
         setRefreshing(true);
       }
+      setError(null);
       
       try {
         const data = await getPaymentStats(refresh);
+        console.log('Payment stats API response:', data);
         
-        if (refresh) {
-          setPaymentStats(data.data);
+        // Validate data format before updating state
+        if (data) {
+          if (refresh && data.data && typeof data.data === 'object') {
+            console.log('Using data.data from refresh response');
+            setPaymentStats(data.data);
+          } else if (data.paymentStats && typeof data.paymentStats === 'object') {
+            console.log('Using data.paymentStats from response');
+            setPaymentStats(data.paymentStats);
+          } else if (typeof data === 'object' && (data.totalRevenue !== undefined || 
+                     data.subscriptionCounts !== undefined)) {
+            // Handle case where the data might be directly in the response
+            console.log('Using top-level data object from response');
+            setPaymentStats(data);
+          } else {
+            console.warn('Received payment stats in unexpected format:', data);
+            // Only set to null if we don't have existing data
+            if (!paymentStats) {
+              console.log('No existing payment stats, setting to empty object');
+              // Instead of null, use an empty object with expected structure
+              setPaymentStats({
+                totalRevenue: 0,
+                transactions: 0,
+                averageOrderValue: 0,
+                conversionRate: 0,
+                subscriptionCounts: {
+                  free: 0,
+                  premium: 0,
+                  vip: 0
+                },
+                monthlyRevenue: {}
+              });
+            } else {
+              console.log('Keeping existing payment stats after receiving invalid data');
+            }
+            setError('Received payment statistics in an unexpected format');
+          }
         } else {
-          setPaymentStats(data.paymentStats);
+          console.warn('No payment stats data received');
+          if (!paymentStats) {
+            console.log('No existing payment stats, setting to empty object');
+            // Instead of null, use an empty object with expected structure
+            setPaymentStats({
+              totalRevenue: 0,
+              transactions: 0,
+              averageOrderValue: 0,
+              conversionRate: 0,
+              subscriptionCounts: {
+                free: 0,
+                premium: 0,
+                vip: 0
+              },
+              monthlyRevenue: {}
+            });
+          }
         }
       } catch (err) {
         if (err.status === 404) {
           console.warn('Payment stats endpoint not available');
-          setPaymentStats(null);
+          // Only set empty data if we don't already have data
+          if (!paymentStats) {
+            console.log('No existing payment stats, setting to empty object');
+            // Instead of null, use an empty object with expected structure
+            setPaymentStats({
+              totalRevenue: 0,
+              transactions: 0,
+              averageOrderValue: 0,
+              conversionRate: 0,
+              subscriptionCounts: {
+                free: 0,
+                premium: 0,
+                vip: 0
+              },
+              monthlyRevenue: {}
+            });
+          } else {
+            console.log('Keeping existing payment stats after 404 error');
+          }
         } else {
           throw err;
         }
@@ -52,6 +122,25 @@ const PaymentStats = () => {
     } catch (err) {
       console.error('Error fetching payment stats:', err);
       setError('Failed to load payment statistics. Please try again.');
+      
+      // Don't modify state if we already have data
+      if (!paymentStats) {
+        console.log('No existing payment stats, setting to empty object');
+        setPaymentStats({
+          totalRevenue: 0,
+          transactions: 0,
+          averageOrderValue: 0,
+          conversionRate: 0,
+          subscriptionCounts: {
+            free: 0,
+            premium: 0,
+            vip: 0
+          },
+          monthlyRevenue: {}
+        });
+      } else {
+        console.log('Keeping existing payment stats after error');
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -99,13 +188,17 @@ const PaymentStats = () => {
     monthlyRevenue: {}
   };
   
-  // Check if we have any data at all
-  const hasAnyData = stats.subscriptionCounts && 
+  // Check if we have any meaningful data at all
+  const hasAnyData = stats && stats.subscriptionCounts && (
     (stats.subscriptionCounts.free > 0 || 
      stats.subscriptionCounts.premium > 0 || 
-     stats.subscriptionCounts.vip > 0);
+     stats.subscriptionCounts.vip > 0) ||
+    stats.totalRevenue > 0 || 
+    stats.transactions > 0
+  );
      
-  if (!paymentStats && !hasAnyData) {
+  if (!hasAnyData) {
+    console.log('No meaningful data found, showing empty data message');
     return (
       <div className="empty-data">
         <h2>No Payment Data Available</h2>
@@ -114,6 +207,8 @@ const PaymentStats = () => {
       </div>
     );
   }
+  
+  console.log('Rendering payment stats with data:', stats);
   
   // Prepare subscription data for pie chart
   const subscriptionData = [
@@ -171,7 +266,7 @@ const PaymentStats = () => {
       <div className="stats-cards">
         <div className="card">
           <div className="card-content">
-            <h2>{formatCurrency(paymentStats.totalRevenue || 0)}</h2>
+            <h2>{formatCurrency(stats.totalRevenue || 0)}</h2>
             <p>Total Revenue</p>
           </div>
           <div className="card-icon">💰</div>
@@ -179,7 +274,7 @@ const PaymentStats = () => {
         
         <div className="card">
           <div className="card-content">
-            <h2>{paymentStats.transactions || 0}</h2>
+            <h2>{stats.transactions || 0}</h2>
             <p>Total Transactions</p>
           </div>
           <div className="card-icon">📊</div>
@@ -187,7 +282,7 @@ const PaymentStats = () => {
         
         <div className="card">
           <div className="card-content">
-            <h2>{formatCurrency(paymentStats.averageOrderValue || 0)}</h2>
+            <h2>{formatCurrency(stats.averageOrderValue || 0)}</h2>
             <p>Average Order Value</p>
           </div>
           <div className="card-icon">📈</div>
@@ -195,7 +290,7 @@ const PaymentStats = () => {
         
         <div className="card">
           <div className="card-content">
-            <h2>{formatPercent(paymentStats.conversionRate || 0)}</h2>
+            <h2>{formatPercent(stats.conversionRate || 0)}</h2>
             <p>Conversion Rate</p>
           </div>
           <div className="card-icon">🔄</div>
@@ -264,42 +359,42 @@ const PaymentStats = () => {
             <tbody>
               <tr>
                 <td>Free</td>
-                <td>{paymentStats.subscriptionCounts?.free || 0}</td>
+                <td>{stats.subscriptionCounts?.free || 0}</td>
                 <td>
                   {formatPercent(
-                    (paymentStats.subscriptionCounts?.free || 0) / 
-                    ((paymentStats.subscriptionCounts?.free || 0) + 
-                     (paymentStats.subscriptionCounts?.premium || 0) + 
-                     (paymentStats.subscriptionCounts?.vip || 0)) * 100 || 0
+                    (stats.subscriptionCounts?.free || 0) / 
+                    ((stats.subscriptionCounts?.free || 0) + 
+                     (stats.subscriptionCounts?.premium || 0) + 
+                     (stats.subscriptionCounts?.vip || 0)) * 100 || 0
                   )}
                 </td>
                 <td>$0.00</td>
               </tr>
               <tr>
                 <td>Premium</td>
-                <td>{paymentStats.subscriptionCounts?.premium || 0}</td>
+                <td>{stats.subscriptionCounts?.premium || 0}</td>
                 <td>
                   {formatPercent(
-                    (paymentStats.subscriptionCounts?.premium || 0) / 
-                    ((paymentStats.subscriptionCounts?.free || 0) + 
-                     (paymentStats.subscriptionCounts?.premium || 0) + 
-                     (paymentStats.subscriptionCounts?.vip || 0)) * 100 || 0
+                    (stats.subscriptionCounts?.premium || 0) / 
+                    ((stats.subscriptionCounts?.free || 0) + 
+                     (stats.subscriptionCounts?.premium || 0) + 
+                     (stats.subscriptionCounts?.vip || 0)) * 100 || 0
                   )}
                 </td>
-                <td>{formatCurrency((paymentStats.subscriptionCounts?.premium || 0) * 9.99)}</td>
+                <td>{formatCurrency((stats.subscriptionCounts?.premium || 0) * 9.99)}</td>
               </tr>
               <tr>
                 <td>VIP</td>
-                <td>{paymentStats.subscriptionCounts?.vip || 0}</td>
+                <td>{stats.subscriptionCounts?.vip || 0}</td>
                 <td>
                   {formatPercent(
-                    (paymentStats.subscriptionCounts?.vip || 0) / 
-                    ((paymentStats.subscriptionCounts?.free || 0) + 
-                     (paymentStats.subscriptionCounts?.premium || 0) + 
-                     (paymentStats.subscriptionCounts?.vip || 0)) * 100 || 0
+                    (stats.subscriptionCounts?.vip || 0) / 
+                    ((stats.subscriptionCounts?.free || 0) + 
+                     (stats.subscriptionCounts?.premium || 0) + 
+                     (stats.subscriptionCounts?.vip || 0)) * 100 || 0
                   )}
                 </td>
-                <td>{formatCurrency((paymentStats.subscriptionCounts?.vip || 0) * 24.99)}</td>
+                <td>{formatCurrency((stats.subscriptionCounts?.vip || 0) * 24.99)}</td>
               </tr>
             </tbody>
             <tfoot>
@@ -307,17 +402,17 @@ const PaymentStats = () => {
                 <td><strong>Total</strong></td>
                 <td>
                   <strong>
-                    {(paymentStats.subscriptionCounts?.free || 0) +
-                     (paymentStats.subscriptionCounts?.premium || 0) +
-                     (paymentStats.subscriptionCounts?.vip || 0)}
+                    {(stats.subscriptionCounts?.free || 0) +
+                     (stats.subscriptionCounts?.premium || 0) +
+                     (stats.subscriptionCounts?.vip || 0)}
                   </strong>
                 </td>
                 <td>100%</td>
                 <td>
                   <strong>
                     {formatCurrency(
-                      (paymentStats.subscriptionCounts?.premium || 0) * 9.99 +
-                      (paymentStats.subscriptionCounts?.vip || 0) * 24.99
+                      (stats.subscriptionCounts?.premium || 0) * 9.99 +
+                      (stats.subscriptionCounts?.vip || 0) * 24.99
                     )}
                   </strong>
                 </td>

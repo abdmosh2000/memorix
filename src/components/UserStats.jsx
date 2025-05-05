@@ -43,24 +43,52 @@ const UserStats = () => {
       
       try {
         const data = await getAdminStats();
-        if (data && data.data) {
-          setStats(data.data);
+        if (data && typeof data === 'object') {
+          console.log('Received user stats data:', data);
+          // Check if we have the data in expected structure to avoid overwriting good data with empty data
+          if (data.data && typeof data.data === 'object' && 
+              data.data.users && typeof data.data.users === 'object') {
+            setStats(data.data);
+          } else {
+            console.warn('Received unexpected user stats data structure:', data);
+            if (!stats) { // Don't overwrite existing data
+              setStats(generateMockStats());
+            }
+            setError('The user statistics data returned has an unexpected format.');
+          }
         } else {
-          // If no data, use mock data
-          setStats(generateMockStats());
+          console.warn('Received invalid user stats data:', data);
+          // Don't overwrite existing data if we already have some
+          if (!stats) {
+            setStats(generateMockStats());
+          }
+          setError('Received invalid data format from server');
         }
       } catch (err) {
         if (err.status === 404) {
-          console.warn('Admin stats endpoint not available, using mock data');
-          setStats(generateMockStats());
+          console.warn('Admin stats endpoint not available');
+          // Don't overwrite existing data if we already have some
+          if (!stats) {
+            console.log('No existing stats, falling back to mock data');
+            setStats(generateMockStats());
+          } else {
+            console.log('Using existing stats data instead of mock data');
+          }
         } else {
           throw err;
         }
       }
     } catch (err) {
       console.error('Error fetching user stats:', err);
-      setError('Failed to load user statistics. Using mock data.');
-      setStats(generateMockStats());
+      setError('Failed to load user statistics. Using existing data.');
+      
+      // Only use mock data if we don't have any existing data
+      if (!stats) {
+        console.log('No existing stats, falling back to mock data');
+        setStats(generateMockStats());
+      } else {
+        console.log('Keeping existing stats data after error');
+      }
     } finally {
       setLoading(false);
     }

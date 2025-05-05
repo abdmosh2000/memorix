@@ -39,12 +39,15 @@ function Navbar({ toggleSidebar }) {
                     <LanguageSelector />
                     {isLoggedIn && (
                         <>
-                            {user?.subscription && user.subscription !== 'free' && (
+                            {user?.subscription?.plan_name && user.subscription.plan_name !== 'Free' && (
                                 <div 
                                     className="plan-badge"
-                                    data-plan={user.subscription.toLowerCase()}
+                                    data-plan={user.subscription.plan_name.toLowerCase()}
+                                    data-status={user.subscription.status}
                                 >
-                                    {user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1)}
+                                    {user.subscription.status === 'lifetime' 
+                                        ? 'Lifetime Member' 
+                                        : `${user.subscription.plan_name} User`}
                                 </div>
                             )}
                             <NotificationsDropdown 

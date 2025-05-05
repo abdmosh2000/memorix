@@ -17,6 +17,7 @@ const ContentManagement = () => {
   const fetchCapsules = async () => {
     try {
       setLoading(true);
+      setError(null);
       const filters = {
         ...(search && { search }),
         ...(publicFilter && { public: publicFilter })
@@ -24,21 +25,37 @@ const ContentManagement = () => {
       
       try {
         const data = await getAllCapsules(currentPage, 10, filters);
-        setCapsules(data.capsules || []);
-        setTotalPages(data.pagination?.pages || 1);
+        console.log('Received capsules data:', data);
+        
+        // Check if we got valid data before updating state
+        if (data && data.capsules) {
+          setCapsules(data.capsules);
+          setTotalPages(data.pagination?.pages || 1);
+        } else {
+          console.warn('Received invalid capsules data structure:', data);
+          // Don't overwrite existing data if response is empty/invalid
+          if (capsules.length === 0) {
+            setError('No content data available');
+          }
+        }
       } catch (err) {
         if (err.status === 404) {
           console.warn('Capsules endpoint not available');
-          setCapsules([]);
-          setTotalPages(0);
+          // Don't clear existing data if we already have some
+          if (capsules.length === 0) {
+            setError('Content management endpoint not available');
+          } else {
+            console.log('Keeping existing capsules data after 404 error');
+          }
         } else {
           throw err;
         }
       }
-      setLoading(false);
     } catch (err) {
       console.error('Error fetching capsules:', err);
-      setError('Failed to load capsules');
+      setError('Failed to load capsules. Keeping existing data.');
+      // Don't clear existing data on error
+    } finally {
       setLoading(false);
     }
   };

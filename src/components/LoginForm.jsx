@@ -73,10 +73,14 @@ function LoginForm() {
             const result = await login(email, password);
             if (result.success) {
                 console.log('Login successful, navigating to dashboard');
-                // Add a small delay to ensure state updates before navigation
+                // Store the token first before navigating
+                localStorage.setItem('authTokens', JSON.stringify(result.token));
+                
+                // Add a longer delay to ensure state updates before navigation
                 setTimeout(() => {
-                    navigate('/dashboard');
-                }, 100);
+                    // Force a hard navigation to dashboard to ensure correct state
+                    window.location.href = '/dashboard';
+                }, 300);
             } else {
                 setErrorMessage(result.message || 'Login failed. Please check your credentials.');
             }

@@ -61,11 +61,14 @@ function PaymentSuccess() {
     return (
         <div className="payment-result-page">
             <SEO 
-                title="Payment Successful - Memorix" 
-                description="Your payment has been processed successfully. Enjoy your premium Memorix subscription features."
-                keywords="payment success, subscription confirmed, memorix premium"
+                title="Journey Enhanced - Memorix" 
+                description="Your memory journey has been enhanced! Enjoy your premium Memorix subscription features."
+                keywords="memory journey, subscription confirmed, memorix premium"
                 canonical="https://memorix.fun/payment-success"
             />
+            {/* Audio element to play success sound */}
+            <audio ref={audioRef} src="/sounds/pamentsuccess.mp3" preload="auto" />
+            
             <div id="confetti" className="confetti-container"></div>
             <div className="payment-result-card success">
             <div className="result-logo">
@@ -81,15 +84,15 @@ function PaymentSuccess() {
                     </div>
                 </div>
             </div>
-                <h1>Payment Successful!</h1>
-                <p>Thank you for your subscription. Your account has been upgraded and you now have access to all premium features.</p>
+                <h1>✨ Your Memory Journey is Enhanced!</h1>
+                <p>Thank you for unlocking deeper memory preservation. Your memories will now have a more beautiful home with premium features.</p>
                 <p className="subscription-details">
                     {user?.subscription && (
-                        <span>Current Plan: <strong>{user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1)}</strong></span>
+                        <span>Your Memory Plan: <strong>{user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1)}</strong></span>
                     )}
                 </p>
                 <button onClick={handleContinue} className="cta-button large primary">
-                    Continue to Dashboard
+                    🚀 Continue to Your Memories
                 </button>
             </div>
         </div>

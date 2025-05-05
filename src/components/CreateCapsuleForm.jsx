@@ -24,9 +24,11 @@ function CreateCapsuleForm() {
     const { user } = useAuth();
     const navigate = useNavigate();
     
+    // Refs
     const videoRef = useRef(null);
     const mediaRecorderRef = useRef(null);
     const mediaChunksRef = useRef([]);
+    const audioRef = useRef(null); // Audio ref for the success sound
     
     // Function to handle photo capture
     const handleCapturePhoto = async () => {
@@ -221,12 +223,23 @@ function CreateCapsuleForm() {
             
             try {
                 const newCapsule = await createCapsule(capsuleData);
-                console.log('Capsule created:', newCapsule);
+                console.log('Memory saved:', newCapsule);
+                
+                // Play the memory saved sound
+                if (audioRef.current) {
+                    audioRef.current.volume = 0.6; // Set appropriate volume
+                    audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+                }
                 
                 // Notify the user of successful creation
                 if (recipients.length > 0) {
                     addNotification(
-                        t('Capsule created successfully and invitation sent to recipients.'),
+                        t('✨ Your memory has been preserved and invitations sent to your loved ones.'),
+                        NOTIFICATION_TYPES.SUCCESS
+                    );
+                } else {
+                    addNotification(
+                        t('✨ Your memory has been beautifully preserved in time.'),
                         NOTIFICATION_TYPES.SUCCESS
                     );
                 }
@@ -259,19 +272,21 @@ function CreateCapsuleForm() {
     return (
         <form className="create-capsule-form" onSubmit={handleSubmit}>
             <div className="form-group">
-                <label htmlFor="title">Title:</label>
+                <label htmlFor="title">Name Your Memory:</label>
                 <input
                     type="text"
                     id="title"
+                    placeholder="Give this precious moment a title..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="content">Content:</label>
+                <label htmlFor="content">Tell Your Story:</label>
                 <textarea
                     id="content"
+                    placeholder="Capture your feelings, emotions, and every detail you want to remember forever..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
@@ -280,7 +295,7 @@ function CreateCapsuleForm() {
             
             {/* Media Capture Section */}
             <div className="form-group media-section">
-                <label>Attach Media:</label>
+                <label>Capture the Moment:</label>
                 <div className="media-buttons">
                     <button 
                         type="button" 
@@ -360,7 +375,7 @@ function CreateCapsuleForm() {
             </div>
             
             <div className="form-group">
-                <label htmlFor="releaseDate">Release Date:</label>
+                <label htmlFor="releaseDate">When to Reveal This Memory:</label>
                 <input
                     type="datetime-local"
                     id="releaseDate"
@@ -368,22 +383,24 @@ function CreateCapsuleForm() {
                     onChange={(e) => setReleaseDate(e.target.value)}
                     required
                 />
+                <small className="field-hint">Choose when your memory will be revealed - a birthday, anniversary, or any special moment</small>
             </div>
-            <div className="form-group">
-                <label htmlFor="isPublic">Public:</label>
+            <div className="form-group public-option">
+                <label htmlFor="isPublic">Share with the World:</label>
                 <input
                     type="checkbox"
                     id="isPublic"
                     checked={isPublic}
                     onChange={(e) => setIsPublic(e.target.checked)}
                 />
+                <small className="field-hint">When checked, your memory becomes visible to everyone in the public gallery</small>
             </div>
 
             {/* Recipients Section */}
             <div className="form-group recipients-section">
-                <label>{t('Add Recipients')}</label>
+                <label>{t('Share with Loved Ones:')}</label>
                 <p className="recipients-info">
-                    {t('Share this capsule with specific people. They will receive an email invitation.')}
+                    {t('Invite special people to cherish this memory with you. They will receive a heartfelt invitation to view your memory when it is revealed.')}
                 </p>
                 
                 <div className="recipient-input-container">
@@ -433,7 +450,10 @@ function CreateCapsuleForm() {
             
             {error && <div className="error-message">{error}</div>}
             
-            <button type="submit" className="submit-btn">Create Capsule</button>
+            {/* Audio element for the memory saved sound */}
+            <audio ref={audioRef} src="/sounds/savememory.mp3" preload="auto" />
+            
+            <button type="submit" className="submit-btn">✨ Preserve This Memory ✨</button>
             
             {/* Subscription Limit Modal */}
             {showSubscriptionLimitModal && (

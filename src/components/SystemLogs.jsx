@@ -22,6 +22,7 @@ const SystemLogs = () => {
   const fetchLogs = async () => {
     try {
       setLoading(true);
+      setError(null);
       
       const filters = {
         ...(levelFilter && { level: levelFilter }),
@@ -31,22 +32,39 @@ const SystemLogs = () => {
       
       try {
         const data = await getSystemLogs(currentPage, 20, filters);
+        console.log('Received system logs data:', data);
         
-        setLogs(data.data);
-        setTotalPages(data.pagination.pages);
+        // Validate data before updating state
+        if (data && data.data && Array.isArray(data.data)) {
+          setLogs(data.data);
+          setTotalPages(data.pagination?.pages || 1);
+        } else {
+          console.warn('Received invalid system logs data structure:', data);
+          // Only show error message if we don't have existing data
+          if (logs.length === 0) {
+            setError('Received system logs in an unexpected format');
+          } else {
+            console.log('Keeping existing logs data after receiving invalid structure');
+          }
+        }
       } catch (err) {
         if (err.status === 404) {
           console.warn('System logs endpoint not available');
-          setLogs([]);
-          setTotalPages(0);
+          // Don't clear existing data if we already have some
+          if (logs.length === 0) {
+            setError('System logs endpoint not available');
+          } else {
+            console.log('Keeping existing logs data after 404 error');
+          }
         } else {
           throw err;
         }
       }
-      setLoading(false);
     } catch (err) {
       console.error('Error fetching system logs:', err);
-      setError('Failed to load system logs');
+      setError('Failed to load system logs. Keeping existing data.');
+      // Don't clear existing data on error
+    } finally {
       setLoading(false);
     }
   };

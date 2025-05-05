@@ -175,15 +175,43 @@ body.light .navbar {
   font-size: 0.9rem;
 }
 
-/* Different colors for different plans */
+/* Colors for Premium plan */
 .plan-badge[data-plan="premium"] {
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   color: white;
 }
 
-.plan-badge[data-plan="vip"] {
+/* Colors for Lifetime plan */
+.plan-badge[data-plan="lifetime"] {
   background: linear-gradient(90deg, #fc00ff, #00dbde);
   color: white;
+}
+
+/* Special styling for active subscriptions */
+.plan-badge[data-status="active"] {
+  box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+}
+
+/* Special styling for lifetime status */
+.plan-badge[data-status="lifetime"] {
+  animation: glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 15px rgba(252, 0, 255, 0.6);
+}
+
+/* Special styling for expired subscriptions */
+.plan-badge[data-status="expired"] {
+  opacity: 0.7;
+  background: linear-gradient(90deg, #888, #555);
+  box-shadow: none;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px rgba(252, 0, 255, 0.6);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(0, 219, 222, 0.8);
+  }
 }
 
 .navbar-toggle {
