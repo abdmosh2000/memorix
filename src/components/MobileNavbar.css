@@ -11,8 +11,7 @@
   z-index: 1000;
   padding: 0 10px;
   
-  /* Flex layout for the nav items */
-  display: flex;
+  /* Flex layout for the nav items - will be enabled in media query */
   justify-content: space-around;
   align-items: center;
 }

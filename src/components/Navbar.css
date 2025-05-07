@@ -45,8 +45,8 @@ body.light .navbar {
 }
 
 .navbar-logo {
-  height: 50px;
-  max-width: 180px;
+  height: 70px;
+  max-width: 200px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
