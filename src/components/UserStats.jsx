@@ -172,15 +172,15 @@ const UserStats = () => {
     );
   }
 
-  // Prepare data for role pie chart
+  // Prepare data for role pie chart with null check
   const roleData = stats.users.byRole.map(role => ({
-    name: role._id.charAt(0).toUpperCase() + role._id.slice(1),
+    name: role._id ? (role._id.charAt(0).toUpperCase() + role._id.slice(1)) : 'Unknown',
     value: role.count
   }));
   
-  // Prepare data for subscription pie chart
+  // Prepare data for subscription pie chart with null check
   const subscriptionData = stats.users.bySubscription.map(sub => ({
-    name: sub._id.charAt(0).toUpperCase() + sub._id.slice(1),
+    name: sub._id ? (sub._id.charAt(0).toUpperCase() + sub._id.slice(1)) : 'Unknown',
     value: sub.count
   }));
   

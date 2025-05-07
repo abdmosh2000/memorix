@@ -100,9 +100,18 @@ const UserManagement = () => {
     try {
       await giftSubscription(userId, subscriptionType, 1, 'Enjoy your complimentary subscription!');
       
+      // Create subscription object based on the type
+      const subscriptionObject = {
+        plan_name: subscriptionType.charAt(0).toUpperCase() + subscriptionType.slice(1),
+        subscribed_at: new Date(),
+        payment_method: 'Manual',
+        status: subscriptionType === 'vip' ? 'lifetime' : 'active',
+        expiry_date: subscriptionType === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days for non-free
+      };
+      
       setUsers(users.map(u => {
         if (u._id === userId) {
-          return { ...u, subscription: subscriptionType };
+          return { ...u, subscription: subscriptionObject };
         }
         return u;
       }));
@@ -252,15 +261,15 @@ const UserManagement = () => {
                           🎁 Gift Subscription
                         </button>
                         <div className="dropdown-content">
-                          <button onClick={() => giftUserSubscription(user._id, 'free')}>
-                            Basic (Free)
-                          </button>
-                          <button onClick={() => giftUserSubscription(user._id, 'premium')}>
-                            Premium (1 Month)
-                          </button>
-                          <button onClick={() => giftUserSubscription(user._id, 'vip')}>
-                            VIP (1 Month)
-                          </button>
+          <button onClick={() => giftUserSubscription(user._id, 'free')}>
+            Basic (Free)
+          </button>
+          <button onClick={() => giftUserSubscription(user._id, 'premium')}>
+            Premium (1 Month)
+          </button>
+          <button onClick={() => giftUserSubscription(user._id, 'lifetime')}>
+            Lifetime
+          </button>
                         </div>
                       </div>
                     </>
