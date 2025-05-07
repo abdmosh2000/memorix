@@ -71,24 +71,33 @@ function LoginForm() {
         
         try {
             const result = await login(email, password);
+            console.log('Login result:', result);
+            
             if (result.success) {
                 console.log('Login successful, navigating to dashboard');
-                // Store the token first before navigating
-                localStorage.setItem('authTokens', JSON.stringify(result.token));
                 
                 // Add a longer delay to ensure state updates before navigation
                 setTimeout(() => {
                     // Force a hard navigation to dashboard to ensure correct state
                     window.location.href = '/dashboard';
-                }, 300);
+                }, 500);
+            } else if (result.offline) {
+                // Handle offline response
+                setIsOffline(true);
+                setErrorMessage(result.message || 'You are offline. Login will be processed when connection is restored.');
+            } else if (result.verified === false) {
+                // Handle unverified email
+                setErrorMessage(`${result.message || 'Please verify your email before logging in.'} 
+                    <a href="/resend-verification?email=${encodeURIComponent(email)}">Resend verification email</a>`);
             } else {
-                setErrorMessage(result.message || 'Login failed. Please check your credentials.');
+                // Handle other errors
+                setErrorMessage(result.message || 'Login failed. Please check your credentials and try again.');
             }
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Login form error:', error);
             
             // Check if it's a network error
-            if (!navigator.onLine || error.message.includes('network')) {
+            if (!navigator.onLine || (error.message && error.message.includes('network'))) {
                 setIsOffline(true);
                 offlineManager.saveAuthOperation('login', { email, password });
                 setErrorMessage('You appear to be offline. Your login has been saved and will be processed when your connection is restored.');
@@ -112,22 +121,63 @@ function LoginForm() {
         }
     };
 
+    // Function to render error message with possible HTML link
+    const renderErrorMessage = () => {
+        if (!errorMessage) return null;
+        
+        // Check if the error message includes a link (for email verification)
+        if (errorMessage.includes('<a href=')) {
+            // Extract the main message and the link parts
+            const [mainMessage, linkPart] = errorMessage.split('<a href=');
+            
+            if (linkPart) {
+                // Extract the URL and link text
+                const hrefMatch = linkPart.match(/"([^"]+)"/);
+                const href = hrefMatch ? hrefMatch[1] : '';
+                const linkText = linkPart.includes('>') ? 
+                    linkPart.split('>')[1].split('</a>')[0] : 
+                    'Resend verification email';
+                    
+                return (
+                    <div className="error-message">
+                        {mainMessage}
+                        <a href={href} className="error-link">{linkText}</a>
+                        
+                        {isOffline && (
+                            <button 
+                                type="button" 
+                                className="retry-button"
+                                onClick={retryConnection}
+                            >
+                                Retry Connection
+                            </button>
+                        )}
+                    </div>
+                );
+            }
+        }
+        
+        // Default case, just render the error message
+        return (
+            <div className="error-message">
+                {errorMessage}
+                
+                {isOffline && (
+                    <button 
+                        type="button" 
+                        className="retry-button"
+                        onClick={retryConnection}
+                    >
+                        Retry Connection
+                    </button>
+                )}
+            </div>
+        );
+    };
+    
     return (
         <form className="login-form" onSubmit={handleSubmit}>
-            {errorMessage && (
-                <div className="error-message">
-                    {errorMessage}
-                    {isOffline && (
-                        <button 
-                            type="button" 
-                            className="retry-button"
-                            onClick={retryConnection}
-                        >
-                            Retry Connection
-                        </button>
-                    )}
-                </div>
-            )}
+            {renderErrorMessage()}
             
             <div className="form-group">
                 <label htmlFor="email">Email:</label>

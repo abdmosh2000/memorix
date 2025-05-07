@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import NetworkStatus from './components/NetworkStatus';
+import MobileNavbar from './components/MobileNavbar';
 
 // Essential pages - loaded eagerly
 import Home from './pages/Home';
@@ -95,6 +96,7 @@ function App() {
                         </Suspense>
                     </div>
                     <Footer />
+                    <MobileNavbar />
                 </div>
         </HelmetProvider>
     );

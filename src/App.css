@@ -144,5 +144,11 @@ body.dark .loading-page:after {
 @media (max-width: 768px) {
   .content {
     padding: 15px;
+    padding-bottom: 75px; /* Extra padding at the bottom for the mobile navbar */
+  }
+  
+  /* Adjust footer on mobile to not overlap with mobile navbar */
+  .app-container > footer {
+    margin-bottom: 60px;
   }
 }

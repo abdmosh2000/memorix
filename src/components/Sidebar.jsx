@@ -4,16 +4,20 @@ import { useAuth } from '../auth';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import ThemeToggle from './ThemeToggle';
+import logo from '../assets/logo.png';
 import './Sidebar.css';
 
 function Sidebar({ isOpen, toggleSidebar }) {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
+    const isAdmin = user && user.role === 'admin';
     const { t } = useTranslation();
 
     return (
         <div className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
-                <h2 className="sidebar-title">Memorix</h2>
+                <Link to="/" onClick={toggleSidebar} className="sidebar-logo-link">
+                    <img src={logo} alt="Memorix Logo" className="sidebar-logo" />
+                </Link>
                 <button className="sidebar-close" onClick={toggleSidebar}>
                     &times;
                 </button>
@@ -41,6 +45,15 @@ function Sidebar({ isOpen, toggleSidebar }) {
                         <Link to="/dashboard" onClick={toggleSidebar}>{t('Dashboard')}</Link>
                         <Link to="/profile" onClick={toggleSidebar}>{t('Profile Settings')}</Link>
                         <Link to="/notifications" onClick={toggleSidebar}>{t('Notifications')}</Link>
+                        
+                        {isAdmin && (
+                            <>
+                                <div className="sidebar-section-title">{t('Admin')}</div>
+                                <Link to="/admin" onClick={toggleSidebar} className="admin-link">
+                                    {t('Admin Dashboard')}
+                                </Link>
+                            </>
+                        )}
                         
                         <div className="sidebar-section-title">{t('Capsules')}</div>
                         <Link to="/create" onClick={toggleSidebar}>{t('Create Capsule')}</Link>

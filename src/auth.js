@@ -294,18 +294,94 @@ export const AuthProvider = ({ children }) => {
                 };
             }
             
-            const response = await fetch(`${config.apiUrl}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    ...config.defaultHeaders,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            // Add retry logic for network failures
+            let retries = 0;
+            const maxRetries = 3;
+            let response = null;
+            let data = null;
+            let lastError = null;
 
-            const data = await response.json();
+            while (retries < maxRetries) {
+                try {
+                    // Log the API URL to make sure we're using the correct one
+                    console.log('Login API URL:', `${config.apiUrl}/auth/login`);
+                    
+                    // Use a timeout to prevent hanging requests
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                    
+                    response = await fetch(`${config.apiUrl}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            ...config.defaultHeaders,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // If we get a response, try to parse JSON
+                    try {
+                        data = await response.json();
+                    } catch (jsonError) {
+                        console.warn('Error parsing JSON response:', jsonError);
+                        // If JSON parsing fails, create a generic error response
+                        data = { 
+                            message: response.status === 500 
+                                ? 'The server encountered an internal error. This could be related to your subscription data. Please try again later.' 
+                                : `Server returned ${response.status} without valid JSON data`
+                        };
+                    }
+                    
+                    // We got a response, break out of retry loop
+                    break;
+                } catch (fetchError) {
+                    lastError = fetchError;
+                    
+                    // Handle abort error differently
+                    if (fetchError.name === 'AbortError') {
+                        console.warn('Login request timed out, retrying...', retries + 1, 'of', maxRetries);
+                    } else {
+                        console.warn('Login fetch error, retrying...', retries + 1, 'of', maxRetries, fetchError);
+                    }
+                    
+                    // Wait before retrying (exponential backoff)
+                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, retries) * 1000));
+                    retries++;
+                }
+            }
             
+            // If we've exhausted retries and still have no response
+            if (!response) {
+                console.error('Failed to login after multiple retries:', lastError);
+                
+                // If it looks like a network error, queue it for later
+                if (!navigator.onLine || (lastError && lastError.message && 
+                    (lastError.message.includes('network') || lastError.message.includes('fetch')))) {
+                    offlineManager.saveAuthOperation('login', { email, password });
+                    return { 
+                        success: false, 
+                        offline: true,
+                        message: 'Network connection issue. Your login will be processed when connection is restored.'
+                    };
+                }
+                
+                return { 
+                    success: false, 
+                    message: 'Login failed after multiple attempts. Please check your connection and try again.' 
+                };
+            }
+            
+            // Process the response
             if (response.ok) {
+                // Check if we got a valid token
+                if (!data.token) {
+                    console.error('Login response missing token:', data);
+                    return { success: false, message: 'Server error: Invalid login response' };
+                }
+                
                 setTokens(data.token);
                 
                 // Clear any pending login operation
@@ -313,28 +389,48 @@ export const AuthProvider = ({ children }) => {
                 
                 return { 
                     success: true,
-                    isAdmin: data.isAdmin,
+                    token: data.token,
+                    isAdmin: data.role === 'admin',
                     subscription: data.subscription
                 };
             } else {
+                // Handle specific error cases
                 if (response.status === 401 && data.verified === false) {
                     // Email not verified
                     return { 
                         success: false, 
                         verified: false, 
                         email: data.email,
-                        message: data.message
+                        message: data.message || 'Email not verified. Please check your inbox for the verification link.'
+                    };
+                } else if (response.status === 500) {
+                    // Special handling for 500 errors, which might be related to subscription migration
+                    console.error('Server error during login:', data);
+                    return { 
+                        success: false, 
+                        message: 'The server encountered an internal error. This could be related to your subscription data. Please try again in a few minutes.' 
+                    };
+                } else if (response.status === 404) {
+                    // This could happen if the API URL is incorrect or if the endpoint doesn't exist
+                    console.error('Login endpoint not found:', response.status, data);
+                    return { 
+                        success: false, 
+                        message: 'Login service unavailable. Please try again later or contact support.'
                     };
                 } else {
-                    console.error(data.message);
-                    return { success: false, message: data.message };
+                    console.error('Login failed:', response.status, data);
+                    return { 
+                        success: false, 
+                        message: data.message || `Login failed with status ${response.status}. Please try again.`
+                    };
                 }
             }
         } catch (error) {
             console.error('Login error:', error);
             
             // Check if it's a network error
-            if (!navigator.onLine || (error.message && error.message.includes('network'))) {
+            if (!navigator.onLine || (error.message && 
+                (error.message.includes('network') || error.message.includes('fetch')))) {
                 // Queue the operation for later
                 offlineManager.saveAuthOperation('login', { email, password });
                 return { 
@@ -344,7 +440,10 @@ export const AuthProvider = ({ children }) => {
                 };
             }
             
-            return { success: false, message: 'Error during login. Please try again.' };
+            return { 
+                success: false, 
+                message: 'Error during login: ' + (error.message || 'Unknown error. Please try again.')
+            };
         }
     };
 

@@ -97,6 +97,27 @@ button:disabled {
   align-items: flex-start;
 }
 
+/* Error message link styling */
+.error-link {
+  color: #2980b9;
+  text-decoration: underline;
+  margin-top: 8px;
+  margin-left: 4px;
+  font-weight: 500;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.error-link:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.error-link:active {
+  color: #1c6394;
+}
+
 /* Retry connection button specific styling */
 .retry-button {
   background-color: transparent;

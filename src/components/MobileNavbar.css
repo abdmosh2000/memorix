@@ -1,0 +1,160 @@
+/* MobileNavbar.css */
+.mobile-navbar {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 0 10px;
+  
+  /* Flex layout for the nav items */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Container for each nav item */
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 8px 0;
+  color: #95a5a6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* Active state styling */
+.mobile-nav-item.active {
+  color: #8e44ad; /* Royal Purple */
+}
+
+.mobile-nav-item.active .mobile-nav-icon {
+  color: #8e44ad; /* Royal Purple */
+  transform: translateY(-2px);
+}
+
+/* Special styling for create button - make it stand out */
+.mobile-nav-item .create-icon {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+  color: white;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+/* Special styling for admin icon */
+.mobile-nav-item .admin-icon {
+  color: #e74c3c; /* Red for admin */
+}
+
+.mobile-nav-item.active .admin-icon {
+  color: #e74c3c; /* Keep admin icon red even when active */
+}
+
+/* Icon styling */
+.mobile-nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease;
+}
+
+/* Text label styling */
+.mobile-nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+/* Hover effect */
+.mobile-nav-item:hover {
+  color: #8e44ad; /* Royal Purple */
+}
+
+.mobile-nav-item:hover .mobile-nav-icon {
+  transform: translateY(-2px);
+}
+
+/* Active indicator dot */
+.mobile-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #8e44ad; /* Royal Purple */
+}
+
+/* Dark mode adjustments */
+body.dark .mobile-navbar {
+  background: #1a1a2e;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .mobile-nav-item {
+  color: #95a5a6;
+}
+
+body.dark .mobile-nav-item.active,
+body.dark .mobile-nav-item:hover {
+  color: #9b59b6; /* Lighter purple for dark mode */
+}
+
+body.dark .mobile-nav-item.active .mobile-nav-icon {
+  color: #9b59b6;
+}
+
+body.dark .mobile-nav-item.active::after {
+  background-color: #9b59b6;
+}
+
+/* RTL support */
+[dir="rtl"] .mobile-navbar {
+  flex-direction: row-reverse;
+}
+
+/* Media query to show only on mobile */
+@media (max-width: 768px) {
+  .mobile-navbar {
+    display: flex;
+  }
+  
+  /* Add padding to the page content to prevent it from being hidden behind the navbar */
+  body {
+    padding-bottom: 60px;
+  }
+  
+  /* Hide the regular navbar on mobile */
+  .navbar {
+    display: none;
+  }
+}
+
+/* For really small screens */
+@media (max-width: 350px) {
+  .mobile-nav-label {
+    display: none; /* Hide text labels on very small screens */
+  }
+  
+  .mobile-nav-icon {
+    margin-bottom: 0;
+  }
+  
+  .mobile-navbar {
+    height: 50px; /* Make the navbar shorter */
+  }
+  
+  body {
+    padding-bottom: 50px;
+  }
+}

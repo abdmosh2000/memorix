@@ -45,8 +45,8 @@ body.light .navbar {
 }
 
 .navbar-logo {
-  height: 40px;
-  max-width: 150px;
+  height: 50px;
+  max-width: 180px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
@@ -267,6 +267,7 @@ body.light .navbar {
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 1rem;
+    display: none; /* Hide the entire navbar on mobile */
   }
 
   .navbar-brand a {
