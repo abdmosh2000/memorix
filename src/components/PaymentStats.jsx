@@ -210,33 +210,44 @@ const PaymentStats = () => {
   
   console.log('Rendering payment stats with data:', stats);
   
-  // Prepare subscription data for pie chart
-  const subscriptionData = [
-    { name: 'Free', value: stats.subscriptionCounts.free || 0 },
-    { name: 'Premium', value: stats.subscriptionCounts.premium || 0 },
-    { name: 'VIP', value: stats.subscriptionCounts.vip || 0 }
-  ];
+  // Prepare subscription data for pie chart with empty data handling
+  const hasSubscriptionData = stats.subscriptionCounts && 
+    (stats.subscriptionCounts.free > 0 || 
+     stats.subscriptionCounts.premium > 0 || 
+     stats.subscriptionCounts.vip > 0);
   
-  // Prepare monthly revenue data for line chart
-  const monthlyRevenueData = Object.entries(stats.monthlyRevenue || {})
-    .map(([month, amount]) => ({ month, revenue: amount }))
-    .sort((a, b) => a.month.localeCompare(b.month));
+  const subscriptionData = hasSubscriptionData ? 
+    [
+      { name: 'Free', value: stats.subscriptionCounts.free || 0 },
+      { name: 'Premium', value: stats.subscriptionCounts.premium || 0 },
+      { name: 'VIP', value: stats.subscriptionCounts.vip || 0 }
+    ] : 
+    [{ name: 'No Data', value: 1 }]; // Provide default data if empty
   
-  // If there's less than 2 months of data, add some placeholder months
-  if (monthlyRevenueData.length < 2) {
-    const currentDate = new Date();
-    for (let i = 0; i < (2 - monthlyRevenueData.length); i++) {
-      const month = new Date(currentDate);
-      month.setMonth(currentDate.getMonth() - i - 1);
-      const monthStr = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, '0')}`;
-      
-      if (!monthlyRevenueData.find(d => d.month === monthStr)) {
-        monthlyRevenueData.unshift({ month: monthStr, revenue: 0 });
-      }
-    }
+  // Prepare monthly revenue data for line chart with empty data handling
+  let monthlyRevenueData = [];
+  
+  if (stats.monthlyRevenue && Object.keys(stats.monthlyRevenue).length > 0) {
+    // Use actual data if available
+    monthlyRevenueData = Object.entries(stats.monthlyRevenue)
+      .map(([month, amount]) => ({ month, revenue: amount }))
+      .sort((a, b) => a.month.localeCompare(b.month));
+  }
+  
+  // Ensure we have at least 6 months of data for a meaningful chart
+  if (monthlyRevenueData.length < 6) {
+    // Generate the last 6 months
+    const placeholderMonths = Array.from({ length: 6 }, (_, i) => {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    }).reverse();
     
-    // Sort again after adding placeholders
-    monthlyRevenueData.sort((a, b) => a.month.localeCompare(b.month));
+    // Merge with existing data, keeping actual values where available
+    monthlyRevenueData = placeholderMonths.map(month => {
+      const existingData = monthlyRevenueData.find(d => d.month === month);
+      return existingData || { month, revenue: 0 };
+    });
   }
   
   const formatCurrency = (value) => {

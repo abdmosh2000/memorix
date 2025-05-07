@@ -172,29 +172,51 @@ const UserStats = () => {
     );
   }
 
-  // Prepare data for role pie chart with null check
-  const roleData = stats.users.byRole.map(role => ({
-    name: role._id ? (role._id.charAt(0).toUpperCase() + role._id.slice(1)) : 'Unknown',
-    value: role.count
-  }));
+  // Prepare data for role pie chart with null check and empty data handling
+  const roleData = Array.isArray(stats.users.byRole) && stats.users.byRole.length > 0 
+    ? stats.users.byRole.map(role => ({
+        name: role._id ? (role._id.charAt(0).toUpperCase() + role._id.slice(1)) : 'Unknown',
+        value: role.count
+      }))
+    : [{ name: 'No Data', value: 1 }]; // Provide default data if empty
   
-  // Prepare data for subscription pie chart with null check
-  const subscriptionData = stats.users.bySubscription.map(sub => ({
-    name: sub._id ? (sub._id.charAt(0).toUpperCase() + sub._id.slice(1)) : 'Unknown',
-    value: sub.count
-  }));
+  // Prepare data for subscription pie chart with null check and empty data handling
+  const subscriptionData = Array.isArray(stats.users.bySubscription) && stats.users.bySubscription.length > 0
+    ? stats.users.bySubscription.map(sub => ({
+        name: sub._id ? (sub._id.charAt(0).toUpperCase() + sub._id.slice(1)) : 'Unknown',
+        value: sub.count
+      }))
+    : [{ name: 'No Data', value: 1 }]; // Provide default data if empty
   
-  // Format monthly data for trend chart
-  const monthlyData = stats.users.monthlyTrend.map(item => ({
-    month: item.month.substring(5), // Get just MM
-    users: item.count
-  }));
+  // Format monthly data for trend chart with empty data handling
+  const monthlyData = Array.isArray(stats.users.monthlyTrend) && stats.users.monthlyTrend.length > 0
+    ? stats.users.monthlyTrend.map(item => ({
+        month: item.month.substring(5), // Get just MM
+        users: item.count
+      }))
+    : Array.from({ length: 6 }, (_, i) => {
+        const date = new Date();
+        date.setMonth(date.getMonth() - i);
+        return {
+          month: `${String(date.getMonth() + 1).padStart(2, '0')}`,
+          users: 0
+        };
+      }).reverse(); // Provide default data for last 6 months if empty
   
-  // Format daily capsule trend data
-  const dailyCapsuleData = stats.capsules.dailyTrend.slice(-10).map(item => ({
-    date: item.date.substring(5), // Get just MM-DD
-    capsules: item.count
-  }));
+  // Format daily capsule trend data with empty data handling
+  const dailyCapsuleData = Array.isArray(stats.capsules.dailyTrend) && stats.capsules.dailyTrend.length > 0
+    ? stats.capsules.dailyTrend.slice(-10).map(item => ({
+        date: item.date.substring(5), // Get just MM-DD
+        capsules: item.count
+      }))
+    : Array.from({ length: 10 }, (_, i) => {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        return {
+          date: `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
+          capsules: 0
+        };
+      }).reverse(); // Provide default data for last 10 days if empty
   
   return (
     <div className="user-stats">
