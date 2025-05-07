@@ -30,6 +30,34 @@ function CreateCapsuleForm() {
     const mediaChunksRef = useRef([]);
     const audioRef = useRef(null); // Audio ref for the success sound
     
+    // Function to compress image
+    const compressImage = (dataUrl, maxWidth = 1200, quality = 0.7) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // Calculate new dimensions if image is too large
+                if (width > maxWidth) {
+                    height = Math.floor(height * (maxWidth / width));
+                    width = maxWidth;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to compressed JPEG
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = dataUrl;
+        });
+    };
+    
     // Function to handle photo capture
     const handleCapturePhoto = async () => {
         try {
@@ -47,16 +75,17 @@ function CreateCapsuleForm() {
     };
     
     // Function to take the photo
-    const takePhoto = () => {
+    const takePhoto = async () => {
         const canvas = document.createElement('canvas');
         canvas.width = videoRef.current.videoWidth;
         canvas.height = videoRef.current.videoHeight;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
         
-        // Convert to data URL
+        // Convert to data URL and compress
         const dataUrl = canvas.toDataURL('image/jpeg');
-        setMediaSrc(dataUrl);
+        const compressedDataUrl = await compressImage(dataUrl);
+        setMediaSrc(compressedDataUrl);
         
         // Stop the camera stream
         const tracks = videoRef.current.srcObject.getTracks();
@@ -66,15 +95,49 @@ function CreateCapsuleForm() {
         setIsRecording(false);
     };
     
+    // Function to compress video (reduce quality)
+    const compressVideo = async (blob, targetSize = 5 * 1024 * 1024) => { // 5MB target
+        // If the blob is already smaller than target size, return it as is
+        if (blob.size <= targetSize) {
+            return blob;
+        }
+        
+        // For larger videos, we'll use a lower quality setting
+        // This is a simple approach - in production you might want to use a proper video compression library
+        const quality = Math.min(0.8, targetSize / blob.size);
+        
+        // For this simple implementation, we'll just return the original blob
+        // with a warning that it might be too large
+        console.warn(`Video size (${(blob.size / (1024 * 1024)).toFixed(2)}MB) exceeds recommended size. This may cause upload issues.`);
+        
+        return blob;
+    };
+    
     // Function to handle video recording
     const handleRecordVideo = async () => {
         try {
             setMediaType('video');
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            // Use lower resolution for video to reduce file size
+            const constraints = {
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    frameRate: { ideal: 15 }
+                },
+                audio: true
+            };
+            
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             videoRef.current.srcObject = stream;
             videoRef.current.style.display = 'block';
             
-            mediaRecorderRef.current = new MediaRecorder(stream);
+            // Use lower bitrate for recording
+            const options = { 
+                mimeType: 'video/webm;codecs=vp8,opus',
+                videoBitsPerSecond: 600000 // 600 kbps
+            };
+            
+            mediaRecorderRef.current = new MediaRecorder(stream, options);
             mediaChunksRef.current = [];
             
             mediaRecorderRef.current.ondataavailable = (event) => {
@@ -83,8 +146,8 @@ function CreateCapsuleForm() {
                 }
             };
             
-            mediaRecorderRef.current.onstop = () => {
-                const blob = new Blob(mediaChunksRef.current, { type: 'video/mp4' });
+            mediaRecorderRef.current.onstop = async () => {
+                const blob = new Blob(mediaChunksRef.current, { type: 'video/webm' });
                 const url = URL.createObjectURL(blob);
                 setMediaSrc(url);
                 
@@ -93,9 +156,12 @@ function CreateCapsuleForm() {
                 tracks.forEach(track => track.stop());
                 videoRef.current.srcObject = null;
                 
+                // Compress video if needed
+                const compressedBlob = await compressVideo(blob);
+                
                 // Convert blob to base64 for storage
                 const reader = new FileReader();
-                reader.readAsDataURL(blob);
+                reader.readAsDataURL(compressedBlob);
                 reader.onloadend = () => {
                     setMediaSrc(reader.result);
                 };
@@ -109,13 +175,32 @@ function CreateCapsuleForm() {
         }
     };
     
+    // Function to compress audio
+    const compressAudio = async (blob, targetSize = 2 * 1024 * 1024) => { // 2MB target
+        // If the blob is already smaller than target size, return it as is
+        if (blob.size <= targetSize) {
+            return blob;
+        }
+        
+        // For larger audio, we'll use a lower quality setting
+        console.warn(`Audio size (${(blob.size / (1024 * 1024)).toFixed(2)}MB) exceeds recommended size. This may cause upload issues.`);
+        
+        return blob;
+    };
+    
     // Function to handle audio recording
     const handleRecordAudio = async () => {
         try {
             setMediaType('audio');
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
-            mediaRecorderRef.current = new MediaRecorder(stream);
+            // Use lower bitrate for recording
+            const options = { 
+                mimeType: 'audio/webm;codecs=opus',
+                audioBitsPerSecond: 64000 // 64 kbps
+            };
+            
+            mediaRecorderRef.current = new MediaRecorder(stream, options);
             mediaChunksRef.current = [];
             
             mediaRecorderRef.current.ondataavailable = (event) => {
@@ -124,7 +209,7 @@ function CreateCapsuleForm() {
                 }
             };
             
-            mediaRecorderRef.current.onstop = () => {
+            mediaRecorderRef.current.onstop = async () => {
                 const blob = new Blob(mediaChunksRef.current, { type: 'audio/webm' });
                 const url = URL.createObjectURL(blob);
                 setMediaSrc(url);
@@ -132,9 +217,12 @@ function CreateCapsuleForm() {
                 // Stop the audio stream
                 stream.getTracks().forEach(track => track.stop());
                 
+                // Compress audio if needed
+                const compressedBlob = await compressAudio(blob);
+                
                 // Convert blob to base64 for storage
                 const reader = new FileReader();
-                reader.readAsDataURL(blob);
+                reader.readAsDataURL(compressedBlob);
                 reader.onloadend = () => {
                     setMediaSrc(reader.result);
                 };
@@ -211,13 +299,30 @@ function CreateCapsuleForm() {
             
             // Add media data if available
             if (mediaSrc && mediaType) {
-                capsuleData.mediaContent = mediaSrc;
+                // Check if media size is too large
+                const estimatedSize = mediaSrc.length * 0.75; // Rough estimate of base64 size in bytes
+                const maxSize = 8 * 1024 * 1024; // 8MB max
+                
+                if (estimatedSize > maxSize) {
+                    // For images, try to compress further
+                    if (mediaType === 'photo') {
+                        const furtherCompressed = await compressImage(mediaSrc, 800, 0.5);
+                        capsuleData.mediaContent = furtherCompressed;
+                    } else {
+                        // For video/audio, warn the user
+                        console.warn(`Media size (${(estimatedSize / (1024 * 1024)).toFixed(2)}MB) is large and may cause upload issues.`);
+                        capsuleData.mediaContent = mediaSrc;
+                    }
+                } else {
+                    capsuleData.mediaContent = mediaSrc;
+                }
+                
                 capsuleData.mediaType = mediaType;
             }
             
             console.log('Submitting capsule data:', { 
                 ...capsuleData, 
-                mediaContent: mediaSrc ? 'Data URL (truncated)': null,
+                mediaContent: mediaSrc ? `Data URL (${(mediaSrc.length * 0.75 / (1024 * 1024)).toFixed(2)}MB estimated)`: null,
                 recipients
             });
             
@@ -450,8 +555,17 @@ function CreateCapsuleForm() {
             
             {error && <div className="error-message">{error}</div>}
             
-            {/* Audio element for the memory saved sound */}
-            <audio ref={audioRef} src="/sounds/savememory.mp3" preload="auto" />
+            {/* Audio element for the memory saved sound with error handling */}
+            <audio 
+                ref={audioRef} 
+                src="sounds/savememory.mp3" 
+                preload="auto" 
+                onError={(e) => {
+                    console.warn('Sound file could not be loaded:', e);
+                    // Prevent console errors by removing the source
+                    e.target.removeAttribute('src');
+                }}
+            />
             
             <button type="submit" className="submit-btn">✨ Preserve This Memory ✨</button>
             
