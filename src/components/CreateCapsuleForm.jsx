@@ -558,7 +558,7 @@ function CreateCapsuleForm() {
             {/* Audio element for the memory saved sound with error handling */}
             <audio 
                 ref={audioRef} 
-                src="sounds/savememory.mp3" 
+                src="/frontend/public/sounds/savememory.mp3" 
                 preload="auto" 
                 onError={(e) => {
                     console.warn('Sound file could not be loaded:', e);
