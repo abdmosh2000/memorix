@@ -6,6 +6,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Cell
 } from 'recharts';
+import AChart from './AChart';
 
 const UserStats = () => {
   const [stats, setStats] = useState(null);
@@ -287,17 +288,15 @@ const UserStats = () => {
         </div>
         
         <div className="chart-container">
-          <h3>Daily Capsules Created</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={dailyCapsuleData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="capsules" fill={colors.secondary} />
-            </BarChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="bar"
+            data={dailyCapsuleData}
+            dataKey="capsules"
+            title="Daily Capsules Created"
+            height={250}
+            colors={colors}
+            emptyMessage="No capsules have been created yet"
+          />
         </div>
         
         <div className="chart-container">
