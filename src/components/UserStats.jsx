@@ -268,23 +268,15 @@ const UserStats = () => {
       
       <div className="charts-grid">
         <div className="chart-container">
-          <h3>User Growth</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="users"
-                stroke={colors.primary}
-                strokeWidth={2}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="line"
+            data={monthlyData}
+            dataKey="users"
+            title="User Growth"
+            height={250}
+            colors={colors}
+            emptyMessage="No user growth data available yet"
+          />
         </div>
         
         <div className="chart-container">
@@ -300,47 +292,29 @@ const UserStats = () => {
         </div>
         
         <div className="chart-container">
-          <h3>User Roles Distribution</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={roleData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill={colors.primary}
-                dataKey="value"
-                label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-              >
-                {roleData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="pie"
+            data={roleData}
+            valueKey="value"
+            nameKey="name"
+            title="User Roles Distribution"
+            height={250}
+            colors={colors}
+            emptyMessage="No role distribution data available yet"
+          />
         </div>
         
         <div className="chart-container">
-          <h3>Subscriptions Distribution</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={subscriptionData}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill={colors.primary}
-                dataKey="value"
-                label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-              >
-                {subscriptionData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="pie"
+            data={subscriptionData}
+            valueKey="value"
+            nameKey="name"
+            title="Subscriptions Distribution"
+            height={250}
+            colors={colors}
+            emptyMessage="No subscription data available yet"
+          />
         </div>
       </div>
       
