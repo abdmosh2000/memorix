@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllCapsules, updateCapsulePublicStatus, featureCapsule, deleteCapsule } from '../api';
+import { getAdminCapsules, updateCapsulePublicStatus, featureCapsule, deleteCapsule } from '../api';
 
 const ContentManagement = () => {
   const [capsules, setCapsules] = useState([]);
@@ -24,7 +24,7 @@ const ContentManagement = () => {
       };
       
       try {
-        const data = await getAllCapsules(currentPage, 10, filters);
+        const data = await getAdminCapsules(currentPage, 10, filters);
         console.log('Received capsules data:', data);
         
         // Check if we got valid data before updating state
