@@ -125,9 +125,9 @@ const ContentManagement = () => {
     );
   }
   
-  return (
-    <div className="content-management">
-      <h2>Content Management</h2>
+return (
+    <div className="content-management tab-content">
+      <h2 className="section-title">Content Management</h2>
       
       <div className="content-filters">
         <div className="filter-group">
@@ -169,7 +169,16 @@ const ContentManagement = () => {
               </div>
               
               <div className="capsule-body">
-                <p>{capsule.description.substring(0, 100)}...</p>
+                <p>{capsule.content ? capsule.content.substring(0, 100) + (capsule.content.length > 100 ? '...' : '') : 'No content'}</p>
+                
+                {capsule.mediaType && (
+                  <div className="capsule-media-indicator">
+                    {capsule.mediaType === 'photo' && <span className="media-badge photo-badge">📸 Photo</span>}
+                    {capsule.mediaType === 'video' && <span className="media-badge video-badge">🎥 Video</span>}
+                    {capsule.mediaType === 'audio' && <span className="media-badge audio-badge">🎙️ Audio</span>}
+                  </div>
+                )}
+                
                 <div className="capsule-meta">
                   <span>By: {capsule.user?.name || 'Unknown'}</span>
                   <span>Created: {new Date(capsule.createdAt).toLocaleDateString()}</span>

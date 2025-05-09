@@ -419,6 +419,253 @@
   background-color: #95A5A6;
 }
 
+/* Subscription badges and info */
+.subscription-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.free-subscription {
+  background-color: #95A5A6; /* Gray */
+}
+
+.premium-subscription {
+  background-color: #3498DB; /* Blue */
+}
+
+.lifetime-subscription {
+  background-color: #8E44AD; /* Purple */
+}
+
+.vip-subscription {
+  background-color: #E74C3C; /* Red */
+}
+
+.subscription-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subscription-status {
+  font-size: 11px;
+  color: #7F8C8D;
+  margin-left: 4px;
+}
+
+.subscription-expiry {
+  font-size: 11px;
+  color: #7F8C8D;
+  margin-left: 4px;
+}
+
+/* Content Management Styles */
+.content-management h2.section-title {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.content-filters {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.filter-select, .search-input {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  min-width: 120px;
+  max-width: 100%;
+}
+
+.search-input {
+  min-width: 250px;
+}
+
+.capsules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.capsule-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-top: 4px solid #8E44AD;
+}
+
+.capsule-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.capsule-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+
+.capsule-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.featured-badge {
+  background-color: #F39C12;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.capsule-body {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.capsule-body p {
+  margin-top: 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  word-break: break-word;
+}
+
+.capsule-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
+.visibility-status {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  align-self: flex-start;
+}
+
+.visibility-status.public {
+  background-color: #2ECC71;
+}
+
+.visibility-status.private {
+  background-color: #95A5A6;
+}
+
+.capsule-actions {
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.capsule-actions button {
+  flex: 1;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.capsule-actions .delete-button {
+  color: #E74C3C;
+  border-color: #E74C3C;
+}
+
+.capsule-actions .delete-button:hover {
+  background-color: #FADBD8;
+}
+
+.no-content {
+  grid-column: 1 / -1;
+  padding: 30px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  color: #7F8C8D;
+}
+
+.capsule-media-indicator {
+  margin-bottom: 15px;
+}
+
+.media-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.photo-badge {
+  background-color: #3498DB;
+}
+
+.video-badge {
+  background-color: #E74C3C;
+}
+
+.audio-badge {
+  background-color: #F39C12;
+}
+
+@media (max-width: 768px) {
+  .capsules-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .content-filters {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  .search-input, .filter-select {
+    width: 100%;
+  }
+}
+
 /* User Action Buttons */
 .user-actions {
   display: flex;

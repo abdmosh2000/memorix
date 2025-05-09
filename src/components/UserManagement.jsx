@@ -203,7 +203,34 @@ const UserManagement = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{renderRoleBadge(user.role)}</td>
-              <td>{user.subscription}</td>
+              <td>
+                {typeof user.subscription === 'string' ? (
+                  // Legacy string format
+                  <span className={`subscription-badge ${user.subscription}-subscription`}>
+                    {user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1)}
+                  </span>
+                ) : user.subscription && user.subscription.plan_name ? (
+                  // New object format
+                  <div className="subscription-info">
+                    <span className={`subscription-badge ${user.subscription.plan_name.toLowerCase()}-subscription`}>
+                      {user.subscription.plan_name}
+                    </span>
+                    <span className="subscription-status">
+                      {user.subscription.status === 'lifetime' ? 'Lifetime' : 
+                       user.subscription.status === 'active' ? 'Active' : 
+                       user.subscription.status}
+                    </span>
+                    {user.subscription.expiry_date && (
+                      <span className="subscription-expiry">
+                        Expires: {new Date(user.subscription.expiry_date).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  // Fallback for missing subscription data
+                  <span className="subscription-badge free-subscription">Free</span>
+                )}
+              </td>
               <td>
                 {user.verified ? 
                   <span style={{ color: '#2ECC71' }}>✓ Verified</span> : 

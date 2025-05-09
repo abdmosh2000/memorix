@@ -65,17 +65,54 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Media options layout */
+.media-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.option-group {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  border: 1px solid #E8ECF1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.option-title {
+  font-size: 0.95rem;
+  margin: 0 0 15px 0;
+  color: #2C3E50;
+  text-align: center;
+  position: relative;
+  font-weight: 600;
+}
+
+.option-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #8E44AD, transparent);
+}
+
+/* Record buttons */
 .media-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   justify-content: center;
 }
 
-/* أزرار الوسائط - Media Buttons */
-.media-btn {
-  background: linear-gradient(145deg, #3498DB, #2980B9);
+/* Record & Upload buttons shared styles */
+.media-btn,
+.upload-btn {
   color: white;
   border: none;
   border-radius: 8px;
@@ -91,6 +128,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+/* Media buttons (recording) */
+.media-btn {
+  background: linear-gradient(145deg, #3498DB, #2980B9);
 }
 
 .media-btn:hover {
@@ -114,10 +156,61 @@
 
 .media-btn.clear-btn {
   background: linear-gradient(145deg, #E74C3C, #C0392B);
+  margin-top: 10px;
+  align-self: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .media-btn.clear-btn:hover {
   background: linear-gradient(145deg, #C0392B, #922B21);
+}
+
+/* Upload buttons */
+.upload-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.upload-btn {
+  background: linear-gradient(145deg, #8E44AD, #9B59B6);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-btn:hover {
+  background: linear-gradient(145deg, #9B59B6, #8E44AD);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2);
+}
+
+.upload-btn.active {
+  background: linear-gradient(145deg, #8E44AD, #7D3C98);
+  box-shadow: 0 2px 10px rgba(142, 68, 173, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn:disabled {
+  background: linear-gradient(145deg, #BDC3C7, #A6ACAF);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Hide actual file input */
+.file-input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
 }
 
 /* معاينة الوسائط - Media Preview */

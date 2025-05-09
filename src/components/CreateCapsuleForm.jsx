@@ -244,6 +244,67 @@ function CreateCapsuleForm() {
         }
     };
     
+    // Function to handle file uploads from device
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Get media type from data attribute
+        const type = e.target.dataset.type; // 'photo', 'video', or 'audio'
+        setMediaType(type);
+        
+        try {
+            // Show loading state
+            setIsRecording(true); // Reuse recording state to show loading
+
+            // Process file based on its type
+            if (type === 'photo') {
+                // Handle image upload
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const dataUrl = event.target.result;
+                    // Compress image before setting
+                    const compressedDataUrl = await compressImage(dataUrl);
+                    setMediaSrc(compressedDataUrl);
+                    setIsRecording(false);
+                };
+                reader.readAsDataURL(file);
+            }
+            else if (type === 'video') {
+                // Handle video upload
+                const blob = new Blob([file], { type: file.type });
+                // Compress video if needed
+                const compressedBlob = await compressVideo(blob);
+                
+                // Convert to data URL for preview
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    setMediaSrc(event.target.result);
+                    setIsRecording(false);
+                };
+                reader.readAsDataURL(compressedBlob);
+            }
+            else if (type === 'audio') {
+                // Handle audio upload
+                const blob = new Blob([file], { type: file.type });
+                // Compress audio if needed
+                const compressedBlob = await compressAudio(blob);
+                
+                // Convert to data URL
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    setMediaSrc(event.target.result);
+                    setIsRecording(false);
+                };
+                reader.readAsDataURL(compressedBlob);
+            }
+        } catch (err) {
+            console.error('Error processing uploaded file:', err);
+            setError('Could not process the uploaded file. Please try another file or a different method.');
+            setIsRecording(false);
+        }
+    };
+
     // Function to clear media
     const clearMedia = () => {
         if (videoRef.current && videoRef.current.srcObject) {
@@ -400,32 +461,76 @@ function CreateCapsuleForm() {
             
             {/* Media Capture Section */}
             <div className="form-group media-section">
-                <label>Capture the Moment:</label>
-                <div className="media-buttons">
-                    <button 
-                        type="button" 
-                        className={`media-btn ${mediaType === 'photo' ? 'active' : ''}`}
-                        onClick={handleCapturePhoto}
-                        disabled={isRecording || mediaSrc}
-                    >
-                        📸 Photo
-                    </button>
-                    <button 
-                        type="button" 
-                        className={`media-btn ${mediaType === 'video' ? 'active' : ''}`}
-                        onClick={handleRecordVideo}
-                        disabled={isRecording || mediaSrc}
-                    >
-                        🎥 Video
-                    </button>
-                    <button 
-                        type="button" 
-                        className={`media-btn ${mediaType === 'audio' ? 'active' : ''}`}
-                        onClick={handleRecordAudio}
-                        disabled={isRecording || mediaSrc}
-                    >
-                        🎙️ Audio
-                    </button>
+                <label>Capture or Upload Media:</label>
+                <div className="media-options">
+                    <div className="option-group">
+                        <h4 className="option-title">Record Now</h4>
+                        <div className="media-buttons">
+                            <button 
+                                type="button" 
+                                className={`media-btn ${mediaType === 'photo' ? 'active' : ''}`}
+                                onClick={handleCapturePhoto}
+                                disabled={isRecording || mediaSrc}
+                            >
+                                📸 Photo
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`media-btn ${mediaType === 'video' ? 'active' : ''}`}
+                                onClick={handleRecordVideo}
+                                disabled={isRecording || mediaSrc}
+                            >
+                                🎥 Video
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`media-btn ${mediaType === 'audio' ? 'active' : ''}`}
+                                onClick={handleRecordAudio}
+                                disabled={isRecording || mediaSrc}
+                            >
+                                🎙️ Audio
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="option-group">
+                        <h4 className="option-title">Upload From Device</h4>
+                        <div className="upload-buttons">
+                            <label className={`upload-btn ${mediaType === 'photo' && mediaSrc ? 'active' : ''}`}>
+                                📸 Image
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileUpload}
+                                    disabled={isRecording || mediaSrc}
+                                    className="file-input"
+                                    data-type="photo"
+                                />
+                            </label>
+                            <label className={`upload-btn ${mediaType === 'video' && mediaSrc ? 'active' : ''}`}>
+                                🎥 Video
+                                <input
+                                    type="file"
+                                    accept="video/*"
+                                    onChange={handleFileUpload}
+                                    disabled={isRecording || mediaSrc}
+                                    className="file-input"
+                                    data-type="video"
+                                />
+                            </label>
+                            <label className={`upload-btn ${mediaType === 'audio' && mediaSrc ? 'active' : ''}`}>
+                                🎙️ Audio
+                                <input
+                                    type="file"
+                                    accept="audio/*"
+                                    onChange={handleFileUpload}
+                                    disabled={isRecording || mediaSrc}
+                                    className="file-input"
+                                    data-type="audio"
+                                />
+                            </label>
+                        </div>
+                    </div>
                     
                     {mediaSrc && (
                         <button 
