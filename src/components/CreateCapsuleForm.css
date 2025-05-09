@@ -55,132 +55,251 @@
   cursor: pointer;
 }
 
-/* قسم الوسائط */
+/* قسم الوسائط - Media Section */
 .media-section {
   border: 1px solid #BDC3C7;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
-  background-color: #F8F9FA;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 35px;
+  background: linear-gradient(to bottom, #F8F9FA, #F0F3F5);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 .media-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: center;
 }
 
-/* أزرار الوسائط */
+/* أزرار الوسائط - Media Buttons */
 .media-btn {
-  background-color: #3498DB; /* ازرق */
+  background: linear-gradient(145deg, #3498DB, #2980B9);
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: auto;
-  margin: 0;
-}
-
-.media-btn:hover {
-  background-color: #2980B9; /* ازرق داكن */
-}
-
-.media-btn.active {
-  background-color: #2980B9;
-  box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.5);
-}
-
-.media-btn:disabled {
-  background-color: #BDC3C7;
-  cursor: not-allowed;
-}
-
-.media-btn.clear-btn {
-  background-color: #E74C3C; /* احمر */
-}
-
-.media-btn.clear-btn:hover {
-  background-color: #C0392B; /* احمر داكن */
-}
-
-/* معاينة الوسائط */
-.media-preview {
   border-radius: 8px;
-  overflow: hidden;
-  margin-top: 20px;
-  background-color: #EAECEE;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.media-preview-content {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  margin: 10px auto;
-  display: block;
-  border-radius: 5px;
-}
-
-.camera-preview {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-}
-
-/* التحكم في التسجيل */
-.recording-controls {
-  padding: 15px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.capture-btn, .stop-btn {
-  background-color: #E74C3C; /* احمر */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  padding: 12px 18px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
   width: auto;
   margin: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.media-btn:hover {
+  background: linear-gradient(145deg, #2980B9, #2573a7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.media-btn.active {
+  background: linear-gradient(145deg, #2980B9, #1f6aa6);
+  box-shadow: 0 2px 10px rgba(41, 128, 185, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.media-btn:disabled {
+  background: linear-gradient(145deg, #BDC3C7, #A6ACAF);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.media-btn.clear-btn {
+  background: linear-gradient(145deg, #E74C3C, #C0392B);
+}
+
+.media-btn.clear-btn:hover {
+  background: linear-gradient(145deg, #C0392B, #922B21);
+}
+
+/* معاينة الوسائط - Media Preview */
+.media-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 25px;
+  background: linear-gradient(to bottom, #EBEDEF, #D6DBDF);
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 1px solid #CCD1D1;
+  padding: 8px;
+}
+
+.media-preview-content {
+  max-width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  margin: 15px auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.camera-preview {
+  width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Customized audio player */
+.media-preview-content[controls] {
+  width: 90%;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #8E44AD, #9B59B6);
+  box-shadow: 0 4px 15px rgba(142, 68, 173, 0.2);
+}
+
+/* Customized video player */
+video.media-preview-content {
+  border: 3px solid #3498DB;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+}
+
+/* التحكم في التسجيل - Recording Controls */
+.recording-controls {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+}
+
+.capture-btn, .stop-btn {
+  background: linear-gradient(145deg, #E74C3C, #C0392B);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: auto;
+  margin: 0;
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .capture-btn:hover, .stop-btn:hover {
-  background-color: #C0392B; /* احمر داكن */
+  background: linear-gradient(145deg, #C0392B, #A93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+}
+
+.capture-btn:active, .stop-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
 }
 
 .recording-indicator {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   color: #E74C3C;
   font-weight: bold;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
 }
 
 .recording-dot {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background-color: #E74C3C;
   border-radius: 50%;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
   animation: blink 1s infinite;
 }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Icons for media buttons */
+.media-btn:nth-child(1)::before {
+  content: "📸";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+.media-btn:nth-child(2)::before {
+  content: "🎥";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+.media-btn:nth-child(3)::before {
+  content: "🎙️";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+/* Media type indicator */
+.media-preview::before {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  z-index: 5;
+}
+
+.media-preview:has(img)::before {
+  content: "Photo";
+  background: rgba(52, 152, 219, 0.8);
+}
+
+.media-preview:has(video)::before {
+  content: "Video";
+  background: rgba(231, 76, 60, 0.8);
+}
+
+.media-preview:has(audio)::before {
+  content: "Audio";
+  background: rgba(142, 68, 173, 0.8);
+}
+
+/* Media responsive behavior */
+@media (max-width: 600px) {
+  .media-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .media-btn {
+    width: 100%;
+  }
+  
+  .recording-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 /* رسالة الخطأ */

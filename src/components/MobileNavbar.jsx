@@ -70,7 +70,7 @@ function MobileNavbar() {
                         <path d="M2 17l10 5 10-5"></path>
                         <path d="M2 12l10 5 10-5"></path>
                     </svg>
-                    <span className="mobile-nav-label">Admin</span>
+                    <span className="mobile-nav-label admin-label">Admin</span>
                 </Link>
             )}
         </nav>

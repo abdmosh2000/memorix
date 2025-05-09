@@ -51,10 +51,16 @@
 /* Special styling for admin icon */
 .mobile-nav-item .admin-icon {
   color: #e74c3c; /* Red for admin */
+  background: rgba(231, 76, 60, 0.1);
+  padding: 3px;
+  border-radius: 50%;
 }
 
 .mobile-nav-item.active .admin-icon {
-  color: #e74c3c; /* Keep admin icon red even when active */
+  color: white; /* White icon when active */
+  background: #e74c3c; /* Red background */
+  transform: translateY(-3px); /* Extra lift for emphasis */
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4); /* Subtle shadow */
 }
 
 /* Icon styling */
@@ -62,7 +68,7 @@
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 /* Text label styling */
@@ -72,6 +78,16 @@
   transition: opacity 0.2s ease;
 }
 
+/* Enhanced admin label */
+.mobile-nav-item .admin-label {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.mobile-nav-item.active .admin-label {
+  color: #e74c3c;
+}
+
 /* Hover effect */
 .mobile-nav-item:hover {
   color: #8e44ad; /* Royal Purple */
@@ -79,6 +95,11 @@
 
 .mobile-nav-item:hover .mobile-nav-icon {
   transform: translateY(-2px);
+}
+
+/* Admin hover effect */
+.mobile-nav-item:hover .admin-icon {
+  background: rgba(231, 76, 60, 0.2);
 }
 
 /* Active indicator dot */
@@ -92,6 +113,13 @@
   height: 4px;
   border-radius: 50%;
   background-color: #8e44ad; /* Royal Purple */
+}
+
+/* Special active indicator for admin */
+.mobile-nav-item.active:has(.admin-icon)::after {
+  background-color: #e74c3c; /* Red for admin */
+  width: 6px; /* Slightly larger */
+  height: 6px;
 }
 
 /* Dark mode adjustments */
@@ -117,6 +145,18 @@ body.dark .mobile-nav-item.active::after {
   background-color: #9b59b6;
 }
 
+body.dark .mobile-nav-item .admin-icon {
+  background: rgba(231, 76, 60, 0.15);
+}
+
+body.dark .mobile-nav-item.active .admin-icon {
+  background: #e74c3c;
+}
+
+body.dark .mobile-nav-item.active:has(.admin-icon)::after {
+  background-color: #e74c3c;
+}
+
 /* RTL support */
 [dir="rtl"] .mobile-navbar {
   flex-direction: row-reverse;
@@ -137,6 +177,16 @@ body.dark .mobile-nav-item.active::after {
   .navbar {
     display: none;
   }
+
+  /* Admin dashboard specific mobile adjustments */
+  .admin-dashboard {
+    padding-bottom: 70px; /* Extra padding for admin dashboard */
+  }
+
+  /* Fix chart containers on small screens */
+  .admin-dashboard .chart-container {
+    overflow: hidden; /* Prevent horizontal scrolling within charts */
+  }
 }
 
 /* For really small screens */
@@ -156,4 +206,33 @@ body.dark .mobile-nav-item.active::after {
   body {
     padding-bottom: 50px;
   }
+
+  /* Adjust admin dashboard on very small screens */
+  .admin-dashboard {
+    padding-bottom: 60px;
+  }
+}
+
+/* Alternative mobile layouts when admin link is present (6 items) */
+@media (max-width: 768px) {
+  .mobile-navbar:has(.admin-icon) {
+    /* When there are 6 items including admin, reduce padding */
+    padding: 0 5px;
+  }
+
+  .mobile-navbar:has(.admin-icon) .mobile-nav-item {
+    padding: 8px 5px;
+  }
+}
+
+/* Transition when switching between pages */
+.mobile-nav-item.active .mobile-nav-icon,
+.mobile-nav-item.active .mobile-nav-label {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
