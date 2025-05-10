@@ -36,26 +36,59 @@ module.exports = {
         },
     },
     module: {
+        // rules: [
+        //     {
+        //         test: /\.(js|jsx)$/,
+        //         exclude: /node_modules/,
+        //         use: {
+        //             loader: 'babel-loader',
+        //             options: {
+        //                 presets: ['@babel/preset-env', '@babel/preset-react'],
+        //             },
+        //         },
+        //     },
+        //     {
+        //         test: /\.css$/i,
+        //         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        //     },
+        //     {
+        //         test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        //         type: 'asset/resource',
+        //     },
+        // ],
         rules: [
+    {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env', '@babel/preset-react'],
+            },
+        },
+    },
+    {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+    },
+    {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+    },
+    {
+        test: /\.(mp3|wav|ogg)$/i,
+        use: [
             {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'],
-                    },
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[contenthash].[ext]',
+                    outputPath: 'assets/sounds/',
                 },
             },
-            {
-                test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            },
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-            },
         ],
+    },
+],
+
     },
     plugins: [
         // Define environment variables that will be available in your React app

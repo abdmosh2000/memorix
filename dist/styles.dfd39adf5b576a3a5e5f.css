@@ -1,0 +1,69 @@
+/*!
+ * 
+ *                 // Memorix Production Build
+ *                 // Build Date: 2025-05-10T15:09:00.896Z
+ *                 // API URL: https://memorix-backend-wn9o.onrender.com/api
+ *                 // NODE_ENV: production
+ *
+ */
+/* Styles for the Testimonials page */
+.testimonials-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.testimonials-page h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.testimonials-list {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.testimonial {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  color: #555;
+  text-align: left;
+}
+
+.testimonial p {
+  line-height: 1.6;
+}
+
+.testimonial p:first-child {
+  font-style: italic;
+}
+
+.testimonial p:last-child {
+  font-weight: bold;
+  color: #333;
+}
+
+.loading, .error-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .testimonials-list {
+      width: 95%;
+  }
+
+  .testimonial {
+      padding: 15px;
+  }
+}
+

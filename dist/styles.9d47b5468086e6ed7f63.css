@@ -1,0 +1,642 @@
+/*!
+ * 
+ *                 // Memorix Production Build
+ *                 // Build Date: 2025-05-10T15:09:00.896Z
+ *                 // API URL: https://memorix-backend-wn9o.onrender.com/api
+ *                 // NODE_ENV: production
+ *
+ */
+/* ستايل نموذج إنشاء الكبسولة */
+.create-capsule-form {
+  background-color: #FFFFFF; /* White background */
+  color: #2C3E50; /* Midnight Blue */
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.create-capsule-form h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+/* تنسيق الحقول في النموذج */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+  color: #2C3E50; /* Midnight Blue */
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #BDC3C7; /* Light gray border */
+  border-radius: 5px;
+  background-color: #F4F6F7; /* Soft Silver */
+  color: #2C3E50; /* Midnight Blue */
+  margin-top: 8px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #8E44AD; /* Royal Purple */
+  outline: none;
+}
+
+/* تنسيق مربع الاختيار (Checkbox) */
+.form-group input[type="checkbox"] {
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+/* قسم الوسائط - Media Section */
+.media-section {
+  border: 1px solid #BDC3C7;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 35px;
+  background: linear-gradient(to bottom, #F8F9FA, #F0F3F5);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Media options layout */
+.media-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.option-group {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  border: 1px solid #E8ECF1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.option-title {
+  font-size: 0.95rem;
+  margin: 0 0 15px 0;
+  color: #2C3E50;
+  text-align: center;
+  position: relative;
+  font-weight: 600;
+}
+
+.option-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #8E44AD, transparent);
+}
+
+/* Record buttons */
+.media-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+/* Record & Upload buttons shared styles */
+.media-btn,
+.upload-btn {
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: auto;
+  margin: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Media buttons (recording) */
+.media-btn {
+  background: linear-gradient(145deg, #3498DB, #2980B9);
+}
+
+.media-btn:hover {
+  background: linear-gradient(145deg, #2980B9, #2573a7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.media-btn.active {
+  background: linear-gradient(145deg, #2980B9, #1f6aa6);
+  box-shadow: 0 2px 10px rgba(41, 128, 185, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.media-btn:disabled {
+  background: linear-gradient(145deg, #BDC3C7, #A6ACAF);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.media-btn.clear-btn {
+  background: linear-gradient(145deg, #E74C3C, #C0392B);
+  margin-top: 10px;
+  align-self: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.media-btn.clear-btn:hover {
+  background: linear-gradient(145deg, #C0392B, #922B21);
+}
+
+/* Upload buttons */
+.upload-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.upload-btn {
+  background: linear-gradient(145deg, #8E44AD, #9B59B6);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-btn:hover {
+  background: linear-gradient(145deg, #9B59B6, #8E44AD);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(142, 68, 173, 0.2);
+}
+
+.upload-btn.active {
+  background: linear-gradient(145deg, #8E44AD, #7D3C98);
+  box-shadow: 0 2px 10px rgba(142, 68, 173, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn:disabled {
+  background: linear-gradient(145deg, #BDC3C7, #A6ACAF);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Hide actual file input */
+.file-input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+/* معاينة الوسائط - Media Preview */
+.media-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 25px;
+  background: linear-gradient(to bottom, #EBEDEF, #D6DBDF);
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 1px solid #CCD1D1;
+  padding: 8px;
+}
+
+.media-preview-content {
+  max-width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  margin: 15px auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.camera-preview {
+  width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Customized audio player */
+.media-preview-content[controls] {
+  width: 90%;
+  height: 50px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #8E44AD, #9B59B6);
+  box-shadow: 0 4px 15px rgba(142, 68, 173, 0.2);
+}
+
+/* Customized video player */
+video.media-preview-content {
+  border: 3px solid #3498DB;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+}
+
+/* التحكم في التسجيل - Recording Controls */
+.recording-controls {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+}
+
+.capture-btn, .stop-btn {
+  background: linear-gradient(145deg, #E74C3C, #C0392B);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: auto;
+  margin: 0;
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.capture-btn:hover, .stop-btn:hover {
+  background: linear-gradient(145deg, #C0392B, #A93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+}
+
+.capture-btn:active, .stop-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #E74C3C;
+  font-weight: bold;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+}
+
+.recording-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: #E74C3C;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Icons for media buttons */
+.media-btn:nth-child(1)::before {
+  content: "📸";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+.media-btn:nth-child(2)::before {
+  content: "🎥";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+.media-btn:nth-child(3)::before {
+  content: "🎙️";
+  margin-right: 6px;
+  font-size: 1.2rem;
+}
+
+/* Media type indicator */
+.media-preview::before {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  z-index: 5;
+}
+
+.media-preview:has(img)::before {
+  content: "Photo";
+  background: rgba(52, 152, 219, 0.8);
+}
+
+.media-preview:has(video)::before {
+  content: "Video";
+  background: rgba(231, 76, 60, 0.8);
+}
+
+.media-preview:has(audio)::before {
+  content: "Audio";
+  background: rgba(142, 68, 173, 0.8);
+}
+
+/* Media responsive behavior */
+@media (max-width: 600px) {
+  .media-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .media-btn {
+    width: 100%;
+  }
+  
+  .recording-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* رسالة الخطأ */
+.error-message {
+  background-color: #FADBD8;
+  color: #E74C3C;
+  border: 1px solid #E74C3C;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+/* Recipients section */
+.recipients-section {
+  border: 1px solid #BDC3C7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  background-color: #F8F9FA;
+}
+
+.recipients-info {
+  font-size: 0.9rem;
+  color: #7F8C8D;
+  margin-bottom: 15px;
+}
+
+.recipient-input-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.recipient-input {
+  flex: 1;
+  min-width: 60%;
+  padding: 12px;
+  border: 1px solid #BDC3C7;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.add-recipient-btn {
+  background-color: #27AE60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  max-width: 100px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.add-recipient-btn:hover {
+  background-color: #2ECC71;
+}
+
+.recipient-error {
+  color: #E74C3C;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.recipients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.recipient-tag {
+  display: flex;
+  align-items: center;
+  background-color: #3498DB;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.recipient-email {
+  margin-right: 10px;
+}
+
+.remove-recipient {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-recipient:hover {
+  color: #E74C3C;
+}
+
+[dir="rtl"] .recipient-email {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/* زر إنشاء الكبسولة */
+.submit-btn {
+  background-color: #8E44AD; /* Royal Purple */
+  color: #ECF0F1; /* Soft White */
+  padding: 14px 20px;
+  font-size: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #9B59B6; /* Lighter Purple */
+}
+
+/* رسالة التنبيه عند حدوث خطأ */
+.alert {
+  background-color: #E74C3C; /* Luxury Red */
+  color: #ECF0F1; /* Soft White */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* الحواف الداخلية للنموذج */
+.create-capsule-form .form-group input,
+.create-capsule-form .form-group textarea {
+  font-size: 1.1rem;
+}
+
+/* تنسيق الـ Textarea */
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* Subscription Limit Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.subscription-limit-modal {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.subscription-limit-modal h2 {
+  color: #E74C3C;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.subscription-limit-modal p {
+  color: #2C3E50;
+  margin-bottom: 15px;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.subscription-limit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.upgrade-button {
+  background-color: #8E44AD;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.upgrade-button:hover {
+  background-color: #9B59B6;
+  transform: translateY(-2px);
+}
+
+.cancel-button {
+  background-color: #ECF0F1;
+  color: #2C3E50;
+  border: 1px solid #BDC3C7;
+  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #D6DBDF;
+}
+

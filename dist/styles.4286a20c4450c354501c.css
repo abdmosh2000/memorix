@@ -1,0 +1,318 @@
+/*!
+ * 
+ *                 // Memorix Production Build
+ *                 // Build Date: 2025-05-10T15:09:00.896Z
+ *                 // API URL: https://memorix-backend-wn9o.onrender.com/api
+ *                 // NODE_ENV: production
+ *
+ */
+/* Settings Controls Component */
+.settings-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.settings-control-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.settings-control-item label {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .settings-controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Styles for the Profile Settings page */
+.profile-settings-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f8fa;
+  padding: 40px 20px;
+  color: #2C3E50;
+}
+
+/* Profile header with large profile picture */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.profile-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-picture-large {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 4px solid white;
+  margin: 0 auto;
+}
+
+.profile-picture-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Container for all profile setting fields */
+.profile-settings-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Individual profile field styling */
+.profile-field {
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+  margin-bottom: 10px;
+}
+
+/* Header for each field with title and edit button */
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.field-header h3 {
+  font-size: 1.2rem;
+  color: #2C3E50;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Edit button styling */
+.edit-button {
+  background-color: transparent;
+  color: #3498DB;
+  border: 1px solid #3498DB;
+  border-radius: 4px;
+  padding: 5px 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: auto;
+}
+
+.edit-button:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+/* Field value display (when not being edited) */
+.field-value {
+  font-size: 1.1rem;
+  margin: 0;
+  padding: 10px 0;
+  color: #34495E;
+}
+
+/* Edit field container */
+.edit-field {
+  margin-top: 10px;
+}
+
+.edit-field input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.edit-field input:focus {
+  border-color: #3498DB;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Save button */
+.save-button {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex: 1;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: #27ae60;
+}
+
+.save-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Cancel button */
+.cancel-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex: 1;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+/* Profile picture preview */
+.image-preview {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.image-preview img {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 50%;
+  border: 2px solid #3498DB;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Error message */
+.error-message {
+  background-color: #FADBD8;
+  color: #C0392B;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  border-left: 4px solid #E74C3C;
+}
+
+/* Email verification styling */
+.email-field-value {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.email-verification-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.verification-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #E74C3C;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.resend-verification-btn {
+  background-color: #3498DB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.resend-verification-btn:hover:not(:disabled) {
+  background-color: #2980B9;
+}
+
+.resend-verification-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-settings-container {
+    padding: 20px;
+    margin: 0 10px;
+  }
+  
+  .profile-picture-large {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .field-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .edit-button {
+    margin-top: 10px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+

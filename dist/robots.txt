@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Allow all bots to crawl the site
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /settings
+Disallow: /dashboard
+
+# Sitemap location
+Sitemap: https://memorix.fun/sitemap.xml

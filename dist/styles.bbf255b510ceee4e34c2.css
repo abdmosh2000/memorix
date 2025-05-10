@@ -1,0 +1,377 @@
+/*!
+ * 
+ *                 // Memorix Production Build
+ *                 // Build Date: 2025-05-10T15:09:00.896Z
+ *                 // API URL: https://memorix-backend-wn9o.onrender.com/api
+ *                 // NODE_ENV: production
+ *
+ */
+/* Checkout page styling */
+.checkout-page {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: #333;
+}
+
+.checkout-container {
+  max-width: 1000px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.checkout-header {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.checkout-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* Plan summary styling */
+.checkout-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plan-summary {
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.plan-header {
+  padding: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.checkout-logo {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: white;
+  padding: 5px;
+  object-fit: contain;
+}
+
+.plan-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.plan-price {
+  padding: 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.amount {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.period {
+  font-size: 1rem;
+  color: #777;
+  margin-left: 5px;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+}
+
+.plan-features li {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.plan-features li:last-child {
+  margin-bottom: 0;
+}
+
+.plan-features li::before {
+  content: "✓";
+  margin-right: 10px;
+  color: #2ecc71;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Order summary styling */
+.order-summary {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.order-summary h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0 5px;
+  border-top: 2px solid #ddd;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Payment section styling */
+.payment-section {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.payment-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.payment-option {
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.payment-label {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.payment-container {
+  width: 100%;
+}
+
+.payment-processing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(66, 133, 244, 0.3);
+  border-radius: 50%;
+  border-top-color: #4285f4;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.payment-error {
+  background-color: #ffeeee;
+  border-left: 4px solid #ff4757;
+  color: #d63031;
+  padding: 15px 20px;
+  border-radius: 4px;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+/* Footer styling */
+.checkout-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  background-color: #e8f4fd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.security-icon {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+.security-note p {
+  margin: 0;
+  color: #2980b9;
+  font-size: 0.9rem;
+}
+
+.terms-note {
+  font-size: 0.8rem;
+  color: #777;
+  text-align: center;
+}
+
+.terms-note a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.terms-note a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkout-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .checkout-container {
+    padding: 20px;
+  }
+}
+
+/* Dark mode support */
+body.dark .checkout-page {
+  background-color: #1a1a1a;
+  color: #f1f1f1;
+}
+
+body.dark .checkout-container {
+  background-color: #222;
+}
+
+body.dark .checkout-header {
+  border-bottom-color: #333;
+}
+
+body.dark .checkout-header h1 {
+  color: #f1f1f1;
+}
+
+body.dark .order-summary {
+  background-color: #2a2a2a;
+}
+
+body.dark .summary-row {
+  border-bottom-color: #444;
+  color: #ddd;
+}
+
+body.dark .summary-total {
+  border-top-color: #555;
+}
+
+body.dark .payment-section {
+  background-color: #2a2a2a;
+  border-color: #444;
+}
+
+body.dark .payment-option {
+  background-color: #333;
+}
+
+body.dark .plan-price {
+  background-color: #2a2a2a;
+  border-bottom-color: #444;
+}
+
+body.dark .amount {
+  color: #f1f1f1;
+}
+
+body.dark .period {
+  color: #aaa;
+}
+
+body.dark .security-note {
+  background-color: rgba(41, 128, 185, 0.2);
+}
+
+body.dark .security-note p {
+  color: #6ab0de;
+}
+
+body.dark .terms-note {
+  color: #aaa;
+}
+
