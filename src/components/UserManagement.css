@@ -284,37 +284,32 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.edit-button {
-  color: #3498DB;
-  border-color: rgba(52, 152, 219, 0.3);
-  background-color: rgba(52, 152, 219, 0.05);
+.edit-user-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.edit-button:hover {
-  background-color: rgba(52, 152, 219, 0.1);
-  border-color: #3498DB;
+.edit-user-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #9b59b6, #8E44AD);
 }
 
-.verify-button {
-  color: #2ECC71;
-  border-color: rgba(46, 204, 113, 0.3);
-  background-color: rgba(46, 204, 113, 0.05);
-}
-
-.verify-button:hover {
-  background-color: rgba(46, 204, 113, 0.1);
-  border-color: #2ECC71;
-}
-
-.gift-button {
-  color: #E67E22;
-  border-color: rgba(230, 126, 34, 0.3);
-  background-color: rgba(230, 126, 34, 0.05);
-}
-
-.gift-button:hover {
-  background-color: rgba(230, 126, 34, 0.1);
-  border-color: #E67E22;
+.edit-user-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Improved Dropdown Menu */

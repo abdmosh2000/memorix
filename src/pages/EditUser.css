@@ -1,0 +1,479 @@
+/* EditUser.css - Modern styling for the user edit page */
+
+.edit-user-page {
+  min-height: 100vh;
+  background-color: #f5f5f7;
+  padding: 30px 20px;
+}
+
+.edit-user-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  color: #333;
+}
+
+/* Header styles */
+.edit-user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  background: linear-gradient(to right, #8E44AD, #9b59b6);
+  color: white;
+}
+
+.edit-user-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 15px;
+  border-radius:.8px;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(-3px);
+}
+
+/* Message styles */
+.success-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 30px;
+  padding: 15px 20px;
+  background-color: rgba(46, 204, 113, 0.1);
+  border-left: 4px solid #2ECC71;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease;
+}
+
+.error-message {
+  background-color: rgba(231, 76, 60, 0.1);
+  border-left: 4px solid #E74C3C;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-message p, .error-message p {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+/* User profile card */
+.user-profile-card {
+  display: flex;
+  margin: 20px 30px;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+}
+
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+  border-radius: 50%;
+  margin-right: 25px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.user-info h2 {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.user-email {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 15px;
+}
+
+/* User badges */
+.user-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.role-badge, .subscription-badge, .status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.role-badge.role-admin {
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+}
+
+.role-badge.role-moderator {
+  background: linear-gradient(135deg, #3498DB, #2980b9);
+}
+
+.role-badge.role-content_curator {
+  background: linear-gradient(135deg, #F39C12, #e67e22);
+}
+
+.role-badge.role-user {
+  background: linear-gradient(135deg, #95A5A6, #7f8c8d);
+}
+
+.subscription-badge.premium-plan {
+  background: linear-gradient(135deg, #3498DB, #2980b9);
+}
+
+.subscription-badge.free-plan {
+  background: linear-gradient(135deg, #95A5A6, #7f8c8d);
+}
+
+.subscription-badge.lifetime-plan {
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+}
+
+.status-badge.verified {
+  background: linear-gradient(135deg, #2ECC71, #27ae60);
+}
+
+.status-badge.unverified {
+  background: linear-gradient(135deg, #E74C3C, #c0392b);
+}
+
+/* User details */
+.user-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+/* Tabs */
+.edit-section-tabs {
+  display: flex;
+  padding: 0 30px;
+  margin: 30px 0 0 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+  padding: 12px 25px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 15px;
+  color: #777;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.tab-button:hover {
+  color: #8E44AD;
+}
+
+.tab-button.active {
+  color: #8E44AD;
+  border-bottom-color: #8E44AD;
+}
+
+/* Edit sections */
+.edit-sections {
+  padding: 30px;
+}
+
+.edit-section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.edit-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.edit-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #444;
+  font-weight: 600;
+}
+
+/* Form styling */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.select-field {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  color: #444;
+  background-color: #f9f9f9;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.select-field:focus {
+  border-color: #8E44AD;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+  background-color: #fff;
+}
+
+.action-button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.action-button.primary {
+  background: linear-gradient(to right, #8E44AD, #9b59b6);
+  color: white;
+  box-shadow: 0 4px 10px rgba(142, 68, 173, 0.2);
+}
+
+.action-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(142, 68, 173, 0.3);
+}
+
+.action-button.primary:active {
+  transform: translateY(1px);
+}
+
+.action-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Verification status */
+.verification-status {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.verification-status .status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.status-icon.verified {
+  background-color: #2ECC71;
+  color: white;
+}
+
+.status-icon.unverified {
+  background-color: #E74C3C;
+  color: white;
+}
+
+.status-text {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Subscription section */
+.current-subscription {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.subscription-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.subscription-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.subscription-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.subscription-form {
+  padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .edit-user-page {
+    padding: 15px 10px;
+  }
+  
+  .edit-user-header {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .user-profile-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .user-avatar {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .user-badges {
+    justify-content: center;
+  }
+  
+  .edit-section-tabs {
+    overflow-x: auto;
+    padding: 0 20px;
+  }
+  
+  .tab-button {
+    padding: 12px 15px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .edit-sections {
+    padding: 20px;
+  }
+  
+  .subscription-details {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-user-container {
+    border-radius: 10px;
+  }
+  
+  .edit-section h3 {
+    font-size: 16px;
+  }
+  
+  .user-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 25px;
+  }
+  
+  .user-info h2 {
+    font-size: 20px;
+  }
+  
+  .action-button {
+    width: 100%;
+  }
+}

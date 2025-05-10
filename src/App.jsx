@@ -38,6 +38,7 @@ const Checkout = lazy(() => import('./pages/Checkout'));
 
 // Admin pages - lazy loaded
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const EditUser = lazy(() => import('./pages/EditUser'));
 import { useAuth } from './auth'; // Custom auth hook
 // ThemeProvider is already wrapped in index.js
 import DemoNotifications from './components/DemoNotifications'; // Demo notifications generator
@@ -91,6 +92,7 @@ function App() {
                                 <Route path="/payment/success" element={isLoggedIn ? <PaymentSuccess /> : <Navigate to="/login" />} />
                                 <Route path="/payment/failed" element={<PaymentFailed />} />
                                 <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
+                                <Route path="/admin/edit-user/:userId" element={isAdmin ? <EditUser /> : <Navigate to="/dashboard" />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </Routes>
                         </Suspense>
