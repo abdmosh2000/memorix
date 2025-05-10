@@ -1,22 +1,128 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth';
+import { getUserById, updateUserRole, verifyUser, giftSubscription } from '../api';
 import './EditUser.css';
 
-// This is a placeholder component that will be styled but not fully functional
 const EditUser = () => {
-  const mockUser = {
-    _id: '123456789',
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    role: 'user',
-    verified: true,
-    subscription: {
-      plan_name: 'Premium',
-      status: 'active',
-      expiry_date: new Date('2026-01-01')
-    },
-    createdAt: new Date('2023-01-01'),
-    capsuleCount: 5
+  const { userId } = useParams();
+  const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
+  
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  
+  // Form states
+  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedSubscription, setSelectedSubscription] = useState('free');
+  const [durationMonths, setDurationMonths] = useState(1);
+  const [activeTab, setActiveTab] = useState('role');
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const userData = await getUserById(userId);
+        setUser(userData);
+        
+        if (userData) {
+          setSelectedRole(userData.role);
+          
+          // Initialize subscription form value
+          if (typeof userData.subscription === 'string') {
+            setSelectedSubscription(userData.subscription);
+          } else if (userData.subscription && userData.subscription.plan_name) {
+            setSelectedSubscription(userData.subscription.plan_name.toLowerCase());
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching user:', err);
+        setError('Failed to load user details. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchUser();
+  }, [userId]);
+  
+  // Role update handler
+  const handleRoleUpdate = async () => {
+    try {
+      setSuccessMessage('');
+      setError(null);
+      
+      await updateUserRole(userId, selectedRole);
+      setSuccessMessage(`User role updated to ${selectedRole} successfully!`);
+      
+      // Update local state
+      setUser(prev => ({ ...prev, role: selectedRole }));
+    } catch (err) {
+      console.error('Error updating role:', err);
+      setError('Failed to update user role.');
+    }
+  };
+  
+  // Verification handler
+  const handleVerify = async () => {
+    try {
+      setSuccessMessage('');
+      setError(null);
+      
+      if (!user.verified) {
+        await verifyUser(userId);
+        setSuccessMessage('User verified successfully!');
+        
+        // Update local state
+        setUser(prev => ({ ...prev, verified: true }));
+      } else {
+        setSuccessMessage('This user is already verified.');
+      }
+    } catch (err) {
+      console.error('Error verifying user:', err);
+      setError('Failed to verify user.');
+    }
+  };
+  
+  // Subscription update handler
+  const handleSubscriptionUpdate = async () => {
+    try {
+      setSuccessMessage('');
+      setError(null);
+      
+      await giftSubscription(
+        userId, 
+        selectedSubscription, 
+        durationMonths, 
+        'Enjoy your complimentary subscription!'
+      );
+      
+      const subscriptionName = selectedSubscription.charAt(0).toUpperCase() + selectedSubscription.slice(1);
+      setSuccessMessage(`Subscription updated to ${subscriptionName} successfully!`);
+      
+      // Update local state with new subscription
+      const isLifetime = selectedSubscription === 'lifetime';
+      let expiryDate = null;
+      
+      if (!isLifetime && selectedSubscription !== 'free') {
+        expiryDate = new Date();
+        expiryDate.setMonth(expiryDate.getMonth() + parseInt(durationMonths));
+      }
+      
+      const subscriptionObject = {
+        plan_name: subscriptionName,
+        status: isLifetime ? 'lifetime' : 'active',
+        subscribed_at: new Date(),
+        expiry_date: expiryDate
+      };
+      
+      setUser(prev => ({ ...prev, subscription: subscriptionObject }));
+    } catch (err) {
+      console.error('Error updating subscription:', err);
+      setError('Failed to update subscription.');
+    }
   };
   
   return (

@@ -252,6 +252,15 @@ export const getUser = async () => {
     }
 };
 
+export const getUserById = async (userId) => {
+    try {
+        return await handleRequest(`/admin/users/${userId}`);
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        throw error;
+    }
+};
+
 // Capsule API calls
 export const getCapsules = async (userId) => {
     return await handleRequest(`/capsules/user/${userId}`);
