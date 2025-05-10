@@ -86,6 +86,9 @@ module.exports = {
                 { from: 'public/site.webmanifest', to: '' },
                 { from: 'public/_redirects', to: '' },
                 { from: 'public/200.html', to: '' },
+                // Copy SEO-related files to the output directory
+                { from: 'public/sitemap.xml', to: '' },
+                { from: 'public/robots.txt', to: '' },
                 { from: 'static.json', to: '' },
             ],
         }),

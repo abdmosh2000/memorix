@@ -106,7 +106,11 @@ try {
 
 // Create _redirects file for Netlify
 const redirects = `
-# Redirect all routes to index.html for SPA routing
+# Serve sitemap.xml and robots.txt directly
+/sitemap.xml    /sitemap.xml    200
+/robots.txt     /robots.txt     200
+
+# For all other routes, serve index.html (SPA routing)
 /*    /index.html   200
 `;
 fs.writeFileSync(path.join(__dirname, 'dist', '_redirects'), redirects);
