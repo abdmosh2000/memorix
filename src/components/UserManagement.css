@@ -1,0 +1,559 @@
+/* UserManagement.css - Enhanced styles for the admin user management section */
+
+/* Container Styles */
+.users-table-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.users-table-container:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Filters Section */
+.users-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+}
+
+.search-input, .filter-select {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+.search-input:focus, .filter-select:focus {
+  border-color: #8E44AD;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+  background-color: white;
+}
+
+.search-input {
+  min-width: 250px;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Table Styles */
+.users-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+.users-table th {
+  text-align: left;
+  padding: 15px;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.users-table th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.users-table th:last-child {
+  border-top-right-radius: 10px;
+  text-align: center;
+}
+
+.users-table td {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+  line-height: 1.5;
+}
+
+.users-table td:last-child {
+  text-align: center;
+}
+
+.users-table tr:hover td {
+  background-color: rgba(142, 68, 173, 0.03);
+}
+
+.users-table tr:last-child td {
+  border-bottom: none;
+}
+
+.users-table tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.users-table tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+/* Enhanced Role & Subscription Badges */
+.role-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.role-admin {
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+}
+
+.role-moderator {
+  background: linear-gradient(135deg, #3498DB, #2980b9);
+}
+
+.role-curator {
+  background: linear-gradient(135deg, #F39C12, #e67e22);
+}
+
+.role-user {
+  background: linear-gradient(135deg, #95A5A6, #7f8c8d);
+}
+
+.subscription-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.subscription-badge:hover {
+  transform: translateY(-2px);
+}
+
+.free-subscription {
+  background: linear-gradient(135deg, #95A5A6, #7f8c8d);
+}
+
+.premium-subscription {
+  background: linear-gradient(135deg, #3498DB, #2980b9);
+}
+
+.lifetime-subscription {
+  background: linear-gradient(135deg, #8E44AD, #9b59b6);
+}
+
+.vip-subscription {
+  background: linear-gradient(135deg, #E74C3C, #c0392b);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(231, 76, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+}
+
+.subscription-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subscription-status {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.subscription-expiry {
+  font-size: 12px;
+  color: #666;
+  display: inline-block;
+}
+
+.subscription-expiry.soon {
+  color: #E74C3C;
+  font-weight: 600;
+}
+
+/* User Status Styling */
+.verified-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.verified-badge.verified {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #2ECC71;
+}
+
+.verified-badge.unverified {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #E74C3C;
+}
+
+.verified-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* User Action Buttons & Dropdowns */
+.user-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-button {
+  color: #3498DB;
+  border-color: rgba(52, 152, 219, 0.3);
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+.edit-button:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+  border-color: #3498DB;
+}
+
+.verify-button {
+  color: #2ECC71;
+  border-color: rgba(46, 204, 113, 0.3);
+  background-color: rgba(46, 204, 113, 0.05);
+}
+
+.verify-button:hover {
+  background-color: rgba(46, 204, 113, 0.1);
+  border-color: #2ECC71;
+}
+
+.gift-button {
+  color: #E67E22;
+  border-color: rgba(230, 126, 34, 0.3);
+  background-color: rgba(230, 126, 34, 0.05);
+}
+
+.gift-button:hover {
+  background-color: rgba(230, 126, 34, 0.1);
+  border-color: #E67E22;
+}
+
+/* Improved Dropdown Menu */
+.dropdown-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  border-radius: 10px;
+  padding: 10px 0;
+  right: 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+
+.dropdown-menu:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-content button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  color: #333;
+  position: relative;
+}
+
+.dropdown-content button:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-content button.active {
+  background-color: rgba(142, 68, 173, 0.08);
+  color: #8E44AD;
+  font-weight: 600;
+}
+
+.dropdown-content button.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: #8E44AD;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Different button styles for subscription levels */
+.dropdown-content button:nth-child(1) {
+  color: #95A5A6;
+}
+
+.dropdown-content button:nth-child(1):hover {
+  background-color: rgba(149, 165, 166, 0.08);
+}
+
+.dropdown-content button:nth-child(2) {
+  color: #3498DB;
+}
+
+.dropdown-content button:nth-child(2):hover {
+  background-color: rgba(52, 152, 219, 0.08);
+}
+
+.dropdown-content button:nth-child(3) {
+  color: #8E44AD;
+}
+
+.dropdown-content button:nth-child(3):hover {
+  background-color: rgba(142, 68, 173, 0.08);
+}
+
+.dropdown-content button:nth-child(4) {
+  color: #E74C3C;
+}
+
+.dropdown-content button:nth-child(4):hover {
+  background-color: rgba(231, 76, 60, 0.08);
+}
+
+/* Enhanced Pagination Styling */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  color: #555;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #8E44AD;
+  color: white;
+  border-color: #8E44AD;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Loading and Error States */
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(142, 68, 173, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #8E44AD;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .users-table th, .users-table td {
+    padding: 12px 10px;
+  }
+  
+  .action-button {
+    min-width: auto;
+    padding: 6px 10px;
+  }
+  
+  .subscription-badge, .role-badge {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .users-table-container {
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .users-filters {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  .users-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .users-table th, 
+  .users-table td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+  
+  .user-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .pagination button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-table th, 
+  .users-table td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  
+  .role-badge, .subscription-badge {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+  
+  .action-button {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+}
