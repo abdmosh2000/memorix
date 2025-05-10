@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
 import SEO from '../components/SEO';
+import paymentSuccessSound from '../assets/sounds/pamentsuccess.mp3';
+import logoImage from '../assets/logo.png';
 import './Pricing.css'; // Reusing the same CSS
 
 function PaymentSuccess() {
@@ -67,12 +69,21 @@ function PaymentSuccess() {
                 canonical="https://memorix.fun/payment-success"
             />
             {/* Audio element to play success sound */}
-            <audio ref={audioRef} src="/sounds/pamentsuccess.mp3" preload="auto" />
+            <audio 
+                ref={audioRef} 
+                src={paymentSuccessSound} 
+                preload="auto"
+                onError={(e) => {
+                    console.warn('Sound file could not be loaded:', e);
+                    // Prevent console errors by removing the source
+                    e.target.removeAttribute('src');
+                }}
+            />
             
             <div id="confetti" className="confetti-container"></div>
             <div className="payment-result-card success">
             <div className="result-logo">
-                <img src="/logo.png" alt="Memorix Logo" className="payment-logo" />
+                <img src={logoImage} alt="Memorix Logo" className="payment-logo" />
             </div>
             <div className="icon-container">
                 <div className="success-checkmark">

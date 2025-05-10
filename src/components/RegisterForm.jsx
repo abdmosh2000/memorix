@@ -4,6 +4,7 @@ import { useAuth } from '../auth';
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
 import offlineManager from '../utils/offlineManager';
 import networkManager from '../utils/networkManager';
+import createAccountSound from '../assets/sounds/createaccount.mp3';
 import './RegisterForm.css';
 
 
@@ -342,7 +343,16 @@ function RegisterForm({ onSuccess }) {
             </div>
             
             {/* Hidden audio element for sound effect */}
-            <audio ref={audioRef} src="/sounds/createaccount.mp3" preload="auto" />
+            <audio 
+                ref={audioRef} 
+                src={createAccountSound} 
+                preload="auto"
+                onError={(e) => {
+                    console.warn('Sound file could not be loaded:', e);
+                    // Prevent console errors by removing the source
+                    e.target.removeAttribute('src');
+                }}
+            />
             
             <button 
                 type="submit" 

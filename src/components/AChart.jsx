@@ -36,18 +36,46 @@ const AChart = ({
 }) => {
   // Function to determine if data is empty
   const isDataEmpty = () => {
+    console.log('Checking if data is empty:', data);
+    
+    // Check if data is missing, not an array, or an empty array
     if (!data || !Array.isArray(data) || data.length === 0) {
+      console.log('Data is empty (not an array or empty array)');
       return true;
     }
     
-    // Check if all values are 0 or null
-    if (type === 'line' || type === 'bar') {
-      return data.every(item => !item[dataKey] || item[dataKey] === 0);
-    } else if (type === 'pie') {
-      return data.every(item => !item[valueKey] || item[valueKey] === 0);
-    }
+    // Check if data contains only empty or invalid entries
+    const hasValidData = data.some(item => {
+      // For charts requiring dataKey
+      if (type === 'line' || type === 'bar') {
+        // Check if dataKey is missing or item is null/undefined
+        if (!dataKey || !item) {
+          return false;
+        }
+        // Consider data valid only if value exists and isn't zero
+        return item[dataKey] !== undefined && 
+               item[dataKey] !== null && 
+               item[dataKey] !== 0 &&
+               item[dataKey] !== '';
+      } 
+      // For pie charts
+      else if (type === 'pie') {
+        // Check if valueKey is missing or item is null/undefined
+        if (!valueKey || !item) {
+          return false;
+        }
+        // Consider data valid only if value exists and isn't zero
+        return item[valueKey] !== undefined && 
+               item[valueKey] !== null && 
+               item[valueKey] !== 0 &&
+               item[valueKey] !== '';
+      }
+      
+      return false;
+    });
     
-    return false;
+    console.log('Has valid data:', hasValidData);
+    return !hasValidData;
   };
 
   // Generate default placeholder data for empty charts

@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getPaymentStats } from '../api';
-import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  Cell
-} from 'recharts';
+import AChart from './AChart';
 import config from '../config';
 
 const PaymentStats = () => {
@@ -310,48 +306,36 @@ const PaymentStats = () => {
       
       <div className="charts-grid">
         <div className="chart-container">
-          <h3>Monthly Revenue</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyRevenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `$${value}`} />
-              <Tooltip formatter={(value) => [`$${value}`, 'Revenue']} />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                name="Revenue" 
-                stroke={colors.primary} 
-                strokeWidth={2}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="line"
+            data={monthlyRevenueData}
+            dataKey="revenue"
+            title="Monthly Revenue"
+            height={300}
+            colors={colors}
+            emptyMessage="No revenue data available yet"
+            tooltip={{formatter: (value) => [`$${value}`, 'Revenue']}}
+            yAxisLabel="Revenue ($)"
+          />
         </div>
         
         <div className="chart-container">
-          <h3>Subscription Distribution</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={subscriptionData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey="value"
-                label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-              >
-                {subscriptionData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => [value, 'Users']} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <AChart 
+            type="pie"
+            data={subscriptionData}
+            valueKey="value"
+            nameKey="name"
+            title="Subscription Distribution"
+            height={300}
+            colors={colors}
+            emptyMessage="No subscription data available yet"
+            tooltip={{formatter: (value) => [value, 'Users']}}
+            pieProps={{
+              innerRadius: 60,
+              outerRadius: 80,
+              paddingAngle: 5
+            }}
+          />
         </div>
       </div>
       

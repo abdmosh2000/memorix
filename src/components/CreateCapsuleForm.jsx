@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../auth';
 import { createCapsule } from '../api'; // Import API function
 import { addNotification, NOTIFICATION_TYPES } from '../notifications';
+import saveMemorySound from '../assets/sounds/savememory.mp3';
 import './CreateCapsuleForm.css';
 
 function CreateCapsuleForm() {
@@ -663,7 +664,7 @@ function CreateCapsuleForm() {
             {/* Audio element for the memory saved sound with error handling */}
             <audio 
                 ref={audioRef} 
-                src="/frontend/public/sounds/savememory.mp3" 
+                src={saveMemorySound} 
                 preload="auto" 
                 onError={(e) => {
                     console.warn('Sound file could not be loaded:', e);

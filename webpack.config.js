@@ -103,6 +103,9 @@ module.exports = {
                 { from: 'public/200.html', to: '' },
                 // Copy logo file to the output directory
                 { from: 'public/logo.png', to: '' },
+                // Copy SEO-related files to the output directory
+                { from: 'public/sitemap.xml', to: '' },
+                { from: 'public/robots.txt', to: '' },
                 // Copy the static.json file for hosting services
                 { from: 'static.json', to: '' },
             ],
