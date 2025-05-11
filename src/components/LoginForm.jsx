@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../auth';
 import offlineManager from '../utils/offlineManager';
 import networkManager from '../utils/networkManager';
-
+import loginSound from '../assets/sounds/login.mp3';
 import './LoginForm.css';
 
 function LoginForm() {
@@ -12,10 +13,12 @@ function LoginForm() {
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loginSuccess, setLoginSuccess] = useState(false);
     
     const { login, isLoggedIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const audioRef = useRef(null);
     
     // Check for query parameters (for returning from offline mode)
     useEffect(() => {
@@ -76,11 +79,20 @@ function LoginForm() {
             if (result.success) {
                 console.log('Login successful, navigating to dashboard');
                 
-                // Add a longer delay to ensure state updates before navigation
+                // Set success state for animation
+                setLoginSuccess(true);
+                
+                // Play login sound
+                if (audioRef.current) {
+                    audioRef.current.volume = 0.6; // Set appropriate volume
+                    audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+                }
+                
+                // Add a longer delay to ensure animations can play before navigation
                 setTimeout(() => {
                     // Force a hard navigation to dashboard to ensure correct state
                     window.location.href = '/dashboard';
-                }, 500);
+                }, 1200); // Longer delay to allow animation to complete
             } else if (result.offline) {
                 // Handle offline response
                 setIsOffline(true);
@@ -175,46 +187,142 @@ function LoginForm() {
         );
     };
     
+    // Animation variants for form elements
+    const formVariants = {
+        hidden: { opacity: 0 },
+        visible: { 
+            opacity: 1,
+            transition: { 
+                staggerChildren: 0.1, 
+                delayChildren: 0.2 
+            } 
+        },
+        success: { 
+            scale: 1.02,
+            transition: { duration: 0.2 }
+        }
+    };
+    
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: { 
+            y: 0, 
+            opacity: 1,
+            transition: { type: 'spring', stiffness: 300, damping: 24 }
+        }
+    };
+    
+    const successVariants = {
+        initial: { scale: 1 },
+        animate: { 
+            scale: [1, 1.05, 1],
+            boxShadow: [
+                "0px 0px 0px rgba(142, 68, 173, 0)",
+                "0px 0px 30px rgba(142, 68, 173, 0.7)",
+                "0px 0px 0px rgba(142, 68, 173, 0)"
+            ],
+            transition: { 
+                duration: 1, 
+                times: [0, 0.5, 1],
+                ease: "easeInOut" 
+            }
+        }
+    };
+
     return (
-        <form className="login-form" onSubmit={handleSubmit}>
+        <motion.form 
+            className={`login-form ${loginSuccess ? 'login-success' : ''}`}
+            variants={formVariants}
+            initial="hidden"
+            animate={loginSuccess ? "success" : "visible"}
+            onSubmit={handleSubmit}
+        >
             {renderErrorMessage()}
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={itemVariants}>
                 <label htmlFor="email">Email:</label>
-                <input
+                <motion.input
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    whileFocus={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(142, 68, 173, 0.3)" }}
                 />
-            </div>
+            </motion.div>
             
-            <div className="form-group">
+            <motion.div className="form-group" variants={itemVariants}>
                 <label htmlFor="password">Password:</label>
-                <input
+                <motion.input
                     type="password"
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    whileFocus={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(142, 68, 173, 0.3)" }}
                 />
-            </div>
+            </motion.div>
             
-            <button 
+            <motion.button 
                 type="submit" 
                 disabled={isSubmitting}
                 className={isOffline ? 'offline-mode' : ''}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                variants={loginSuccess ? successVariants : itemVariants}
+                animate={loginSuccess ? "animate" : "visible"}
             >
                 {isSubmitting ? 'Logging in...' : isOffline ? 'Save for Later' : 'Login'}
-            </button>
+            </motion.button>
             
             {isOffline && (
-                <p className="offline-note">
+                <motion.p 
+                    className="offline-note"
+                    variants={itemVariants}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
                     <span role="img" aria-label="Offline">📴</span> You're currently offline. Login will be processed when connection is restored.
-                </p>
+                </motion.p>
             )}
-        </form>
+            
+            {/* Hidden audio element for login sound */}
+            <audio 
+                ref={audioRef} 
+                src={loginSound} 
+                preload="auto"
+                onError={(e) => {
+                    console.warn('Sound file could not be loaded:', e);
+                    // Prevent console errors by removing the source
+                    e.target.removeAttribute('src');
+                }}
+            />
+            
+            {/* Success animation */}
+            {loginSuccess && (
+                <motion.div 
+                    className="success-overlay"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <motion.div 
+                        className="success-icon"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1, rotate: [0, 10, -10, 0] }}
+                        transition={{ 
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 20,
+                            delay: 0.1
+                        }}
+                    >
+                        ✓
+                    </motion.div>
+                </motion.div>
+            )}
+        </motion.form>
     );
 }
 

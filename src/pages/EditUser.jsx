@@ -125,6 +125,60 @@ const EditUser = () => {
     }
   };
   
+  if (loading) {
+    return (
+      <div className="edit-user-page">
+        <div className="edit-user-container">
+          <div className="loading-spinner"></div>
+          <p>Loading user data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="edit-user-page">
+        <div className="edit-user-container">
+          <div className="edit-user-header">
+            <Link to="/admin/dashboard" className="back-button">
+              ← Back to Dashboard
+            </Link>
+            <h1>User Not Found</h1>
+          </div>
+          <div className="error-message">
+            <p>Could not find user with ID: {userId}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Helper function to get subscription display info
+  const getSubscriptionInfo = () => {
+    if (typeof user.subscription === 'string') {
+      return {
+        name: user.subscription.charAt(0).toUpperCase() + user.subscription.slice(1),
+        status: 'active',
+        expiry: null
+      };
+    } else if (user.subscription && user.subscription.plan_name) {
+      return {
+        name: user.subscription.plan_name,
+        status: user.subscription.status || 'active',
+        expiry: user.subscription.expiry_date
+      };
+    } else {
+      return {
+        name: 'Free',
+        status: 'active',
+        expiry: null
+      };
+    }
+  };
+  
+  const subscriptionInfo = getSubscriptionInfo();
+  
   return (
     <div className="edit-user-page">
       <div className="edit-user-container">
@@ -135,133 +189,212 @@ const EditUser = () => {
           <h1>Edit User</h1>
         </div>
         
-        {/* Example success message */}
-        <div className="success-message">
-          <p>✅ User updated successfully!</p>
-          <button className="close-button">✕</button>
-        </div>
+        {/* Success message */}
+        {successMessage && (
+          <div className="success-message">
+            <p>✅ {successMessage}</p>
+            <button className="close-button" onClick={() => setSuccessMessage('')}>✕</button>
+          </div>
+        )}
+        
+        {/* Error message */}
+        {error && (
+          <div className="error-message">
+            <p>❌ {error}</p>
+            <button className="close-button" onClick={() => setError(null)}>✕</button>
+          </div>
+        )}
         
         {/* User profile card */}
         <div className="user-profile-card">
           <div className="user-avatar">
-            {mockUser.name.charAt(0).toUpperCase()}
+            {user.name.charAt(0).toUpperCase()}
           </div>
           <div className="user-info">
-            <h2>{mockUser.name}</h2>
-            <p className="user-email">{mockUser.email}</p>
+            <h2>{user.name}</h2>
+            <p className="user-email">{user.email}</p>
             
             <div className="user-badges">
-              <span className={`role-badge role-${mockUser.role}`}>
-                {mockUser.role}
+              <span className={`role-badge role-${user.role}`}>
+                {user.role}
               </span>
               
-              <span className={`subscription-badge ${mockUser.subscription.plan_name.toLowerCase()}-plan`}>
-                {mockUser.subscription.plan_name}
+              <span className={`subscription-badge ${subscriptionInfo.name.toLowerCase()}-plan`}>
+                {subscriptionInfo.name}
               </span>
               
-              <span className={`status-badge ${mockUser.verified ? 'verified' : 'unverified'}`}>
-                {mockUser.verified ? '✓ Verified' : '✗ Unverified'}
+              <span className={`status-badge ${user.verified ? 'verified' : 'unverified'}`}>
+                {user.verified ? '✓ Verified' : '✗ Unverified'}
               </span>
             </div>
             
             <div className="user-details">
               <div className="detail-item">
                 <span className="detail-label">User ID:</span>
-                <span className="detail-value">{mockUser._id}</span>
+                <span className="detail-value">{user._id}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Created:</span>
                 <span className="detail-value">
-                  {mockUser.createdAt.toLocaleDateString()}
+                  {new Date(user.createdAt).toLocaleDateString()}
                 </span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">Capsules:</span>
-                <span className="detail-value">{mockUser.capsuleCount}</span>
+                <span className="detail-value">{user.capsuleCount || 0}</span>
               </div>
             </div>
           </div>
         </div>
         
-        {/* Edit sections */}
+        {/* Edit sections tabs */}
         <div className="edit-section-tabs">
-          <button className="tab-button active">Role</button>
-          <button className="tab-button">Verification</button>
-          <button className="tab-button">Subscription</button>
+          <button 
+            className={`tab-button ${activeTab === 'role' ? 'active' : ''}`}
+            onClick={() => setActiveTab('role')}
+          >
+            Role
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'verification' ? 'active' : ''}`}
+            onClick={() => setActiveTab('verification')}
+          >
+            Verification
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'subscription' ? 'active' : ''}`}
+            onClick={() => setActiveTab('subscription')}
+          >
+            Subscription
+          </button>
         </div>
         
         <div className="edit-sections">
           {/* Role section */}
-          <section className="edit-section active" id="role-section">
+          <section 
+            className={`edit-section ${activeTab === 'role' ? 'active' : ''}`} 
+            id="role-section"
+          >
             <h3>Change User Role</h3>
             <div className="form-group">
-              <label>Select Role:</label>
-              <select className="select-field">
+              <label htmlFor="role-select">Select Role:</label>
+              <select
+                id="role-select" 
+                className="select-field"
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+              >
                 <option value="user">User</option>
                 <option value="moderator">Moderator</option>
                 <option value="content_curator">Content Curator</option>
-                <option value="admin">Admin</option>
+                {currentUser?.role === 'admin' && <option value="admin">Admin</option>}
               </select>
               
-              <button className="action-button primary">
+              <button 
+                className="action-button primary"
+                onClick={handleRoleUpdate}
+                disabled={selectedRole === user.role}
+              >
                 Update Role
               </button>
             </div>
           </section>
           
           {/* Verification section */}
-          <section className="edit-section" id="verification-section">
+          <section 
+            className={`edit-section ${activeTab === 'verification' ? 'active' : ''}`}
+            id="verification-section"
+          >
             <h3>User Verification</h3>
             <div className="verification-status">
               <div className="status">
-                <span className="status-icon verified">✓</span>
-                <span className="status-text">This user is already verified</span>
+                {user.verified ? (
+                  <>
+                    <span className="status-icon verified">✓</span>
+                    <span className="status-text">This user is already verified</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="status-icon unverified">✗</span>
+                    <span className="status-text">This user is not verified</span>
+                    <button 
+                      className="action-button primary verify-button"
+                      onClick={handleVerify}
+                    >
+                      Verify User
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </section>
           
           {/* Subscription section */}
-          <section className="edit-section" id="subscription-section">
+          <section 
+            className={`edit-section ${activeTab === 'subscription' ? 'active' : ''}`}
+            id="subscription-section"
+          >
             <h3>Manage Subscription</h3>
             
             <div className="current-subscription">
               <div className="subscription-header">
                 <h4>Current Subscription</h4>
-                <div className="subscription-badge premium-plan">Premium</div>
+                <div className={`subscription-badge ${subscriptionInfo.name.toLowerCase()}-plan`}>
+                  {subscriptionInfo.name}
+                </div>
               </div>
               <div className="subscription-details">
                 <div className="detail-item">
                   <span className="detail-label">Status:</span>
-                  <span className="detail-value">Active</span>
+                  <span className="detail-value">{subscriptionInfo.status}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Expiry:</span>
-                  <span className="detail-value">January 1, 2026</span>
-                </div>
+                {subscriptionInfo.expiry && (
+                  <div className="detail-item">
+                    <span className="detail-label">Expiry:</span>
+                    <span className="detail-value">
+                      {new Date(subscriptionInfo.expiry).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             
             <div className="subscription-form">
               <div className="form-group">
-                <label>Subscription Type:</label>
-                <select className="select-field">
+                <label htmlFor="subscription-type">Subscription Type:</label>
+                <select
+                  id="subscription-type"
+                  className="select-field"
+                  value={selectedSubscription}
+                  onChange={(e) => setSelectedSubscription(e.target.value)}
+                >
                   <option value="free">Free</option>
                   <option value="premium">Premium</option>
                   <option value="lifetime">Lifetime</option>
                 </select>
               </div>
               
-              <div className="form-group">
-                <label>Duration:</label>
-                <select className="select-field">
-                  <option value="1">1 month</option>
-                  <option value="3">3 months</option>
-                  <option value="6">6 months</option>
-                  <option value="12">12 months</option>
-                </select>
-              </div>
+              {selectedSubscription === 'premium' && (
+                <div className="form-group">
+                  <label htmlFor="duration">Duration:</label>
+                  <select
+                    id="duration"
+                    className="select-field"
+                    value={durationMonths}
+                    onChange={(e) => setDurationMonths(e.target.value)}
+                  >
+                    <option value="1">1 month</option>
+                    <option value="3">3 months</option>
+                    <option value="6">6 months</option>
+                    <option value="12">12 months</option>
+                  </select>
+                </div>
+              )}
               
-              <button className="action-button primary">
+              <button 
+                className="action-button primary"
+                onClick={handleSubscriptionUpdate}
+              >
                 Update Subscription
               </button>
             </div>

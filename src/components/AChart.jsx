@@ -44,7 +44,7 @@ const AChart = ({
       return true;
     }
     
-    // Check if data contains only empty or invalid entries
+    // Check if data contains valid entries - NOTE: Zero (0) is now considered valid data!
     const hasValidData = data.some(item => {
       // For charts requiring dataKey
       if (type === 'line' || type === 'bar') {
@@ -52,10 +52,9 @@ const AChart = ({
         if (!dataKey || !item) {
           return false;
         }
-        // Consider data valid only if value exists and isn't zero
+        // Consider data valid if value exists (including zero)
         return item[dataKey] !== undefined && 
-               item[dataKey] !== null && 
-               item[dataKey] !== 0 &&
+               item[dataKey] !== null &&
                item[dataKey] !== '';
       } 
       // For pie charts
@@ -64,10 +63,9 @@ const AChart = ({
         if (!valueKey || !item) {
           return false;
         }
-        // Consider data valid only if value exists and isn't zero
+        // Consider data valid if value exists (including zero)
         return item[valueKey] !== undefined && 
-               item[valueKey] !== null && 
-               item[valueKey] !== 0 &&
+               item[valueKey] !== null &&
                item[valueKey] !== '';
       }
       
