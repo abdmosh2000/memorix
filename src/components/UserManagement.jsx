@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth';
 import { getAdminUsers, updateUserRole, verifyUser, giftSubscription } from '../api';
+import { useNavigate } from 'react-router-dom';
 import './UserManagement.css';
 
 const UserManagement = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -254,7 +256,7 @@ const UserManagement = () => {
                   {(isHeadAdmin || user.email.toLowerCase() !== 'abdmosh2000@gmail.com') && (
                     <button 
                       className="action-button edit-user-button"
-                      onClick={() => window.location.href = `/admin/edit-user/${user._id}`}
+                      onClick={() => navigate(`/admin/edit-user/${user._id}`)}
                     >
                       ✏️ Edit User
                     </button>

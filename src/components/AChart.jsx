@@ -44,29 +44,39 @@ const AChart = ({
       return true;
     }
     
+    // New projects may have valid arrays but with zero or very small values
+    // We still want to show these values, not consider them "empty"
+    
     // Check if data contains valid entries - NOTE: Zero (0) is now considered valid data!
     const hasValidData = data.some(item => {
-      // For charts requiring dataKey
-      if (type === 'line' || type === 'bar') {
-        // Check if dataKey is missing or item is null/undefined
-        if (!dataKey || !item) {
-          return false;
+      if (!item) return false;
+      
+      try {
+        // For charts requiring dataKey
+        if (type === 'line' || type === 'bar') {
+          // Check if dataKey is missing
+          if (!dataKey) {
+            return false;
+          }
+          // Consider any number (even 0) as valid data
+          return item[dataKey] !== undefined && 
+                item[dataKey] !== null &&
+                item[dataKey] !== '';
+        } 
+        // For pie charts
+        else if (type === 'pie') {
+          // Check if valueKey is missing
+          if (!valueKey) {
+            return false;
+          }
+          // Consider any number (even 0) as valid data
+          return item[valueKey] !== undefined && 
+                item[valueKey] !== null &&
+                item[valueKey] !== '';
         }
-        // Consider data valid if value exists (including zero)
-        return item[dataKey] !== undefined && 
-               item[dataKey] !== null &&
-               item[dataKey] !== '';
-      } 
-      // For pie charts
-      else if (type === 'pie') {
-        // Check if valueKey is missing or item is null/undefined
-        if (!valueKey || !item) {
-          return false;
-        }
-        // Consider data valid if value exists (including zero)
-        return item[valueKey] !== undefined && 
-               item[valueKey] !== null &&
-               item[valueKey] !== '';
+      } catch (error) {
+        console.error('Error checking data validity:', error);
+        return false;
       }
       
       return false;
