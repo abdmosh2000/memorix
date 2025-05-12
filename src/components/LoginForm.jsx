@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../auth';
 import offlineManager from '../utils/offlineManager';
@@ -153,7 +153,7 @@ function LoginForm() {
                 return (
                     <div className="error-message">
                         {mainMessage}
-                        <a href={href} className="error-link">{linkText}</a>
+                        <Link to={href} className="error-link">{linkText}</Link>
                         
                         {isOffline && (
                             <button 
@@ -264,15 +264,22 @@ function LoginForm() {
                     />
                 </div>
                 <div className="forgot-password-container">
-                    <motion.a 
-                        href="/forgot-password" 
-                        className="forgot-password-link"
+                    <motion.div
                         variants={itemVariants}
-                        whileHover={{ scale: 1.03, color: "#8E44AD" }}
-                        whileTap={{ scale: 0.98 }}
                     >
-                        Forgot Password?
-                    </motion.a>
+                        <Link 
+                            to="/forgot-password" 
+                            className="forgot-password-link"
+                            style={{ display: 'inline-block' }}
+                        >
+                            <motion.span
+                                whileHover={{ scale: 1.03, color: "#8E44AD" }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                Forgot Password?
+                            </motion.span>
+                        </Link>
+                    </motion.div>
                 </div>
             </motion.div>
             
