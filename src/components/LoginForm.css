@@ -48,6 +48,39 @@
   outline: none;
 }
 
+/* Password field and forgot password styling */
+.password-group {
+  position: relative;
+  width: 100%;
+}
+
+.forgot-password-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.forgot-password-link {
+  color: #8E44AD;
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  position: relative;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.forgot-password-link:hover {
+  color: #9B59B6;
+  background-color: rgba(142, 68, 173, 0.05);
+  text-decoration: underline;
+}
+
+.forgot-password-link:active {
+  transform: translateY(1px);
+}
+
 /* زر تسجيل الدخول */
 button {
   background-color: #8E44AD; /* Royal Purple */

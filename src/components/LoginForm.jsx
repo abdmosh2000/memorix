@@ -252,15 +252,28 @@ function LoginForm() {
             </motion.div>
             
             <motion.div className="form-group" variants={itemVariants}>
-                <label htmlFor="password">Password:</label>
-                <motion.input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    whileFocus={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(142, 68, 173, 0.3)" }}
-                />
+                <div className="password-group">
+                    <label htmlFor="password">Password:</label>
+                    <motion.input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        whileFocus={{ scale: 1.01, boxShadow: "0px 0px 8px rgba(142, 68, 173, 0.3)" }}
+                    />
+                </div>
+                <div className="forgot-password-container">
+                    <motion.a 
+                        href="/forgot-password" 
+                        className="forgot-password-link"
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.03, color: "#8E44AD" }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        Forgot Password?
+                    </motion.a>
+                </div>
             </motion.div>
             
             <motion.button 

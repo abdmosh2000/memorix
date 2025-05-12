@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 // Secondary pages - lazy loaded
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
 const ResendVerification = lazy(() => import('./pages/ResendVerification'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ProfileSettings = lazy(() => import('./pages/ProfileSettings'));
 const CreateCapsule = lazy(() => import('./pages/CreateCapsule'));
 const PublicCapsules = lazy(() => import('./pages/PublicCapsules'));
@@ -88,10 +89,12 @@ function App() {
                                 <Route path="/favorites" element={isLoggedIn ? <Favorites /> : <Navigate to="/login" />} />
                                 <Route path="/verify-email" element={<VerifyEmail />} />
                                 <Route path="/resend-verification" element={<ResendVerification />} />
+                                <Route path="/forgot-password" element={<ForgotPassword />} />
                                 <Route path="/checkout" element={isLoggedIn ? <Checkout /> : <Navigate to="/login" />} />
                                 <Route path="/payment/success" element={isLoggedIn ? <PaymentSuccess /> : <Navigate to="/login" />} />
                                 <Route path="/payment/failed" element={<PaymentFailed />} />
                                 <Route path="/admin" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
+                                <Route path="/admin/dashboard" element={isAdmin ? <AdminDashboard /> : <Navigate to="/dashboard" />} />
                                 <Route path="/admin/edit-user/:userId" element={isAdmin ? <EditUser /> : <Navigate to="/dashboard" />} />
                                 <Route path="*" element={<Navigate to="/" />} />
                             </Routes>

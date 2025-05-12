@@ -392,3 +392,12 @@ export const getSystemLogs = async (page = 1, limit = 20, filters = {}) => {
     }).toString();
     return await handleRequest(`/admin/logs?${queryParams}`);
 };
+
+// Password recovery API calls
+export const resetPasswordRequest = async (email) => {
+    return await handleRequest('/auth/forgot-password', 'POST', { email }, 0, { critical: true });
+};
+
+export const resetPassword = async (token, newPassword) => {
+    return await handleRequest('/auth/reset-password', 'POST', { token, password: newPassword }, 0, { critical: true });
+};
