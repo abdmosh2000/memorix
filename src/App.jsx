@@ -18,6 +18,7 @@ import Dashboard from './pages/Dashboard';
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
 const ResendVerification = lazy(() => import('./pages/ResendVerification'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const ProfileSettings = lazy(() => import('./pages/ProfileSettings'));
 const CreateCapsule = lazy(() => import('./pages/CreateCapsule'));
 const PublicCapsules = lazy(() => import('./pages/PublicCapsules'));
@@ -90,6 +91,7 @@ function App() {
                                 <Route path="/verify-email" element={<VerifyEmail />} />
                                 <Route path="/resend-verification" element={<ResendVerification />} />
                                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                                <Route path="/reset-password" element={<ResetPassword />} />
                                 <Route path="/checkout" element={isLoggedIn ? <Checkout /> : <Navigate to="/login" />} />
                                 <Route path="/payment/success" element={isLoggedIn ? <PaymentSuccess /> : <Navigate to="/login" />} />
                                 <Route path="/payment/failed" element={<PaymentFailed />} />
