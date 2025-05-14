@@ -35,8 +35,8 @@ function AboutUs() {
             </p>
             <h3>About the Creator</h3>
             <p>
-                This project was created by <strong>Abdullah</strong>, a web developer passionate about creating digital solutions
-                that bring people closer together. With years of experience in web development, Abdullah's goal is to build
+                This project was created by <strong>Abdallah Shalat</strong>, a web developer passionate about creating digital solutions
+                that bring people closer together. With years of experience in web development, Abdallah Shalat's goal is to build
                 innovative platforms that provide meaningful experiences for users worldwide.
             </p>
         </div>

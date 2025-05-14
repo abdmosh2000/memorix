@@ -117,76 +117,104 @@ function PublicCapsules() {
         const fetchPublicCapsules = async () => {
             try {
                 setLoading(true);
+                setError(null);
                 
-                // For now, let's simulate fetching from localStorage
-                const storedCapsules = localStorage.getItem('capsules');
-                let initialCapsules = [];
+                // Fetch public capsules from the API
+                const response = await getPublicCapsules();
                 
-                if (storedCapsules) {
-                    try {
-                        initialCapsules = JSON.parse(storedCapsules);
-                    } catch (e) {
-                        console.error('Error parsing stored capsules:', e);
+                console.log('API response for public capsules:', response);
+                
+                // Process the fetched capsules for display
+                let fetchedCapsules = [];
+                
+                if (response && Array.isArray(response)) {
+                    fetchedCapsules = response.map(capsule => {
+                        // Format the capsule data for display
+                        return {
+                            id: capsule._id,
+                            title: capsule.title,
+                            description: capsule.content || 'No description available',
+                            releaseDate: new Date(capsule.releaseDate).toISOString().split('T')[0],
+                            isPublic: capsule.isPublic,
+                            userName: capsule.user ? capsule.user.name : 'Anonymous',
+                            userId: capsule.user ? capsule.user._id : null,
+                            userPhoto: 'https://randomuser.me/api/portraits/men/32.jpg', // Placeholder
+                            totalRatings: capsule.totalRatings || 0,
+                            ratingCount: capsule.ratingCount || 0,
+                            userRating: 0, // Will be set if user has rated
+                            tags: capsule.tags || [],
+                            comments: capsule.comments || [],
+                            images: capsule.mediaType === 'photo' ? [{ url: capsule.mediaUrl || '' }] : []
+                        };
+                    });
+                    
+                    // Save the fetched capsules to localStorage for offline access
+                    localStorage.setItem('capsules', JSON.stringify(fetchedCapsules));
+                } else if (!fetchedCapsules.length) {
+                    // Fallback to local storage if API returned no capsules
+                    const storedCapsules = localStorage.getItem('capsules');
+                    if (storedCapsules) {
+                        try {
+                            fetchedCapsules = JSON.parse(storedCapsules);
+                        } catch (e) {
+                            console.error('Error parsing stored capsules:', e);
+                        }
+                    }
+                    
+                    // If still empty, use demo capsules
+                    if (!fetchedCapsules.length) {
+                        fetchedCapsules = [
+                            {
+                                id: '1',
+                                title: 'My Graduation Day',
+                                description: 'All the memories from my graduation ceremony and the celebration afterwards.',
+                                releaseDate: '2023-05-15',
+                                isPublic: true,
+                                userName: 'Sarah Johnson',
+                                userId: 'user123',
+                                userPhoto: 'https://randomuser.me/api/portraits/women/44.jpg',
+                                totalRatings: 18,
+                                ratingCount: 4,
+                                userRating: 0,
+                                tags: ['graduation', 'college', 'celebration'],
+                                comments: [
+                                    {
+                                        id: 'c1',
+                                        text: 'Such wonderful memories! Congratulations on your achievement.',
+                                        userId: 'user456',
+                                        userName: 'Michael Brown',
+                                        userPhoto: 'https://randomuser.me/api/portraits/men/22.jpg',
+                                        createdAt: '2023-05-20T15:32:00.000Z'
+                                    }
+                                ],
+                                images: [
+                                    { url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1' }
+                                ]
+                            },
+                            {
+                                id: '2',
+                                title: 'Summer Trip 2023',
+                                description: 'Our amazing adventure exploring the national parks. So many beautiful landscapes and wildlife encounters.',
+                                releaseDate: '2023-08-10',
+                                isPublic: true,
+                                userName: 'David Chen',
+                                userId: 'user456',
+                                userPhoto: 'https://randomuser.me/api/portraits/men/32.jpg',
+                                totalRatings: 24,
+                                ratingCount: 5,
+                                userRating: 0,
+                                tags: ['travel', 'nature', 'summer', 'hiking'],
+                                comments: [],
+                                images: [
+                                    { url: 'https://images.unsplash.com/photo-1533577116850-9cc66cad8a9b' }
+                                ]
+                            }
+                        ];
                     }
                 }
                 
-                // If no stored capsules, create some initial ones
-                if (!initialCapsules || initialCapsules.length === 0) {
-                    // Create some initial demo capsules
-                    initialCapsules = [
-                        {
-                            id: '1',
-                            title: 'My Graduation Day',
-                            description: 'All the memories from my graduation ceremony and the celebration afterwards.',
-                            releaseDate: '2023-05-15',
-                            isPublic: true,
-                            userName: 'Sarah Johnson',
-                            userId: 'user123',
-                            userPhoto: 'https://randomuser.me/api/portraits/women/44.jpg',
-                            totalRatings: 18,
-                            ratingCount: 4,
-                            userRating: 0,
-                            tags: ['graduation', 'college', 'celebration'],
-                            comments: [
-                                {
-                                    id: 'c1',
-                                    text: 'Such wonderful memories! Congratulations on your achievement.',
-                                    userId: 'user456',
-                                    userName: 'Michael Brown',
-                                    userPhoto: 'https://randomuser.me/api/portraits/men/22.jpg',
-                                    createdAt: '2023-05-20T15:32:00.000Z'
-                                }
-                            ],
-                            images: [
-                                { url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1' }
-                            ]
-                        },
-                        {
-                            id: '2',
-                            title: 'Summer Trip 2023',
-                            description: 'Our amazing adventure exploring the national parks. So many beautiful landscapes and wildlife encounters.',
-                            releaseDate: '2023-08-10',
-                            isPublic: true,
-                            userName: 'David Chen',
-                            userId: 'user456',
-                            userPhoto: 'https://randomuser.me/api/portraits/men/32.jpg',
-                            totalRatings: 24,
-                            ratingCount: 5,
-                            userRating: 0,
-                            tags: ['travel', 'nature', 'summer', 'hiking'],
-                            comments: [],
-                            images: [
-                                { url: 'https://images.unsplash.com/photo-1533577116850-9cc66cad8a9b' }
-                            ]
-                        }
-                    ];
-                    
-                    // Save the initial capsules to localStorage
-                    localStorage.setItem('capsules', JSON.stringify(initialCapsules));
-                }
-                
                 // Apply filter
-                let filteredResults = [...initialCapsules];
+                let filteredResults = [...fetchedCapsules];
                 if (filter === 'popular') {
                     filteredResults = filteredResults.sort((a, b) => {
                         const aAvg = a.ratingCount > 0 ? a.totalRatings / a.ratingCount : 0;
@@ -199,15 +227,27 @@ function PublicCapsules() {
                     });
                 }
                 
+                // Use a small delay for better UX
                 setTimeout(() => {
                     setCapsules(filteredResults);
                     setLoading(false);
-                }, 800);
+                }, 500);
                 
             } catch (err) {
                 setError(err);
                 setLoading(false);
                 console.error("Error fetching public capsules:", err);
+                
+                // Fallback to local storage on error
+                const storedCapsules = localStorage.getItem('capsules');
+                if (storedCapsules) {
+                    try {
+                        const parsedCapsules = JSON.parse(storedCapsules);
+                        setCapsules(parsedCapsules);
+                    } catch (e) {
+                        console.error('Error parsing stored capsules:', e);
+                    }
+                }
             }
         };
 
